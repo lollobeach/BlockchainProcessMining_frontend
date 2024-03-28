@@ -10,6 +10,9 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "@uiw/react-json-view": "^2.0.0-alpha.20",
+    "axios": "^1.6.8",
+    "concurrently": "^8.2.2",
     "jquery": "^3.7.1",
     "jsdom": "^24.0.0",
     "react": "^18.2.0",
@@ -19,7 +22,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "concurrently \"react-scripts start\" \"cd ../BlockchainProcessMining_backend && node server.js\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

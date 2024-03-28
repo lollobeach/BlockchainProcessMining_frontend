@@ -4,7 +4,7 @@ import {Outlet} from "react-router-dom";
 
 function BodyLayout() {
     return (
-        <Box paddingY={5}>
+        <Box position="relative" paddingX={2} paddingY={5}>
             <Outlet/>
         </Box>
     );
