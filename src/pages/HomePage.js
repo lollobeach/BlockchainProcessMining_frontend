@@ -56,6 +56,7 @@ function HomePage() {
         anchor.href = href
         anchor.download = "jsonLog.json"
         anchor.click()
+        window.URL.revokeObjectURL(href)
         setLoading(false)
     }
 
