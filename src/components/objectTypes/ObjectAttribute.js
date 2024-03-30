@@ -1,16 +1,16 @@
 import React from 'react';
-import {Box, Button, FormControl, InputLabel, MenuItem, Select} from "@mui/material";
+import {Box, Button, FormControl, InputLabel, MenuItem, Select, Stack} from "@mui/material";
 import CustomTypography from "../CustomTypography";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-function ObjectAttribute({attribute, index, setObjectAttributes, objectAttributes}) {
+function ObjectAttribute({keys, values, attribute, index, setObjectsAttributes, objectAttributes, isObjectType}) {
 
     const handleRemoveAttribute = (input) => {
-        setObjectAttributes(objectAttributes.filter(attribute => attribute.name !== input.name))
+        setObjectsAttributes(objectAttributes.filter(attribute => attribute.name !== input.name))
     }
 
     return (
-        <Box display="flex" alignItems="center" justifyContent="space-between">
+        <Box display="flex" alignItems="center">
             <Box>
                 <CustomTypography>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"{"}
@@ -19,46 +19,161 @@ function ObjectAttribute({attribute, index, setObjectAttributes, objectAttribute
                     <CustomTypography>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"name":
                     </CustomTypography>
-                    <FormControl fullWidth sx={{minWidth: 150}}>
-                        <InputLabel>Attribute Name</InputLabel>
-                        <Select
-                            value={attribute.name}
-                            label="name"
-                            onChange={(e) => (setObjectAttributes(objectAttributes.map(item => item === attribute ? {
-                                ...item,
-                                name: e.target.value
-                            } : item)))}
-                        >
-                            <MenuItem value="amount">Amount</MenuItem>
-                            <MenuItem value="date">Date</MenuItem>
-                            <MenuItem value="authority">Authority</MenuItem>
-                            <MenuItem value="process">Process</MenuItem>
-                            <MenuItem value="duration">Duration</MenuItem>
-                        </Select>
-                    </FormControl>
+                    <Stack spacing={1}>
+                        <FormControl fullWidth sx={{width: 200}}>
+                            <InputLabel>Key</InputLabel>
+                            <Select
+                                value={attribute.name}
+                                label="name"
+                                onChange={(e) => (setObjectsAttributes(objectAttributes.map(item => item === attribute ? {
+                                    ...item,
+                                    name: e.target.value
+                                } : item)))}
+                            >
+                                {
+                                    keys.map((name, index) => (
+                                        <MenuItem key={index} value={name}
+                                                  sx={{width: 400, overflow: "auto"}}>{name}</MenuItem>
+                                    ))
+                                }
+                            </Select>
+                        </FormControl>
+                        <FormControl fullWidth sx={{width: 200}}>
+                            <InputLabel>Value</InputLabel>
+                            <Select
+                                value={attribute.name}
+                                label="name"
+                                onChange={(e) => (setObjectsAttributes(objectAttributes.map(item => item === attribute ? {
+                                    ...item,
+                                    name: e.target.value
+                                } : item)))}
+                            >
+                                {
+                                    values.map((name, index) => (
+                                        <MenuItem key={index} value={name}
+                                                  sx={{width: 400, overflow: "auto"}}>{name}</MenuItem>
+                                    ))
+                                }
+                            </Select>
+                        </FormControl>
+                    </Stack>
                 </Box>
-                <Box display="flex" gap={1} alignItems="center" marginTop={1}>
-                    <CustomTypography>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"type":
-                    </CustomTypography>
-                    <FormControl fullWidth sx={{minWidth: 150}}>
-                        <InputLabel>Attribute Type</InputLabel>
-                        <Select
-                            value={attribute.type}
-                            label="name"
-                            onChange={(e) => (setObjectAttributes(objectAttributes.map(item => item === attribute ? {
-                                ...item,
-                                type: e.target.value
-                            } : item)))}
-                        >
-                            <MenuItem value="uint">Uint</MenuItem>
-                            <MenuItem value="date">Date</MenuItem>
-                            <MenuItem value="string">String</MenuItem>
-                            <MenuItem value="uuid">UUID</MenuItem>
-                            <MenuItem value="timestamp">Timestamp</MenuItem>
-                        </Select>
-                    </FormControl>
-                </Box>
+                {
+                    isObjectType ? (
+                        <Box display="flex" gap={1} alignItems="center" marginTop={1}>
+                            <CustomTypography>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"type":
+                            </CustomTypography>
+                            <Stack spacing={1}>
+                                <FormControl fullWidth sx={{width: 200}}>
+                                    <InputLabel>Key</InputLabel>
+                                    <Select
+                                        value={attribute.type}
+                                        label="name"
+                                        onChange={(e) => (setObjectsAttributes(objectAttributes.map(item => item === attribute ? {
+                                            ...item,
+                                            type: e.target.value
+                                        } : item)))}
+                                    >
+                                        {
+                                            keys.map((name, index) => (
+                                                <MenuItem key={index} value={name}
+                                                          sx={{width: 400, overflow: "auto"}}>{name}</MenuItem>
+                                            ))
+                                        }
+                                    </Select>
+                                </FormControl>
+                                <FormControl fullWidth sx={{width: 200}}>
+                                    <InputLabel>Value</InputLabel>
+                                    <Select
+                                        value={attribute.type}
+                                        label="name"
+                                        onChange={(e) => (setObjectsAttributes(objectAttributes.map(item => item === attribute ? {
+                                            ...item,
+                                            type: e.target.value
+                                        } : item)))}
+                                    >
+                                        {
+                                            values.map((name, index) => (
+                                                <MenuItem key={index} value={name}
+                                                          sx={{width: 400, overflow: "auto"}}>{name}</MenuItem>
+                                            ))
+                                        }
+                                    </Select>
+                                </FormControl>
+                            </Stack>
+                        </Box>
+                    ) : (
+                        <>
+                            <Box display="flex" gap={1} alignItems="center" marginTop={1}>
+                                <CustomTypography>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"time":
+                                </CustomTypography>
+                                <FormControl fullWidth sx={{width: 200}}>
+                                    <InputLabel>Time</InputLabel>
+                                    <Select
+                                        value={attribute.time}
+                                        label="name"
+                                        onChange={(e) => (setObjectsAttributes(objectAttributes.map(item => item === attribute ? {
+                                            ...item,
+                                            time: e.target.value
+                                        } : item)))}
+                                    >
+                                        {
+                                            values.filter(value => !isNaN(new Date(value).getTime()) && value.toString().includes("Z")).map((name, index) => (
+                                                <MenuItem key={index} value={name}
+                                                          sx={{width: 400, overflow: "auto"}}>{name}</MenuItem>
+                                            ))
+                                        }
+                                    </Select>
+                                </FormControl>
+                            </Box>
+                            <Box display="flex" gap={1} alignItems="center" marginTop={1}>
+                                <CustomTypography>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"value":
+                                </CustomTypography>
+                                <Stack spacing={1}>
+                                    <FormControl fullWidth sx={{width: 200}}>
+                                        <InputLabel>Key</InputLabel>
+                                        <Select
+                                            value={attribute.value}
+                                            label="name"
+                                            onChange={(e) => (setObjectsAttributes(objectAttributes.map(item => item === attribute ? {
+                                                ...item,
+                                                value: e.target.value
+                                            } : item)))}
+                                        >
+                                            {
+                                                keys.map((name, index) => (
+                                                    <MenuItem key={index} value={name}
+                                                              sx={{width: 400, overflow: "auto"}}>{name}</MenuItem>
+                                                ))
+                                            }
+                                        </Select>
+                                    </FormControl>
+                                    <FormControl fullWidth sx={{width: 200}}>
+                                        <InputLabel>Value</InputLabel>
+                                        <Select
+                                            value={attribute.value}
+                                            label="name"
+                                            onChange={(e) => (setObjectsAttributes(objectAttributes.map(item => item === attribute ? {
+                                                ...item,
+                                                value: e.target.value
+                                            } : item)))}
+                                        >
+                                            {
+                                                values.map((name, index) => (
+                                                    <MenuItem key={index} value={name}
+                                                              sx={{width: 400, overflow: "auto"}}>{name}</MenuItem>
+                                                ))
+                                            }
+                                        </Select>
+                                    </FormControl>
+                                </Stack>
+                            </Box>
+                        </>
+                    )
+                }
                 <CustomTypography>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"}"}{index !== objectAttributes.length - 1 && ","}
                 </CustomTypography>

@@ -1,21 +1,25 @@
-import React, {useState} from 'react';
-import {Box, Button, FormControl, InputLabel, MenuItem, Select} from "@mui/material";
+import React, {useState, useEffect} from 'react';
+import {Box, Button, FormControl, InputLabel, MenuItem, Select, Stack} from "@mui/material";
 
 import CustomTypography from "../CustomTypography";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import ObjectAttribute from "./ObjectAttribute";
 
-function ObjectType({objectsName, setObjectsTypesItem, objectsTypesItem, objectType, index}) {
+function ObjectType({objectsKeys, objectsValue, setObjectsTypesItem, objectsTypesItem, objectType, index}) {
 
     const [objectAttributes, setObjectsAttributes] = useState([])
+
+    useEffect(() => {
+        objectType.attributes = objectAttributes
+    }, [objectAttributes]);
 
     const handleAddObjectAttribute = () => {
         setObjectsAttributes([...objectAttributes, {name: "", type: ""}])
     }
 
-    const handleRemoveObject = (event) => {
-        setObjectsTypesItem(objectsTypesItem.filter(item => item.name !== event.name))
+    const handleRemoveObject = (object) => {
+        setObjectsTypesItem(objectsTypesItem.filter(item => item.name !== object.name))
     }
 
     const handleSelectObjectName = (e) => {
@@ -26,7 +30,7 @@ function ObjectType({objectsName, setObjectsTypesItem, objectsTypesItem, objectT
     }
 
     return (
-        <Box display="flex" justifyContent="space-between">
+        <Box display="flex">
             <Box>
                 <CustomTypography>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"{"}
@@ -35,20 +39,37 @@ function ObjectType({objectsName, setObjectsTypesItem, objectsTypesItem, objectT
                     <CustomTypography>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"name":
                     </CustomTypography>
-                    <FormControl fullWidth sx={{minWidth: 150}}>
-                        <InputLabel>Object Name</InputLabel>
+                    <Stack spacing={1}>
+                    <FormControl fullWidth sx={{width: 200}}>
+                        <InputLabel>Key</InputLabel>
                         <Select
                             value={objectType.name}
                             label="name"
                             onChange={(e) => handleSelectObjectName(e)}
                         >
                             {
-                                objectsName.map((name, index) => (
+                                objectsKeys.map((name, index) => (
                                     <MenuItem key={index} value={name}>{name}</MenuItem>
                                 ))
                             }
                         </Select>
                     </FormControl>
+                    <FormControl fullWidth sx={{width: 200}}>
+                        <InputLabel>Value</InputLabel>
+                        <Select
+                            value={objectType.name}
+                            label="name"
+                            onChange={(e) => handleSelectObjectName(e)}
+                        >
+                            {
+                                objectsValue.map((name, index) => (
+                                    <MenuItem key={index} value={name}
+                                              sx={{width: 400, overflow: "auto"}}>{name}</MenuItem>
+                                ))
+                            }
+                        </Select>
+                    </FormControl>
+                    </Stack>
                     <CustomTypography>
                         ,
                     </CustomTypography>
@@ -61,19 +82,23 @@ function ObjectType({objectsName, setObjectsTypesItem, objectsTypesItem, objectT
                         </Button>
                     }
                     {objectAttributes.length === 0 && "],"}
-                    {
-                        objectAttributes.length > 0 &&
-                        (
-                            <>
-                                {objectAttributes.map((attribute, index) => (
-                                    <ObjectAttribute key={`${index}_attribute`} attribute={attribute} index={index}
-                                                    setObjectsAttributes={setObjectsAttributes}
-                                                    objectAttributes={objectAttributes}/>
-                                ))}
-                            </>
-                        )
-                    }
                 </CustomTypography>
+                {
+                    objectAttributes.length > 0 &&
+                    (
+                        <>
+                            {objectAttributes.map((attribute, index) => (
+                                <ObjectAttribute key={`${index}_attribute`} keys={objectsKeys} values={objectsValue}
+                                                 attribute={attribute} index={index} isObjectType
+                                                 setObjectsAttributes={setObjectsAttributes}
+                                                 objectAttributes={objectAttributes}/>
+                            ))}
+                            <CustomTypography>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],
+                            </CustomTypography>
+                        </>
+                    )
+                }
                 <CustomTypography>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"}"}{index !== objectsTypesItem.length - 1 && ","}
                 </CustomTypography>

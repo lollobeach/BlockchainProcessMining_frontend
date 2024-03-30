@@ -1,13 +1,17 @@
-import React, {useState} from 'react';
-import {Box, Button, FormControl, InputLabel, MenuItem, Select} from "@mui/material";
+import React, {useState, useEffect} from 'react';
+import {Box, Button, FormControl, InputLabel, MenuItem, Select, Stack} from "@mui/material";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CustomTypography from "../CustomTypography";
 import EventAttribute from "./EventAttribute";
 
-function EventType({eventsName, setEventTypesItem, eventsTypesItem, eventType, index}) {
+function EventType({eventsKey, eventsValue, setEventTypesItem, eventsTypesItem, eventType, index}) {
 
     const [eventAttributes, setEventAttributes] = useState([])
+
+    useEffect(() => {
+        eventType.attributes = eventAttributes
+    }, [eventAttributes]);
 
     const handleAddEventAttribute = () => {
         setEventAttributes([...eventAttributes, {name: "", type: ""}])
@@ -25,7 +29,7 @@ function EventType({eventsName, setEventTypesItem, eventsTypesItem, eventType, i
     }
 
     return (
-        <Box display="flex" justifyContent="space-between">
+        <Box display="flex">
             <Box>
                 <CustomTypography>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"{"}
@@ -34,34 +38,37 @@ function EventType({eventsName, setEventTypesItem, eventsTypesItem, eventType, i
                     <CustomTypography>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"name":
                     </CustomTypography>
-                    <FormControl fullWidth sx={{minWidth: 150}}>
-                        <InputLabel>Key</InputLabel>
-                        <Select
-                            value={eventType.name}
-                            label="name"
-                            onChange={(e) => handleSelectEventName(e)}
-                        >
-                            {
-                                eventsName.map((name, index) => (
-                                    <MenuItem key={index} value={name}>{name}</MenuItem>
-                                ))
-                            }
-                        </Select>
-                    </FormControl>
-                    <FormControl fullWidth sx={{minWidth: 150}}>
-                        <InputLabel>Value</InputLabel>
-                        <Select
-                            value={eventType.name}
-                            label="name"
-                            onChange={(e) => handleSelectEventName(e)}
-                        >
-                            {
-                                eventsName.map((name, index) => (
-                                    <MenuItem key={index} value={name}>{name}</MenuItem>
-                                ))
-                            }
-                        </Select>
-                    </FormControl>
+                    <Stack spacing={1}>
+                        <FormControl fullWidth sx={{width: 200}}>
+                            <InputLabel>Key</InputLabel>
+                            <Select
+                                value={eventType.name}
+                                label="name"
+                                onChange={(e) => handleSelectEventName(e)}
+                            >
+                                {
+                                    eventsKey.map((name, index) => (
+                                        <MenuItem key={index} value={name}>{name}</MenuItem>
+                                    ))
+                                }
+                            </Select>
+                        </FormControl>
+                        <FormControl fullWidth sx={{width: 200}}>
+                            <InputLabel>Value</InputLabel>
+                            <Select
+                                value={eventType.name}
+                                label="name"
+                                onChange={(e) => handleSelectEventName(e)}
+                            >
+                                {
+                                    eventsValue.map((name, index) => (
+                                        <MenuItem key={index} value={name}
+                                                  sx={{width: 400, overflow: "auto"}}>{name}</MenuItem>
+                                    ))
+                                }
+                            </Select>
+                        </FormControl>
+                    </Stack>
                     <CustomTypography>
                         ,
                     </CustomTypography>
@@ -74,19 +81,23 @@ function EventType({eventsName, setEventTypesItem, eventsTypesItem, eventType, i
                         </Button>
                     }
                     {eventAttributes.length === 0 && "],"}
-                    {
-                        eventAttributes.length > 0 &&
-                        (
-                            <>
-                                {eventAttributes.map((attribute, index) => (
-                                    <EventAttribute key={`${index}_attribute`} attribute={attribute} index={index}
-                                                    setEventAttributes={setEventAttributes}
-                                                    eventAttributes={eventAttributes}/>
-                                ))}
-                            </>
-                        )
-                    }
                 </CustomTypography>
+                {
+                    eventAttributes.length > 0 &&
+                    (
+                        <>
+                            {eventAttributes.map((attribute, index) => (
+                                <EventAttribute key={`${index}_attribute`} keys={eventsKey} values={eventsValue}
+                                                attribute={attribute} index={index}
+                                                setEventAttributes={setEventAttributes} isEventType
+                                                eventAttributes={eventAttributes}/>
+                            ))}
+                            <CustomTypography>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],
+                            </CustomTypography>
+                        </>
+                    )
+                }
                 <CustomTypography>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"}"}{index !== eventsTypesItem.length - 1 && ","}
                 </CustomTypography>
