@@ -15,8 +15,11 @@ import {_sendData} from "../api/services";
 import PageLayout from "../layouts/PageLayout";
 
 import JsonResults from "../mock/jsonLog.json"
+import useDataContext from "../dataContext/useDataContext";
 
 function HomePage() {
+
+    const {results, setResults} = useDataContext()
 
     const [contractName, setContractName] = useState("CakeOFT")
     const [contractAddress, setContractAddress] = useState("0x152649eA73beAb28c5b49B26eb48f7EAD6d4c898")
@@ -24,13 +27,9 @@ function HomePage() {
     const [toBlock, setToBlock] = useState("18698323")
 
     const [loading, setLoading] = useState(false)
-    const [results, setResults] = useState()
+    // const [results, setResults] = useState()
 
-    const { state } = useLocation()
-
-    useEffect(() => {
-        if (state) setResults(state.state.results)
-    }, [])
+    // const {state} = useLocation()
 
     const sendData = async () => {
         setLoading(true)
@@ -40,7 +39,7 @@ function HomePage() {
     }
 
     return (
-        <PageLayout loading={loading} setLoading={setLoading} results={results}>
+        <PageLayout loading={loading} setLoading={setLoading}>
             <Stack justifyContent="space-between" height="100%">
                 <Typography textAlign="center" variant="h3">
                     Data Extraction
@@ -85,19 +84,11 @@ function HomePage() {
                             }
                         </Box>
                     </Button>
-                    {
-                        results ? (
-                            <Link to="/ocel" state={{ results }} style={{textDecoration: "none"}}>
-                                <Button variant="contained" sx={{padding: 1, width: "100%"}}>
-                                    <Typography color="white">Map data</Typography>
-                                </Button>
-                            </Link>
-                        ) : (
-                            <Button disabled variant="contained" sx={{padding: 1, width: "100%"}}>
-                                <Typography color="white">Map data</Typography>
-                            </Button>
-                        )
-                    }
+                    <Link to="/ocel" style={{textDecoration: "none"}}>
+                        <Button variant="contained" sx={{padding: 1, width: "100%"}}>
+                            <Typography color="white">Map data</Typography>
+                        </Button>
+                    </Link>
                 </Stack>
             </Stack>
         </PageLayout>

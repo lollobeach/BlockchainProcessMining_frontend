@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {Box, Button, Stack, Typography} from "@mui/material";
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import {Link, useLocation} from "react-router-dom";
+import {Link} from "react-router-dom";
 
 import EventType from "../components/eventTypes/EventType";
 import CustomTypography from "../components/CustomTypography";
@@ -10,6 +10,7 @@ import Event from "../components/events/Event";
 import PageLayout from "../layouts/PageLayout";
 import ObjectOCEL from "../components/objects/ObjectOCEL";
 import {_downloadOCEL} from "../api/services";
+import useDataContext from "../dataContext/useDataContext";
 
 const getAllKeys = (jsonLog, set) => {
     if (Array.isArray(jsonLog)) {
@@ -64,6 +65,8 @@ const getAllValues = (jsonLog, set) => {
 
 function OcelFormatting() {
 
+    const {results} = useDataContext()
+
 
     const [jsonKeys, setJsonKeys] = useState([])
     const [jsonValues, setJsonValues] = useState([])
@@ -74,19 +77,20 @@ function OcelFormatting() {
     const [objectsItem, setObjectsItem] = useState([])
 
 
-    const {state} = useLocation()
-
     useEffect(() => {
-        if (state) {
+        if (results) {
             const keySet = new Set()
-            getAllKeys(state.results, keySet)
+            getAllKeys(results, keySet)
             setJsonKeys([...keySet])
 
             const valueSet = new Set()
-            getAllValues(state.results, valueSet)
+            getAllValues(results, valueSet)
             setJsonValues([...valueSet])
+        } else {
+            setJsonKeys([])
+            setJsonValues([])
         }
-    }, []);
+    }, [results]);
 
     const handleAddEventType = () => {
         setEventTypesItem([...eventsTypesItem, {name: "", attributes: []}])
@@ -120,8 +124,24 @@ function OcelFormatting() {
         window.URL.revokeObjectURL(href)
     }
 
+    const downloadJSONOcel = async () => {
+        const ocel = {
+            eventTypes: eventsTypesItem,
+            objectTypes: objectsTypesItem,
+            events: eventsItem,
+            objects: objectsItem
+        }
+        const response = await _downloadOCEL(ocel)
+        const href = window.URL.createObjectURL(response)
+        const anchor = document.createElement('a')
+        anchor.href = href
+        anchor.download = "ocel.jsonocel"
+        anchor.click()
+        window.URL.revokeObjectURL(href)
+    }
+
     return (
-        <PageLayout results={state.results}>
+        <PageLayout>
             <Box display="flex" justifyContent="center" height="100%">
                 <Box position="relative" height="100%" width={520} paddingBottom={2}>
                     <Typography variant="h3">
@@ -242,13 +262,16 @@ function OcelFormatting() {
                     </Stack>
                     <Box display="flex" justifyContent="space-evenly" alignItems="center" gap={1} position="absolute"
                          bottom={0} height="48px">
-                        <Link to="/" state={{state}}>
-                            <Button color="error" variant="contained" sx={{padding: 1, width: "175px"}}>
+                        <Button variant="contained" onClick={downloadOcel} sx={{padding: 1, width: "175px", height: "64px"}}>
+                            <Typography color="white">Download JSON</Typography>
+                        </Button>
+                        <Link to="/">
+                            <Button color="error" variant="contained" sx={{padding: 1, width: "175px", height: "64px"}}>
                                 <Typography>BACK</Typography>
                             </Button>
                         </Link>
-                        <Button variant="contained" onClick={downloadOcel} sx={{padding: 1, width: "175px"}}>
-                            <Typography color="white">Download OCEL</Typography>
+                        <Button variant="contained" onClick={downloadJSONOcel} sx={{padding: 1, width: "175px", backgroundColor: "#5316ec"}}>
+                            <Typography color="white">Download JSONOCEL</Typography>
                         </Button>
                     </Box>
                 </Box>

@@ -56,3 +56,16 @@ export const _downloadOCEL = async (ocel) => {
         console.error(error)
     }
 }
+
+export const _downloadJSONOCEL = async (ocel) => {
+    const body = {
+        ocel
+    }
+
+    try {
+        const response = await axios.post(serverUrl + "/jsonocel-download", body, {responseType: 'blob'})
+        return response.data
+    } catch (error) {
+        console.error(error)
+    }
+}

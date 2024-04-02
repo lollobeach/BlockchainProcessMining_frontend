@@ -10,6 +10,7 @@ import OcelFormatting from "./pages/OcelFormatting";
 import BodyLayout from "./layouts/BodyLayout";
 import {ThemeProvider} from "@mui/material";
 import {customTheme} from "./theme/customTheme";
+import DataProvider from "./dataContext/DataContext";
 
 const router = createBrowserRouter([
     {
@@ -24,7 +25,9 @@ const router = createBrowserRouter([
 function App() {
     return (
         <ThemeProvider theme={customTheme}>
-            <RouterProvider router={router}/>
+            <DataProvider>
+                <RouterProvider router={router}/>
+            </DataProvider>
         </ThemeProvider>
     );
 }
