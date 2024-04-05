@@ -41,60 +41,61 @@ function ObjectOCEL({objectKeys, objectValues, setObject, objectsType, objects, 
                 <CustomTypography>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"{"}
                 </CustomTypography>
-                <Box display="flex" gap={1} alignItems="center">
-                    <CustomTypography>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"id":
-                    </CustomTypography>
-                    <Stack spacing={1}>
-                        <FormControl fullWidth sx={{width: 200}}>
-                            <InputLabel>Key</InputLabel>
-                            <Select
-                                value={object.id}
-                                label="name"
-                                onChange={(e) => handleSelectObjectId(e)}
-                            >
-                                {
-                                    objectKeys.map((name, index) => (
-                                        <MenuItem key={index} value={name}>{name}</MenuItem>
-                                    ))
-                                }
-                            </Select>
-                        </FormControl>
-                        <FormControl fullWidth sx={{width: 200}}>
-                            <InputLabel>Value</InputLabel>
-                            <Select
-                                value={object.id}
-                                label="name"
-                                onChange={(e) => handleSelectObjectId(e)}
-                            >
-                                {
-                                    objectValues.map((name, index) => (
-                                        <MenuItem key={index} value={name}
-                                                  sx={{width: 400, overflow: "auto"}}>{name}</MenuItem>
-                                    ))
-                                }
-                            </Select>
-                        </FormControl>
-                    </Stack>
-                </Box>
+                {/*<Box display="flex" gap={1} alignItems="center">*/}
+                {/*    <CustomTypography>*/}
+                {/*        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"id":*/}
+                {/*    </CustomTypography>*/}
+                {/*    <Stack spacing={1}>*/}
+                {/*        <FormControl fullWidth sx={{width: 200}}>*/}
+                {/*            <InputLabel>Key</InputLabel>*/}
+                {/*            <Select*/}
+                {/*                value={object.id}*/}
+                {/*                label="name"*/}
+                {/*                onChange={(e) => handleSelectObjectId(e)}*/}
+                {/*            >*/}
+                {/*                {*/}
+                {/*                    objectKeys.map((name, index) => (*/}
+                {/*                        <MenuItem key={index} value={name}>{name}</MenuItem>*/}
+                {/*                    ))*/}
+                {/*                }*/}
+                {/*            </Select>*/}
+                {/*        </FormControl>*/}
+                {/*        <FormControl fullWidth sx={{width: 200}}>*/}
+                {/*            <InputLabel>Value</InputLabel>*/}
+                {/*            <Select*/}
+                {/*                value={object.id}*/}
+                {/*                label="name"*/}
+                {/*                onChange={(e) => handleSelectObjectId(e)}*/}
+                {/*            >*/}
+                {/*                {*/}
+                {/*                    objectValues.map((name, index) => (*/}
+                {/*                        <MenuItem key={index} value={name}*/}
+                {/*                                  sx={{width: 400, overflow: "auto"}}>{name}</MenuItem>*/}
+                {/*                    ))*/}
+                {/*                }*/}
+                {/*            </Select>*/}
+                {/*        </FormControl>*/}
+                {/*    </Stack>*/}
+                {/*</Box>*/}
                 <Box display="flex" gap={1} alignItems="center" marginTop={1}>
                     <CustomTypography>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"type":
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"type": <span
+                        style={{color: "#0016ff"}}>{object.key}-{object.type}</span>
                     </CustomTypography>
-                    <FormControl fullWidth sx={{width: 200}}>
-                        <InputLabel>Type</InputLabel>
-                        <Select
-                            value={object.type}
-                            label="name"
-                            onChange={(e) => handleSelectObjectType(e)}
-                        >
-                            {
-                                objectsType.map(item => item.name).map((name, index) => (
-                                    <MenuItem key={index} value={name}>{name}</MenuItem>
-                                ))
-                            }
-                        </Select>
-                    </FormControl>
+                    {/*<FormControl fullWidth sx={{width: 200}}>*/}
+                    {/*    <InputLabel>Type</InputLabel>*/}
+                    {/*    <Select*/}
+                    {/*        value={object.type}*/}
+                    {/*        label="name"*/}
+                    {/*        onChange={(e) => handleSelectObjectType(e)}*/}
+                    {/*    >*/}
+                    {/*        {*/}
+                    {/*            objectsType.map(item => item.name).map((name, index) => (*/}
+                    {/*                <MenuItem key={index} value={name}>{name}</MenuItem>*/}
+                    {/*            ))*/}
+                    {/*        }*/}
+                    {/*    </Select>*/}
+                    {/*</FormControl>*/}
                 </Box>
                 <CustomTypography>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"attributes": [
@@ -128,11 +129,11 @@ function ObjectOCEL({objectKeys, objectValues, setObject, objectsType, objects, 
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"}"}{index !== objects.length - 1 && ","}
                 </CustomTypography>
             </Box>
-            <Box marginTop={8} marginLeft={2}>
-                <Button onClick={() => handleRemoveObject(object)}>
-                    <DeleteIcon sx={{fontSize: 30, color: "red"}}/>
-                </Button>
-            </Box>
+            {/*<Box marginTop={8} marginLeft={2}>*/}
+            {/*    <Button onClick={() => handleRemoveObject(object)}>*/}
+            {/*        <DeleteIcon sx={{fontSize: 30, color: "red"}}/>*/}
+            {/*    </Button>*/}
+            {/*</Box>*/}
         </Box>
     );
 }

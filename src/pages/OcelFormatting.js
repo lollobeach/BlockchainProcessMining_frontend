@@ -65,7 +65,7 @@ const getAllValues = (jsonLog, set) => {
 
 function OcelFormatting() {
 
-    const {results} = useDataContext()
+    const {results, ocel} = useDataContext()
 
 
     const [jsonKeys, setJsonKeys] = useState([])
@@ -93,52 +93,20 @@ function OcelFormatting() {
     }, [results]);
 
     const handleAddEventType = () => {
-        setEventTypesItem([...eventsTypesItem, {name: "", attributes: []}])
+        setEventTypesItem([...eventsTypesItem, {name: "", attributes: [], names: [], id:  ""}])
     }
 
     const handleAddObjectType = () => {
-        setObjectsTypesItem([...objectsTypesItem, {name: "", attributes: []}])
+        setObjectsTypesItem([...objectsTypesItem, {name: "", attributes: [], names: [], id: ""}])
     }
 
-    const handleAddEvent = () => {
-        setEventsItem([...eventsItem, {id: "", type: "", time: "", attributes: [], relationships: []}])
-    }
+    // const handleAddEvent = () => {
+    //     setEventsItem([...eventsItem, {id: "", key: "", type: "", time: "", attributes: [], relationships: []}])
+    // }
 
-    const handleAddObject = () => {
-        setObjectsItem([...objectsItem, {id: "", type: "", attributes: []}])
-    }
-
-    const downloadOcel = async () => {
-        const ocel = {
-            eventTypes: eventsTypesItem,
-            objectTypes: objectsTypesItem,
-            events: eventsItem,
-            objects: objectsItem
-        }
-        const response = await _downloadOCEL(ocel)
-        const href = window.URL.createObjectURL(response)
-        const anchor = document.createElement('a')
-        anchor.href = href
-        anchor.download = "ocel.json"
-        anchor.click()
-        window.URL.revokeObjectURL(href)
-    }
-
-    const downloadJSONOcel = async () => {
-        const ocel = {
-            eventTypes: eventsTypesItem,
-            objectTypes: objectsTypesItem,
-            events: eventsItem,
-            objects: objectsItem
-        }
-        const response = await _downloadOCEL(ocel)
-        const href = window.URL.createObjectURL(response)
-        const anchor = document.createElement('a')
-        anchor.href = href
-        anchor.download = "ocel.jsonocel"
-        anchor.click()
-        window.URL.revokeObjectURL(href)
-    }
+    // const handleAddObject = () => {
+    //     setObjectsItem([...objectsItem, {id: "", type: "", attributes: []}])
+    // }
 
     return (
         <PageLayout>
@@ -165,7 +133,7 @@ function OcelFormatting() {
                                 <>
                                     {eventsTypesItem.map((eventType, index) => (
                                         <EventType key={`${index}_event`} eventsKey={jsonKeys} eventsValue={jsonValues}
-                                                   setEventTypesItem={setEventTypesItem}
+                                                   setEventTypesItem={setEventTypesItem} setEventsItem={setEventsItem}
                                                    eventsTypesItem={eventsTypesItem} eventType={eventType}
                                                    index={index}/>
                                     ))}
@@ -190,7 +158,7 @@ function OcelFormatting() {
                                     {objectsTypesItem.map((objectType, index) => (
                                         <ObjectType key={`${index}_object`} objectsKeys={jsonKeys}
                                                     objectsValue={jsonValues}
-                                                    setObjectsTypesItem={setObjectsTypesItem}
+                                                    setObjectsTypesItem={setObjectsTypesItem} setObjectsItem={setObjectsItem}
                                                     objectsTypesItem={objectsTypesItem} objectType={objectType}
                                                     index={index}/>
                                     ))}
@@ -201,79 +169,65 @@ function OcelFormatting() {
                             )
                         }
                         <CustomTypography>
-                            &nbsp;&nbsp;&nbsp;"events": [
-                            {
-                                <Button onClick={handleAddEvent}>
-                                    <AddBoxIcon sx={{fontSize: 30}}/>
-                                </Button>
-                            }
-                            {eventsItem.length === 0 && "],"}
+                            &nbsp;&nbsp;&nbsp;"events": []
+                            {/*{*/}
+                            {/*    <Button onClick={handleAddEvent}>*/}
+                            {/*        <AddBoxIcon sx={{fontSize: 30}}/>*/}
+                            {/*    </Button>*/}
+                            {/*}*/}
+                            {/*{eventsItem.length === 0 && "],"}*/}
                         </CustomTypography>
-                        {
-                            eventsItem.length > 0 &&
-                            (
-                                <>
-                                    {
-                                        eventsItem.map((event, index) => (
-                                            <Event key={`${index}_event`} eventKeys={jsonKeys}
-                                                   eventValues={jsonValues} eventsType={eventsTypesItem}
-                                                   setEventsItem={setEventsItem} events={eventsItem} event={event}
-                                                   index={index} objects={objectsItem}
-                                            />
-                                        ))
-                                    }
-                                    <CustomTypography>
-                                        &nbsp;&nbsp;&nbsp;],
-                                    </CustomTypography>
-                                </>
-                            )
-                        }
+                        {/*{*/}
+                        {/*    eventsItem.length > 0 &&*/}
+                        {/*    (*/}
+                        {/*        <>*/}
+                        {/*            {*/}
+                        {/*                eventsItem.map((event, index) => (*/}
+                        {/*                    <Event key={`${index}_event`} eventKeys={jsonKeys}*/}
+                        {/*                           eventValues={jsonValues} eventsType={eventsTypesItem}*/}
+                        {/*                           setEventsItem={setEventsItem} events={eventsItem} event={event}*/}
+                        {/*                           index={index} objects={objectsItem}*/}
+                        {/*                    />*/}
+                        {/*                ))*/}
+                        {/*            }*/}
+                        {/*            <CustomTypography>*/}
+                        {/*                &nbsp;&nbsp;&nbsp;],*/}
+                        {/*            </CustomTypography>*/}
+                        {/*        </>*/}
+                        {/*    )*/}
+                        {/*}*/}
                         <CustomTypography>
-                            &nbsp;&nbsp;&nbsp;"objects": [
-                            {
-                                <Button onClick={handleAddObject}>
-                                    <AddBoxIcon sx={{fontSize: 30}}/>
-                                </Button>
-                            }
-                            {objectsItem.length === 0 && "],"}
-                            {
-                                objectsItem.length > 0 &&
-                                (
-                                    <>
-                                        {
-                                            objectsItem.map((object, index) => (
-                                                <ObjectOCEL key={`${index}_object`} objectKeys={jsonKeys}
-                                                            objectValues={jsonValues}
-                                                            setObject={setObjectsItem} objectsType={objectsTypesItem}
-                                                            objects={objectsItem} object={object} index={index}
-                                                />
-                                            ))
-                                        }
-                                        <CustomTypography>
-                                            &nbsp;&nbsp;&nbsp;]
-                                        </CustomTypography>
-                                    </>
-                                )
-                            }
+                            &nbsp;&nbsp;&nbsp;"objects": []
+                            {/*{*/}
+                            {/*    <Button onClick={handleAddObject}>*/}
+                            {/*        <AddBoxIcon sx={{fontSize: 30}}/>*/}
+                            {/*    </Button>*/}
+                            {/*}*/}
+                            {/*{objectsItem.length === 0 && "],"}*/}
+                            {/*{*/}
+                            {/*    objectsItem.length > 0 &&*/}
+                            {/*    (*/}
+                            {/*        <>*/}
+                            {/*            {*/}
+                            {/*                objectsItem.map((object, index) => (*/}
+                            {/*                    <ObjectOCEL key={`${index}_object`} objectKeys={jsonKeys}*/}
+                            {/*                                objectValues={jsonValues}*/}
+                            {/*                                setObject={setObjectsItem} objectsType={objectsTypesItem}*/}
+                            {/*                                objects={objectsItem} object={object} index={index}*/}
+                            {/*                    />*/}
+                            {/*                ))*/}
+                            {/*            }*/}
+                            {/*            <CustomTypography>*/}
+                            {/*                &nbsp;&nbsp;&nbsp;]*/}
+                            {/*            </CustomTypography>*/}
+                            {/*        </>*/}
+                            {/*    )*/}
+                            {/*}*/}
                         </CustomTypography>
                         <CustomTypography>
                             {"}"}
                         </CustomTypography>
                     </Stack>
-                    <Box display="flex" justifyContent="space-evenly" alignItems="center" gap={1} position="absolute"
-                         bottom={0} height="48px">
-                        <Button variant="contained" onClick={downloadOcel} sx={{padding: 1, width: "175px", height: "64px"}}>
-                            <Typography color="white">Download JSON</Typography>
-                        </Button>
-                        <Link to="/">
-                            <Button color="error" variant="contained" sx={{padding: 1, width: "175px", height: "64px"}}>
-                                <Typography>BACK</Typography>
-                            </Button>
-                        </Link>
-                        <Button variant="contained" onClick={downloadJSONOcel} sx={{padding: 1, width: "175px", backgroundColor: "#5316ec"}}>
-                            <Typography color="white">Download JSONOCEL</Typography>
-                        </Button>
-                    </Box>
                 </Box>
             </Box>
         </PageLayout>

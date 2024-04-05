@@ -1,10 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
     Box,
     Button,
     Card,
     CardContent,
-    CardHeader,
     CircularProgress,
     Grid,
     Stack,
@@ -14,8 +13,9 @@ import {
 import JsonView from "@uiw/react-json-view";
 import {darkTheme} from "@uiw/react-json-view/dark";
 import {Download, FileUpload, Delete} from "@mui/icons-material";
-import {_downloadCSV, _downloadJson} from "../api/services";
+import {_downloadCSV, _downloadJson, _downloadOCEL} from "../api/services";
 import useDataContext from "../dataContext/useDataContext";
+import {Link} from "react-router-dom";
 
 const CardContentNoPadding = styled(CardContent)(
     `
@@ -40,9 +40,15 @@ const VisuallyHiddenInput = styled('input')({
 
 function PageLayout({children, loading, setLoading}) {
 
-    const {results, setResults} = useDataContext()
+    const {results, ocel, setResults} = useDataContext()
+
+    const [showOcel, setShowOcel] = useState(false)
 
     const path = window.location.pathname
+
+    const handleShowOcel = () => {
+        setShowOcel(!showOcel)
+    }
 
     const handleDelete = () => {
         setResults(null)
@@ -82,6 +88,26 @@ function PageLayout({children, loading, setLoading}) {
         setLoading && setLoading(false)
     }
 
+    const downloadOcel = async () => {
+        const response = await _downloadOCEL(ocel)
+        const href = window.URL.createObjectURL(response)
+        const anchor = document.createElement('a')
+        anchor.href = href
+        anchor.download = "ocel.json"
+        anchor.click()
+        window.URL.revokeObjectURL(href)
+    }
+
+    const downloadJSONOcel = async () => {
+        const response = await _downloadOCEL(ocel)
+        const href = window.URL.createObjectURL(response)
+        const anchor = document.createElement('a')
+        anchor.href = href
+        anchor.download = "ocel.jsonocel"
+        anchor.click()
+        window.URL.revokeObjectURL(href)
+    }
+
     return (
         <Box display="flex" justifyContent="center" marginTop={5} paddingX={5} height="100%">
             <Grid container spacing={2}>
@@ -91,11 +117,15 @@ function PageLayout({children, loading, setLoading}) {
                 <Grid item lg={6} md={12} width="100%">
                     <Stack spacing={1}>
                         <Card sx={{minWidth: "500px", height: "500px"}}>
-                            <CardHeader title="Contract Logs"
-                                        action={
-                                            <Button disabled={!results} color="error" startIcon={<Delete/>} onClick={handleDelete}/>
-                                        }
-                            />
+                            <Box display="flex" alignItems="center" justifyContent="space-between" padding={2}>
+                                <Typography variant="h5">Contract Logs</Typography>
+                                <Button variant="contained" sx={{padding: 1, width: "130px"}}
+                                        onClick={handleShowOcel}>{showOcel ? "Show Logs" : "Show OCEL"}</Button>
+                                <Button disabled={!results} color="error"
+                                        onClick={handleDelete} sx={{padding: 0}}>
+                                    <Delete/>
+                                </Button>
+                            </Box>
                             <CardContentNoPadding sx={{height: "calc(100% - 112px)", overflow: "auto"}}>
                                 {
                                     loading ? (
@@ -104,22 +134,39 @@ function PageLayout({children, loading, setLoading}) {
                                                 <CircularProgress/>
                                             </Box>
                                         ) :
-                                        results &&
-                                            (
+                                        (
+                                            showOcel ? (
                                                 <>
-                                                    <JsonView value={results} style={darkTheme} width="100%"/>
+                                                    <JsonView value={ocel} style={darkTheme} width="100%"/>
                                                 </>
-                                            )
+                                            ) : results &&
+                                                (
+                                                    <>
+                                                        <JsonView value={results} style={darkTheme} width="100%"/>
+                                                    </>
+                                                )
+                                        )
                                 }
                             </CardContentNoPadding>
                         </Card>
                         {
                             path === "/ocel" ? (
-                                    <Box display="flex" justifyContent="center">
+                                    <Box display="flex" justifyContent="space-between" gap={2}>
                                         <Button component="label" variant="contained" startIcon={<FileUpload/>}
-                                                sx={{padding: 1}}>
+                                                sx={{padding: 1, height: "55px"}}>
                                             Upload File
                                             <VisuallyHiddenInput type="file" onChange={handleFileChange}/>
+                                        </Button>
+                                        <Button variant="contained" onClick={downloadOcel} sx={{padding: 1, width: "125px", height: "55px"}}>
+                                            <Typography color="white">Download JSON</Typography>
+                                        </Button>
+                                        <Link to="/">
+                                            <Button color="error" variant="contained" sx={{padding: 1, width: "125px", height: "55px"}}>
+                                                <Typography>BACK</Typography>
+                                            </Button>
+                                        </Link>
+                                        <Button variant="contained" onClick={downloadJSONOcel} sx={{padding: 1, width: "125px", height: "55px", backgroundColor: "#5316ec"}}>
+                                            <Typography color="white">Download JSONOCEL</Typography>
                                         </Button>
                                     </Box>
                                 )

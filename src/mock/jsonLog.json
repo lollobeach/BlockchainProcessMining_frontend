@@ -5,32 +5,27 @@
     "gasUsed": "26882",
     "activity": "transfer",
     "timestamp": "2023-12-02T10:05:23.000Z",
-    "inputTypes": [
+    "inputs": [
       {
-        "name": "to",
-        "type": "address"
+        "inputId": "17ab92d9-e275-441b-ace0-8be926eaaaa1",
+        "inputName": "to",
+        "type": "address",
+        "inputValue": "2e6998192a5990f07Ec382946d08F54131b829a1"
       },
       {
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "inputValues": [
-      {
-        "name": "to",
-        "value": "2e6998192a5990f07Ec382946d08F54131b829a1"
-      },
-      {
-        "name": "amount",
-        "value": 12010565012640647000
+        "inputId": "e540c00e-35fc-4524-a7c9-97d13ddb6ce7",
+        "inputName": "amount",
+        "type": "uint256",
+        "inputValue": 12010565012640647000
       }
     ],
     "storageState": [],
     "internalTxs": [],
     "events": [
       {
-        "name": "Transfer",
-        "values": {
+        "eventId": "4c220ac7-5732-478d-add5-6543e61b7de5",
+        "eventName": "Transfer",
+        "eventValues": {
           "0": "0x2e6998192a5990f07Ec382946d08F54131b829a1",
           "1": "0x2e6998192a5990f07Ec382946d08F54131b829a1",
           "2": 12010565012640647000,
@@ -48,32 +43,27 @@
     "gasUsed": "46597",
     "activity": "approve",
     "timestamp": "2023-12-02T10:24:35.000Z",
-    "inputTypes": [
+    "inputs": [
       {
-        "name": "spender",
-        "type": "address"
+        "inputId": "c97c095c-a28c-4c57-a601-b35da47e9d99",
+        "inputName": "spender",
+        "type": "address",
+        "inputValue": "46A15B0b27311cedF172AB29E4f4766fbE7F4364"
       },
       {
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "inputValues": [
-      {
-        "name": "spender",
-        "value": "46A15B0b27311cedF172AB29E4f4766fbE7F4364"
-      },
-      {
-        "name": "amount",
-        "value": 1.157920892373162e+77
+        "inputId": "0929b381-a815-4cbc-8ce0-56e7d89e10fc",
+        "inputName": "amount",
+        "type": "uint256",
+        "inputValue": 1.157920892373162e+77
       }
     ],
     "storageState": [],
     "internalTxs": [],
     "events": [
       {
-        "name": "Approval",
-        "values": {
+        "eventId": "cb2ee4a3-6902-4d18-b10d-eb619bb0e0a7",
+        "eventName": "Approval",
+        "eventValues": {
           "0": "0x2023b331c4283B34d067eCEB247A9dc4AA4202C3",
           "1": "0x46A15B0b27311cedF172AB29E4f4766fbE7F4364",
           "2": 1.157920892373162e+77,
@@ -91,137 +81,115 @@
     "gasUsed": "232289",
     "activity": "sendFrom",
     "timestamp": "2023-12-02T10:38:59.000Z",
-    "inputTypes": [
+    "inputs": [
       {
-        "name": "_from",
-        "type": "address"
+        "inputId": "5c824508-e5ca-497c-b550-f53b600dde15",
+        "inputName": "_from",
+        "type": "address",
+        "inputValue": "0x39739A9CB5f7fC23A5370b940d4691018C2Ca74e"
       },
       {
-        "name": "_dstChainId",
-        "type": "uint16"
+        "inputId": "705252a2-d938-4cfa-a34d-ae7647794fde",
+        "inputName": "_dstChainId",
+        "type": "uint16",
+        "inputValue": 102
       },
       {
-        "name": "_toAddress",
-        "type": "bytes32"
+        "inputId": "2c6808e7-818f-42ef-b65a-1db18123778e",
+        "inputName": "_toAddress",
+        "type": "bytes32",
+        "inputValue": "0x00000000000000000000000039739a9cb5f7fc23a5370b940d4691018c2ca74e"
       },
       {
-        "name": "_amount",
-        "type": "uint256"
+        "inputId": "47443de8-a8da-44ec-9ce1-f027f35f8577",
+        "inputName": "_amount",
+        "type": "uint256",
+        "inputValue": 96079776827306230000
       },
       {
-        "name": "_minAmount",
-        "type": "uint256"
+        "inputId": "d5255962-bd7e-434a-b10a-bf9370b88393",
+        "inputName": "_minAmount",
+        "type": "uint256",
+        "inputValue": 95599377943169700000
       },
       {
-        "name": [
-          "_callParams",
-          [
-            "refundAddress",
-            "zroPaymentAddress",
-            "adapterParams"
-          ]
-        ],
-        "type": "(address,address,bytes)"
-      }
-    ],
-    "inputValues": [
-      {
-        "name": "_from",
-        "value": "0x39739A9CB5f7fC23A5370b940d4691018C2Ca74e"
-      },
-      {
-        "name": "_dstChainId",
-        "value": 102
-      },
-      {
-        "name": "_toAddress",
-        "value": "0x00000000000000000000000039739a9cb5f7fc23a5370b940d4691018c2ca74e"
-      },
-      {
-        "name": "_amount",
-        "value": 96079776827306230000
-      },
-      {
-        "name": "_minAmount",
-        "value": 95599377943169700000
-      },
-      {
-        "name": [
-          "_callParams",
-          [
-            "refundAddress",
-            "zroPaymentAddress",
-            "adapterParams"
-          ]
-        ],
-        "value": [
-          "0x39739A9CB5f7fC23A5370b940d4691018C2Ca74e",
-          "0x0000000000000000000000000000000000000000",
-          "0x00010000000000000000000000000000000000000000000000000000000000030d40"
-        ]
+        "inputId": "97deeb25-dc22-4e41-b31f-f1ba983c80d0",
+        "inputName": "_callParams,refundAddress,zroPaymentAddress,adapterParams",
+        "type": "(address,address,bytes)",
+        "inputValue": "0x39739A9CB5f7fC23A5370b940d4691018C2Ca74e,0x0000000000000000000000000000000000000000,0x00010000000000000000000000000000000000000000000000000000000000030d40"
       }
     ],
     "storageState": [
       {
-        "name": "failedMessages",
+        "variableId": "4818fde7-8e1e-4da9-9b99-2864c52a9e2a",
+        "variableName": "failedMessages",
         "type": "t_mapping(t_uint16,t_mapping(t_bytes_memory_ptr,t_mapping(t_uint64,t_bytes32)))",
-        "value": "{0\":0,\"1\":0,\"2\":0,\"3\":0,\"4\":0,\"5\":0,\"6\":0,\"7\":0,\"8\":0,\"9\":0,\"10\":0,\"11\":0,\"12\":0,\"13\":0,\"14\":0,\"15\":0,\"16\":0,\"17\":0,\"18\":0,\"19\":0,\"20\":0,\"21\":0,\"22\":0,\"23\":0,\"24\":62,\"25\":65,\"26\":10,\"27\":191,\"28\":93,\"29\":157,\"30\":158,\"31\":235}",
-        "rawValue": "0000000000000000000000000000000000000000000000003e410abf5d9d9eeb"
+        "variableValue": "{0\":0,\"1\":0,\"2\":0,\"3\":0,\"4\":0,\"5\":0,\"6\":0,\"7\":0,\"8\":0,\"9\":0,\"10\":0,\"11\":0,\"12\":0,\"13\":0,\"14\":0,\"15\":0,\"16\":0,\"17\":0,\"18\":0,\"19\":0,\"20\":0,\"21\":0,\"22\":0,\"23\":0,\"24\":62,\"25\":65,\"26\":10,\"27\":191,\"28\":93,\"29\":157,\"30\":158,\"31\":235}",
+        "variableRawValue": "0000000000000000000000000000000000000000000000003e410abf5d9d9eeb"
       },
       {
-        "name": "failedMessages",
+        "variableId": "ff22ade6-2fd2-4d94-9c41-eb019e2b6d65",
+        "variableName": "failedMessages",
         "type": "t_mapping(t_uint16,t_mapping(t_bytes_memory_ptr,t_mapping(t_uint64,t_bytes32)))",
-        "value": "{0\":0,\"1\":0,\"2\":0,\"3\":0,\"4\":0,\"5\":0,\"6\":0,\"7\":0,\"8\":0,\"9\":0,\"10\":0,\"11\":0,\"12\":0,\"13\":0,\"14\":0,\"15\":0,\"16\":0,\"17\":0,\"18\":0,\"19\":0,\"20\":0,\"21\":0,\"22\":0,\"23\":0,\"24\":8,\"25\":23,\"26\":15,\"27\":211,\"28\":40,\"29\":208,\"30\":175,\"31\":158}",
-        "rawValue": "00000000000000000000000000000000000000000000000008170fd328d0af9e"
+        "variableValue": "{0\":0,\"1\":0,\"2\":0,\"3\":0,\"4\":0,\"5\":0,\"6\":0,\"7\":0,\"8\":0,\"9\":0,\"10\":0,\"11\":0,\"12\":0,\"13\":0,\"14\":0,\"15\":0,\"16\":0,\"17\":0,\"18\":0,\"19\":0,\"20\":0,\"21\":0,\"22\":0,\"23\":0,\"24\":8,\"25\":23,\"26\":15,\"27\":211,\"28\":40,\"29\":208,\"30\":175,\"31\":158}",
+        "variableRawValue": "00000000000000000000000000000000000000000000000008170fd328d0af9e"
       },
       {
-        "name": "amountsForCall",
+        "variableId": "85190683-3ade-4fa4-94da-4013df3d9783",
+        "variableName": "amountsForCall",
         "type": "t_mapping(t_uint16,t_mapping(t_bytes_memory_ptr,t_mapping(t_uint64,t_struct(AmountForCall)1045_storage)))",
-        "value": "0000000000000000000000000000000000000000000000000000000000000aad",
-        "rawValue": "0000000000000000000000000000000000000000000000000000000000000aad"
+        "variableValue": "0000000000000000000000000000000000000000000000000000000000000aad",
+        "variableRawValue": "0000000000000000000000000000000000000000000000000000000000000aad"
       },
       {
-        "name": "_balances",
+        "variableId": "27e09843-7518-4015-a48e-0108c55f984e",
+        "variableName": "_balances",
         "type": "t_mapping(t_address,t_uint256)",
-        "value": 7306225652,
-        "rawValue": "00000000000000000000000000000000000000000000000000000001b37c27f4"
+        "variableValue": 7306225652,
+        "variableRawValue": "00000000000000000000000000000000000000000000000000000001b37c27f4"
       },
       {
-        "name": "chainIdToLastSentTimestamp",
+        "variableId": "d7c5344e-0fe2-4337-acc5-a21444bfd813",
+        "variableName": "chainIdToLastSentTimestamp",
         "type": "t_mapping(t_uint16,t_uint256)",
-        "value": 1701513539,
-        "rawValue": "00000000000000000000000000000000000000000000000000000000656b0943"
+        "variableValue": 1701513539,
+        "variableRawValue": "00000000000000000000000000000000000000000000000000000000656b0943"
       },
       {
-        "name": "chainIdToSentTokenAmount",
+        "variableId": "daabbec6-01b8-4f3b-81f2-cb81ca4a0261",
+        "variableName": "chainIdToSentTokenAmount",
         "type": "t_mapping(t_uint16,t_uint256)",
-        "value": 2.23507650049e+21,
-        "rawValue": "00000000000000000000000000000000000000000000007929eadb40b9a3e400"
+        "variableValue": 2.23507650049e+21,
+        "variableRawValue": "00000000000000000000000000000000000000000000007929eadb40b9a3e400"
       },
       {
-        "name": "defaultFeeBp",
+        "variableId": "2aaee732-dc21-40f9-bb38-5c853cf47b1c",
+        "variableName": "defaultFeeBp",
         "type": "t_uint16",
-        "value": 0,
-        "rawValue": "00000000000000000000702099e284f23da733c03b461c7571a742782fc20000"
+        "variableValue": 0,
+        "variableRawValue": "00000000000000000000702099e284f23da733c03b461c7571a742782fc20000"
       },
       {
-        "name": "feeOwner",
+        "variableId": "f323831c-b4a0-4b17-81a7-21239fbcaa8e",
+        "variableName": "feeOwner",
         "type": "t_address",
-        "value": "00000000000000000000702099e284f23da733c03b461c7571a742782fc2",
-        "rawValue": "00000000000000000000702099e284f23da733c03b461c7571a742782fc20000"
+        "variableValue": "00000000000000000000702099e284f23da733c03b461c7571a742782fc2",
+        "variableRawValue": "00000000000000000000702099e284f23da733c03b461c7571a742782fc20000"
       },
       {
-        "name": "_totalSupply",
+        "variableId": "6ffc374e-5bb6-49eb-bec4-c67736e23ddd",
+        "variableName": "_totalSupply",
         "type": "t_uint256",
-        "value": 3.69246181196281e+24,
-        "rawValue": "000000000000000000000000000000000000000000030de8c183cf0ac774c400"
+        "variableValue": 3.69246181196281e+24,
+        "variableRawValue": "000000000000000000000000000000000000000000030de8c183cf0ac774c400"
       }
     ],
     "internalTxs": [
       {
+        "callId": "54ad8d61-87bd-442f-bbbe-04ec806f20c5",
         "type": "CALL",
         "to": "00000000000000000000000066a71dcef29a0ffbdbe3c6a460a3b5bc225cd675",
-        "inputs": [
+        "inputsCall": [
           null,
           null,
           null,
@@ -241,9 +209,10 @@
         ]
       },
       {
+        "callId": "189eff5b-30ef-447f-801a-5585b157b267",
         "type": "CALL",
         "to": "0000000000000000000000004d73adb72bc3dd368966edd0f0b2148401a178e2",
-        "inputs": [
+        "inputsCall": [
           "4d3a0f7c000000000000000000000000152649ea73beab28c5b49b26eb48f7ea",
           "d6d4c89800000000000000000000000000000000000000000000000000000000",
           "00000aad00000000000000000000000000000000000000000000000000000000",
@@ -265,9 +234,10 @@
         ]
       },
       {
+        "callId": "11955300-3495-4789-9bce-b84c5d122f4d",
         "type": "CALL",
         "to": "0000000000000000000000005b905fe05f81f3a8ad8b28c6e17779cfabf76068",
-        "inputs": [
+        "inputsCall": [
           "6fe7b67300000000000000000000000000000000000000000000000000000000",
           "00000066000000000000000000000000152649ea73beab28c5b49b26eb48f7ea",
           "d6d4c89800000000000000000000000000000000000000000000000000000000",
@@ -278,17 +248,19 @@
         ]
       },
       {
+        "callId": "f4bb4662-f7bd-44cf-a12c-cc99cfba6d81",
         "type": "STATICCALL",
         "to": "00000000000000000000000066a71dcef29a0ffbdbe3c6a460a3b5bc225cd675",
-        "inputs": [
+        "inputsCall": [
           "9c729da1000000000000000000000000152649ea73beab28c5b49b26eb48f7ea",
           "d6d4c89800000000000000000000000000000000000000000000000000000000"
         ]
       },
       {
+        "callId": "2deed132-8a8e-4320-bda9-34a78e924b06",
         "type": "CALL",
         "to": "000000000000000000000000902f09715b6303d4173037652fa7377e5b98089e",
-        "inputs": [
+        "inputsCall": [
           "5886ea6500000000000000000000000000000000000000000000000000000000",
           "0000006600000000000000000000000000000000000000000000000000000000",
           "00000001000000000000000000000000152649ea73beab28c5b49b26eb48f7ea",
@@ -301,9 +273,10 @@
         ]
       },
       {
+        "callId": "3b0c3f3c-c034-4c17-9acb-1499e5766520",
         "type": "DELEGATECALL",
         "to": "000000000000000000000000b830a5afcbebb936c30c607a18bbba9f5b0a592f",
-        "inputs": [
+        "inputsCall": [
           "5886ea6500000000000000000000000000000000000000000000000000000000",
           "0000006600000000000000000000000000000000000000000000000000000000",
           "00000001000000000000000000000000152649ea73beab28c5b49b26eb48f7ea",
@@ -316,9 +289,10 @@
         ]
       },
       {
+        "callId": "cc5b1191-9507-4af2-b6eb-9f5fce631557",
         "type": "STATICCALL",
         "to": "000000000000000000000000c03f31fd86a9077785b7bcf6598ce3598fa91113",
-        "inputs": [
+        "inputsCall": [
           "88a4124c00000000000000000000000000000000000000000000000000000000",
           "0000006600000000000000000000000000000000000000000000000000000000",
           "000002c100000000000000000000000000000000000000000000000000000000",
@@ -326,9 +300,10 @@
         ]
       },
       {
+        "callId": "54b21f8d-13a5-48f5-95c7-8f40b652c0f9",
         "type": "DELEGATECALL",
         "to": "000000000000000000000000f641db6860fd5f6643d05bd75405a2586a63a141",
-        "inputs": [
+        "inputsCall": [
           "88a4124c00000000000000000000000000000000000000000000000000000000",
           "0000006600000000000000000000000000000000000000000000000000000000",
           "000002c100000000000000000000000000000000000000000000000000000000",
@@ -336,9 +311,10 @@
         ]
       },
       {
+        "callId": "07cfee98-3df3-449f-9a9c-5a41833725b1",
         "type": "CALL",
         "to": "000000000000000000000000d56e4eab23cb81f43168f9f45211eb027b9ac7cc",
-        "inputs": [
+        "inputsCall": [
           "c5e193cd00000000000000000000000000000000000000000000000000000000",
           "0000006600000000000000000000000000000000000000000000000000000000",
           "0000000100000000000000000000000000000000000000000000000000000000",
@@ -347,9 +323,10 @@
         ]
       },
       {
+        "callId": "412f4a72-51fb-4922-92c7-17c1407422b1",
         "type": "CALL",
         "to": "000000000000000000000000dea04ef31c4b4fdf31cb58923f37869739280d49",
-        "inputs": [
+        "inputsCall": [
           "df2b057e000000000000000000000000c03f31fd86a9077785b7bcf6598ce359",
           "8fa9111300000000000000000000000000000000000000000000000000000000",
           "0000006600000000000000000000000000000000000000000000000000000000",
@@ -365,9 +342,10 @@
         ]
       },
       {
+        "callId": "96c9cb8a-835a-455c-9205-32d6174e8ffc",
         "type": "CALL",
         "to": "000000000000000000000000c03f31fd86a9077785b7bcf6598ce3598fa91113",
-        "inputs": [
+        "inputsCall": [
           "c1723a1d00000000000000000000000000000000000000000000000000000000",
           "0000006600000000000000000000000000000000000000000000000000000000",
           "0000020400000000000000000000000000000000000000000000000000000000",
@@ -375,9 +353,10 @@
         ]
       },
       {
+        "callId": "3aaf0c2b-f560-4626-b096-b7dee8891496",
         "type": "DELEGATECALL",
         "to": "000000000000000000000000f641db6860fd5f6643d05bd75405a2586a63a141",
-        "inputs": [
+        "inputsCall": [
           "c1723a1d00000000000000000000000000000000000000000000000000000000",
           "0000006600000000000000000000000000000000000000000000000000000000",
           "0000020400000000000000000000000000000000000000000000000000000000",
@@ -385,9 +364,10 @@
         ]
       },
       {
+        "callId": "0d559954-7231-4f0d-8005-4101c3d2fac0",
         "type": "STATICCALL",
         "to": "0000000000000000000000003773e1e9deb273fcdf9f80bc88bb387b1e6ce34d",
-        "inputs": [
+        "inputsCall": [
           "5cbbbd7500000000000000000000000000000000000000000000000000000000",
           "000000000000000000000000000000000000000000000000000000000001eb3b",
           "1774e251000000000000000000000000000000000000000000000000000020d9",
@@ -397,8 +377,9 @@
     ],
     "events": [
       {
-        "name": "Transfer",
-        "values": {
+        "eventId": "a471ce9d-4e44-4af1-90be-258adf162a98",
+        "eventName": "Transfer",
+        "eventValues": {
           "0": "0x39739A9CB5f7fC23A5370b940d4691018C2Ca74e",
           "1": "0x0000000000000000000000000000000000000000",
           "2": 96079776820000000000,
@@ -409,8 +390,9 @@
         }
       },
       {
-        "name": "SendToChain",
-        "values": {
+        "eventId": "88188e6e-2311-4272-8857-2b612e3beb0e",
+        "eventName": "SendToChain",
+        "eventValues": {
           "0": 102,
           "1": "0x39739A9CB5f7fC23A5370b940d4691018C2Ca74e",
           "2": "0x00000000000000000000000039739a9cb5f7fc23a5370b940d4691018c2ca74e",
@@ -430,32 +412,27 @@
     "gasUsed": "34482",
     "activity": "transfer",
     "timestamp": "2023-12-02T11:08:35.000Z",
-    "inputTypes": [
+    "inputs": [
       {
-        "name": "to",
-        "type": "address"
+        "inputId": "02f3b591-92b8-4120-ba10-591ddd939319",
+        "inputName": "to",
+        "type": "address",
+        "inputValue": "96528e0620E07753C0B66EBe9E59be053649aE2E"
       },
       {
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "inputValues": [
-      {
-        "name": "to",
-        "value": "96528e0620E07753C0B66EBe9E59be053649aE2E"
-      },
-      {
-        "name": "amount",
-        "value": 320290554920000000000
+        "inputId": "32c54acf-bad0-4a14-95a1-482e31567af3",
+        "inputName": "amount",
+        "type": "uint256",
+        "inputValue": 320290554920000000000
       }
     ],
     "storageState": [],
     "internalTxs": [],
     "events": [
       {
-        "name": "Transfer",
-        "values": {
+        "eventId": "e883f2ef-6939-4c06-b646-0514690cea5a",
+        "eventName": "Transfer",
+        "eventValues": {
           "0": "0x28C6c06298d514Db089934071355E5743bf21d60",
           "1": "0x96528e0620E07753C0B66EBe9E59be053649aE2E",
           "2": 320290554920000000000,

@@ -17,6 +17,8 @@ function EventRelationship({
         setEventRelationships(eventRelationships.filter(relationship => relationship.objectId !== input.objectId))
     }
 
+    console.log(objects)
+
     return (
         <Box display="flex" alignItems="center">
             <Box>
