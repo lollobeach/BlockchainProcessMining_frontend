@@ -9,7 +9,7 @@ function ActivityEventAttribute() {
 
     return (
         attributes.map((attribute, index) => (
-            <>
+            <Box key={index}>
                 <Box display="flex" alignItems="center">
                     <Box>
                         <CustomTypography>
@@ -54,7 +54,7 @@ function ActivityEventAttribute() {
                 <CustomTypography>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"}"}{index !== attributes.length - 1 && ","}
                 </CustomTypography>
-            </>
+            </Box>
         ))
     )
 }

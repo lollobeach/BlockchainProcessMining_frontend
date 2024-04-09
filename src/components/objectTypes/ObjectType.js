@@ -31,10 +31,19 @@ function ObjectType({
     }
 
     const handleRemoveObject = (object) => {
+
+        const events = ocel.events
+        events.forEach((event) => {
+            event.relationships = event.relationships.filter((relationship) => (
+                !object.names.map(name => name.id).includes(relationship.objectId)
+            ))
+        })
+
         setOcel({
             ...ocel,
             objectTypes: ocel.objectTypes.filter(item => !objectType.names.includes(item.name)),
-            objects: ocel.objects.filter(item => !objectType.names.includes(item.type))
+            objects: ocel.objects.filter(item => !objectType.names.includes(item.type)),
+            events: events
         })
         setObjectsItem((oldObjects) => oldObjects.filter(item => !objectType.names.includes(item.type)))
         setObjectsTypesItem(objectsTypesItem.filter(item => item.name !== object.name))
@@ -42,10 +51,8 @@ function ObjectType({
 
     const handleInputNameObjects = () => {
         const variables = []
-        const names = []
 
         results.forEach((log) => {
-            findValue(log, "inputName", names)
             log.inputs.forEach((input) => {
                 variables.push({
                     time: log.timestamp,
@@ -70,7 +77,7 @@ function ObjectType({
         setObjectsTypesItem(objectsTypesItem.map(item => item === objectType ? {
             ...item,
             name: "inputName",
-            names: names.map(value => value.value)
+            names: variables.map(value => ({name: value.name, id: value.id}))
         } : item))
 
         const objects = []
@@ -86,6 +93,14 @@ function ObjectType({
             })
         })
 
+        setObjectsItem((oldObjects) => [...oldObjects, ...objects])
+        setOcel({
+            ...ocel,
+            objectTypes: newObjectTypes,
+            objects: [...ocel.objects, ...objects.map(({key, ...rest}) => rest)],
+            events: [...ocel.events]
+        })
+
         const events = [...ocel.events]
         events.forEach((event) => {
             objects.forEach((object) => {
@@ -94,22 +109,12 @@ function ObjectType({
                 }
             })
         })
-
-        setObjectsItem((oldObjects) => [...oldObjects, ...objects])
-        setOcel({
-            ...ocel,
-            objectTypes: newObjectTypes,
-            objects: [...ocel.objects, ...objects.map(({key, ...rest}) => rest)],
-            events: [...ocel.events]
-        })
     }
 
     const handleStorageStateObjects = () => {
         const variables = []
-        const names = []
 
         results.forEach((log) => {
-            findValue(log, "variableName", names)
             log.storageState.forEach((variable) => {
                 variables.push({
                     time: log.timestamp,
@@ -134,7 +139,7 @@ function ObjectType({
         setObjectsTypesItem(objectsTypesItem.map(item => item === objectType ? {
             ...item,
             name: "variableName",
-            names: names.map(value => value.value)
+            names: variables.map(value => ({name: value.name, id: value.id}))
         } : item))
 
         const objects = []
@@ -150,6 +155,13 @@ function ObjectType({
             })
         })
 
+        setObjectsItem((oldObjects) => [...oldObjects, ...objects])
+        setOcel({
+            ...ocel,
+            objectTypes: newObjectTypes,
+            objects: [...ocel.objects, ...objects.map(({key, ...rest}) => rest)]
+        })
+
         const events = [...ocel.events]
         events.forEach((event) => {
             objects.forEach((object) => {
@@ -158,21 +170,12 @@ function ObjectType({
                 }
             })
         })
-
-        setObjectsItem((oldObjects) => [...oldObjects, ...objects])
-        setOcel({
-            ...ocel,
-            objectTypes: newObjectTypes,
-            objects: [...ocel.objects, ...objects.map(({key, ...rest}) => rest)]
-        })
     }
 
     const handleInternalTxsObjects = () => {
         const variables = []
-        const names = []
 
         results.forEach((log) => {
-            findValue(log, "callType", names)
             log.internalTxs.forEach((internalTx) => {
                 variables.push({
                     time: log.timestamp,
@@ -196,7 +199,7 @@ function ObjectType({
         setObjectsTypesItem(objectsTypesItem.map(item => item === objectType ? {
             ...item,
             name: "callType",
-            names: names.map(value => value.value)
+            names: variables.map(value => ({name: value.name, id: value.id}))
         } : item))
 
         const objects = []
@@ -212,6 +215,13 @@ function ObjectType({
             })
         })
 
+        setObjectsItem((oldObjects) => [...oldObjects, ...objects])
+        setOcel({
+            ...ocel,
+            objectTypes: newObjectTypes,
+            objects: [...ocel.objects, ...objects.map(({key, ...rest}) => rest)]
+        })
+
         const events = [...ocel.events]
         events.forEach((event) => {
             objects.forEach((object) => {
@@ -220,22 +230,12 @@ function ObjectType({
                 }
             })
         })
-
-        setObjectsItem((oldObjects) => [...oldObjects, ...objects])
-        setOcel({
-            ...ocel,
-            objectTypes: newObjectTypes,
-            objects: [...ocel.objects, ...objects.map(({key, ...rest}) => rest)]
-        })
     }
 
     const handleEventNameObjects = () => {
         const variables = []
-        const names = []
-        let ids = []
 
         results.forEach((log) => {
-            findValue(log, "eventName", names)
             log.events.forEach((event) => {
                 variables.push({
                     time: log.timestamp,
@@ -250,8 +250,6 @@ function ObjectType({
                 })
             })
         })
-
-        findRelatedKeys(results, "eventName", ids)
 
         let newObjectTypes = [...ocel.objectTypes]
         const valuesSet = variables.filter((value, index, self) => index === self.findIndex((t) => t.name === value.name))
@@ -270,7 +268,7 @@ function ObjectType({
         setObjectsTypesItem(objectsTypesItem.map(item => item === objectType ? {
             ...item,
             name: "eventName",
-            names: names.map(value => value.value)
+            names: variables.map(value => ({name: value.name, id: value.id}))
         } : item))
 
         const objects = []
@@ -290,6 +288,13 @@ function ObjectType({
             })
         })
 
+        setObjectsItem((oldObjects) => [...oldObjects, ...objects])
+        setOcel({
+            ...ocel,
+            objectTypes: newObjectTypes,
+            objects: [...ocel.objects, ...objects.map(({key, ...rest}) => rest)]
+        })
+
         const events = [...ocel.events]
         events.forEach((event) => {
             objects.forEach((object) => {
@@ -297,13 +302,6 @@ function ObjectType({
                     event.relationships.push({objectId: object.id, qualifier: "emitted"})
                 }
             })
-        })
-
-        setObjectsItem((oldObjects) => [...oldObjects, ...objects])
-        setOcel({
-            ...ocel,
-            objectTypes: newObjectTypes,
-            objects: [...ocel.objects, ...objects.map(({key, ...rest}) => rest)]
         })
     }
 
