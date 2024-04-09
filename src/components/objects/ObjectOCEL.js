@@ -99,11 +99,11 @@ function ObjectOCEL({objectKeys, objectValues, setObject, objectsType, objects, 
                 </Box>
                 <CustomTypography>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"attributes": [
-                    {
-                        <Button onClick={handleAddObjectAttribute}>
-                            <AddBoxIcon sx={{fontSize: 30}}/>
-                        </Button>
-                    }
+                    {/*{*/}
+                    {/*    <Button onClick={handleAddObjectAttribute}>*/}
+                    {/*        <AddBoxIcon sx={{fontSize: 30}}/>*/}
+                    {/*    </Button>*/}
+                    {/*}*/}
                     {objectAttributes.length === 0 && "],"}
                 </CustomTypography>
                 {

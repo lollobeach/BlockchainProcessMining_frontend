@@ -34,69 +34,7 @@ function EventType({eventsKey, eventsValue, setEventTypesItem, setEventsItem, ev
     }
 
     const handleSelectEventTypeName = (e) => {
-        if (e.target.value === "activity") {
-
-            const values = []
-            const unixTimes = []
-            let ids = []
-            const temporaryEvents = []
-
-            if (Array.isArray(results)) {
-                results.forEach((log) => {
-                    findValue(log, e.target.value, values)
-                    unixTimes.push(findUnixTime(log))
-                    temporaryEvents.push({
-                        relationships: log.storageState.map(variable => ({objectId: variable.variableId, qualifier: variable.variableName})),
-                        timestamp: log.timestamp,
-                        name: log.activity,
-                        gasUsed: log.gasUsed,
-                        sender: log.sender,
-                        attributes: [{name: "gasUsed", type: "string"}, {name: "sender", type: "string"}]
-                    })
-                })
-            } else {
-                findValue(results, e.target.value, values)
-                unixTimes.push(findUnixTime(results))
-            }
-
-            findRelatedKeys(results, e.target.value, ids)
-
-
-            setEventId(ids.filter(item => item !== e.target.value))
-
-            let newEventTypes = [...ocel.eventTypes]
-
-            const valuesSet = temporaryEvents.filter((value, index, self) => self.map(item => item.name).indexOf(value.name) === index)
-            valuesSet.forEach(value => {
-                newEventTypes.push({name: value.name, attributes: value.attributes})
-            })
-
-            setEventTypesItem(eventsTypesItem.map(item => item === eventType ? {
-                ...item,
-                name: e.target.value,
-                names: values.map(value => value.value),
-            } : item))
-
-            const events = []
-            temporaryEvents.forEach((value) => {
-                events.push({
-                    id: "",
-                    key: e.target.value,
-                    type: value.name,
-                    time: value.timestamp,
-                    attributes: [{name: "gasUsed", value: value.gasUsed}, {name: "sender", value: value.sender}],
-                    relationships: value.relationships
-                })
-            })
-            setEventsItem((oldEvents) => [...oldEvents, ...events])
-
-            setOcel({
-                ...ocel,
-                eventTypes: newEventTypes,
-                events: [...ocel.events, ...events.map(({key, ...rest}) => rest)]
-            })
-        }
-
+        console.log("Oook")
     }
 
     const handleEventTypeId = (e) => {

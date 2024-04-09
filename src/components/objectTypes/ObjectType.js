@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Box, Button, FormControl, InputLabel, MenuItem, Select, Stack} from "@mui/material";
+import {Box, Button, FormControl, InputLabel, MenuItem, Select, Stack, TextField} from "@mui/material";
 
 import CustomTypography from "../CustomTypography";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -21,7 +21,6 @@ function ObjectType({
     const {results, ocel, setOcel} = useDataContext()
 
     const [objectAttributes, setObjectsAttributes] = useState([])
-    const [objectId, setObjectId] = useState([])
 
     useEffect(() => {
         objectType.attributes = objectAttributes
@@ -41,73 +40,312 @@ function ObjectType({
         setObjectsTypesItem(objectsTypesItem.filter(item => item.name !== object.name))
     }
 
-    const handleSelectObjectTypeName = (e) => {
-        if (e.target.value === "variableName") {
-            const variables = []
-            const names = []
-            let ids = []
+    const handleInputNameObjects = () => {
+        const variables = []
+        const names = []
 
-            if (Array.isArray(results)) {
-                results.forEach((log) => {
-                    findValue(log, e.target.value, names)
-                    log.storageState.forEach((variable) => {
-                        variables.push({timestamp: log.timestamp, name: variable.variableName, value: variable.variableValue, type: typeof variable.variableValue === "number" ? "integer" : typeof variable.variableValue})
-                    })
+        results.forEach((log) => {
+            findValue(log, "inputName", names)
+            log.inputs.forEach((input) => {
+                variables.push({
+                    time: log.timestamp,
+                    id: input.inputId,
+                    name: input.inputName,
+                    value: input.inputValue,
+                    type: typeof input.inputValue === "number" ? "integer" : typeof input.inputValue
                 })
-            }
-            else {
-                findValue(results, e.target.value, variables)
-            }
-            findRelatedKeys(results, e.target.value, ids)
-
-            setObjectId(ids.filter(item => item !== e.target.value))
-
-            let newObjectTypes = [...ocel.objectTypes]
-
-            const valuesSet = variables.filter((value, index, self) => index === self.findIndex((t) => t.name === value.name))
-            valuesSet.forEach(value => {
-                newObjectTypes.push({name: value.name, attributes: [{name: "value", type: value.type}]})
             })
-
-            setObjectsTypesItem(objectsTypesItem.map(item => item === objectType ? {
-                ...item,
-                name: e.target.value,
-                names: names.map(value => value.value)
-            } : item))
-
-            const objects = []
-            variables.forEach(value => {
-                objects.push({id: "", key: e.target.value, type: value.name, attributes: [{name: "value", time: value.timestamp, value: value.value}]})
-            })
-            setObjectsItem((oldObjects) => [...oldObjects, ...objects])
-
-            setOcel({
-                ...ocel,
-                objectTypes: newObjectTypes,
-                objects: [...ocel.objects, ...objects.map(({key, ...rest}) => rest)]
-            })
-        }
-    }
-
-    const handleObjectTypeId = (e) => {
-        setObjectsTypesItem(objectsTypesItem.map(item => item === objectType ? {
-            ...item,
-            id: e.target.value
-        } : item))
-
-        const idValues = []
-        if (Array.isArray(results)) {
-            results.forEach(log => {
-                findValue(log, e.target.value, idValues)
-            })
-        }
-
-        const oldEvents = ocel.objects.filter(object => objectType.names.includes(object.type))
-        oldEvents.forEach((event, index) => {
-            event.id = idValues[index].value
         })
 
+        let newObjectTypes = [...ocel.objectTypes]
+        const valuesSet = variables.filter((value, index, self) => index === self.findIndex((t) => t.name === value.name))
+        valuesSet.forEach(value => {
+                newObjectTypes.push({
+                    name: value.name,
+                    attributes: [{name: "value", type: value.type}]
+                })
+            }
+        )
+
+        setObjectsTypesItem(objectsTypesItem.map(item => item === objectType ? {
+            ...item,
+            name: "inputName",
+            names: names.map(value => value.value)
+        } : item))
+
+        const objects = []
+        variables.forEach(value => {
+            let attributeValues = []
+            attributeValues = [{name: "value", time: value.time, value: value.value}]
+
+            objects.push({
+                id: value.id,
+                key: "inputName",
+                type: value.name,
+                attributes: attributeValues
+            })
+        })
+
+        const events = [...ocel.events]
+        events.forEach((event) => {
+            objects.forEach((object) => {
+                if (object.attributes[0].time === event.time) {
+                    event.relationships.push({objectId: object.id, qualifier: "paramater"})
+                }
+            })
+        })
+
+        setObjectsItem((oldObjects) => [...oldObjects, ...objects])
+        setOcel({
+            ...ocel,
+            objectTypes: newObjectTypes,
+            objects: [...ocel.objects, ...objects.map(({key, ...rest}) => rest)],
+            events: [...ocel.events]
+        })
     }
+
+    const handleStorageStateObjects = () => {
+        const variables = []
+        const names = []
+
+        results.forEach((log) => {
+            findValue(log, "variableName", names)
+            log.storageState.forEach((variable) => {
+                variables.push({
+                    time: log.timestamp,
+                    id: variable.variableId,
+                    name: variable.variableName,
+                    value: variable.variableValue,
+                    type: typeof variable.variableValue === "number" ? "integer" : typeof variable.variableValue
+                })
+            })
+        })
+
+        let newObjectTypes = [...ocel.objectTypes]
+        const valuesSet = variables.filter((value, index, self) => index === self.findIndex((t) => t.name === value.name))
+        valuesSet.forEach(value => {
+                newObjectTypes.push({
+                    name: value.name,
+                    attributes: [{name: "value", type: value.type}]
+                })
+            }
+        )
+
+        setObjectsTypesItem(objectsTypesItem.map(item => item === objectType ? {
+            ...item,
+            name: "variableName",
+            names: names.map(value => value.value)
+        } : item))
+
+        const objects = []
+        variables.forEach(value => {
+            let attributeValues = []
+            attributeValues = [{name: "value", time: value.time, value: value.value}]
+
+            objects.push({
+                id: value.id,
+                key: "variableName",
+                type: value.name,
+                attributes: attributeValues
+            })
+        })
+
+        const events = [...ocel.events]
+        events.forEach((event) => {
+            objects.forEach((object) => {
+                if (object.attributes[0].time === event.time) {
+                    event.relationships.push({objectId: object.id, qualifier: "update"})
+                }
+            })
+        })
+
+        setObjectsItem((oldObjects) => [...oldObjects, ...objects])
+        setOcel({
+            ...ocel,
+            objectTypes: newObjectTypes,
+            objects: [...ocel.objects, ...objects.map(({key, ...rest}) => rest)]
+        })
+    }
+
+    const handleInternalTxsObjects = () => {
+        const variables = []
+        const names = []
+
+        results.forEach((log) => {
+            findValue(log, "callType", names)
+            log.internalTxs.forEach((internalTx) => {
+                variables.push({
+                    time: log.timestamp,
+                    id: internalTx.callId,
+                    name: internalTx.callType,
+                    value: internalTx.to,
+                    type: "string"
+                })
+            })
+        })
+
+        let newObjectTypes = [...ocel.objectTypes]
+        const valuesSet = variables.filter((value, index, self) => index === self.findIndex((t) => t.name === value.name))
+        valuesSet.forEach(value => {
+            newObjectTypes.push({
+                name: value.name,
+                attributes: [{name: "to", type: "string"}]
+            })
+        })
+
+        setObjectsTypesItem(objectsTypesItem.map(item => item === objectType ? {
+            ...item,
+            name: "callType",
+            names: names.map(value => value.value)
+        } : item))
+
+        const objects = []
+        variables.forEach(value => {
+            let attributeValues = []
+            attributeValues = [{name: "to", time: value.time, value: value.value}]
+
+            objects.push({
+                id: value.id,
+                key: "callType",
+                type: value.name,
+                attributes: attributeValues
+            })
+        })
+
+        const events = [...ocel.events]
+        events.forEach((event) => {
+            objects.forEach((object) => {
+                if (object.attributes[0].time === event.time) {
+                    event.relationships.push({objectId: object.id, qualifier: "invoked"})
+                }
+            })
+        })
+
+        setObjectsItem((oldObjects) => [...oldObjects, ...objects])
+        setOcel({
+            ...ocel,
+            objectTypes: newObjectTypes,
+            objects: [...ocel.objects, ...objects.map(({key, ...rest}) => rest)]
+        })
+    }
+
+    const handleEventNameObjects = () => {
+        const variables = []
+        const names = []
+        let ids = []
+
+        results.forEach((log) => {
+            findValue(log, "eventName", names)
+            log.events.forEach((event) => {
+                variables.push({
+                    time: log.timestamp,
+                    id: event.eventId,
+                    name: event.eventName,
+                    owner: event.eventValues.owner,
+                    ownerType: "string",
+                    spender: event.eventValues.spender,
+                    spenderType: "string",
+                    value: event.eventValues.value,
+                    valueType: "integer"
+                })
+            })
+        })
+
+        findRelatedKeys(results, "eventName", ids)
+
+        let newObjectTypes = [...ocel.objectTypes]
+        const valuesSet = variables.filter((value, index, self) => index === self.findIndex((t) => t.name === value.name))
+        valuesSet.forEach(value => {
+                newObjectTypes.push({
+                    name: value.name,
+                    attributes: [
+                        {name: "owner", type: value.ownerType},
+                        {name: "spender", type: value.spenderType},
+                        {name: "value", type: value.valueType}
+                    ]
+                })
+            }
+        )
+
+        setObjectsTypesItem(objectsTypesItem.map(item => item === objectType ? {
+            ...item,
+            name: "eventName",
+            names: names.map(value => value.value)
+        } : item))
+
+        const objects = []
+        variables.forEach(value => {
+            let attributeValues = []
+            attributeValues = [{name: "owner", time: value.time, value: value.owner}, {
+                name: "spender",
+                time: value.time,
+                value: value.spender
+            }, {name: "value", time: value.time, value: value.value}]
+
+            objects.push({
+                id: value.id,
+                key: "eventName",
+                type: value.name,
+                attributes: attributeValues
+            })
+        })
+
+        const events = [...ocel.events]
+        events.forEach((event) => {
+            objects.forEach((object) => {
+                if (object.attributes[0].time === event.time) {
+                    event.relationships.push({objectId: object.id, qualifier: "emitted"})
+                }
+            })
+        })
+
+        setObjectsItem((oldObjects) => [...oldObjects, ...objects])
+        setOcel({
+            ...ocel,
+            objectTypes: newObjectTypes,
+            objects: [...ocel.objects, ...objects.map(({key, ...rest}) => rest)]
+        })
+    }
+
+    const handleSelectObjectTypeName = (e) => {
+        switch (e.target.value) {
+            case "inputName":
+                handleInputNameObjects()
+                break;
+            case "variableName":
+                handleStorageStateObjects()
+                break;
+            case "eventName":
+                handleEventNameObjects()
+                break;
+            case "callType":
+                handleInternalTxsObjects()
+                break;
+            default:
+                console.log("Choose a valid object type")
+        }
+    }
+
+    // const handleObjectTypeId = (e) => {
+    //     setObjectsTypesItem(objectsTypesItem.map(item => item === objectType ? {
+    //         ...item,
+    //         id: e.target.value
+    //     } : item))
+    //
+    //     const idValues = []
+    //     if (Array.isArray(results)) {
+    //         results.forEach(log => {
+    //             findValue(log, e.target.value, idValues)
+    //         })
+    //     }
+    //     const oldEvents = ocel.objects.filter(object => objectType.names.includes(object.type))
+    //     oldEvents.forEach((event, index) => {
+    //         event.id = idValues[index].value
+    //     })
+    //
+    // }
+
+    const objectTypesOptions = ["inputName", "variableName", "eventName", "callType"]
 
     return (
         <Box display="flex">
@@ -115,30 +353,6 @@ function ObjectType({
                 <CustomTypography>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"{"}
                 </CustomTypography>
-                <Box display="flex" gap={1} alignItems="center">
-                    <CustomTypography>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OBJECT ID:
-                    </CustomTypography>
-                    <Stack spacing={1}>
-                        <FormControl disabled={!objectType.name} fullWidth sx={{width: 200}}>
-                            <InputLabel>Key</InputLabel>
-                            <Select
-                                value={objectType.id}
-                                label="idEvent"
-                                onChange={(e) => handleObjectTypeId(e)}
-                            >
-                                {
-                                    objectId.map((name, index) => (
-                                        <MenuItem key={index} value={name}>{name}</MenuItem>
-                                    ))
-                                }
-                            </Select>
-                        </FormControl>
-                    </Stack>
-                    <CustomTypography>
-                        ,
-                    </CustomTypography>
-                </Box>
                 <Box display="flex" gap={1} alignItems="center" marginTop={1}>
                     <CustomTypography>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"name":
@@ -152,7 +366,7 @@ function ObjectType({
                                 onChange={(e) => handleSelectObjectTypeName(e)}
                             >
                                 {
-                                    objectsKeys.map((name, index) => (
+                                    objectTypesOptions.map((name, index) => (
                                         <MenuItem key={index} value={name}>{name}</MenuItem>
                                     ))
                                 }
@@ -165,12 +379,6 @@ function ObjectType({
                 </Box>
                 <CustomTypography>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"attributes": []
-                    {/*{*/}
-                    {/*    <Button onClick={handleAddObjectAttribute}>*/}
-                    {/*        <AddBoxIcon sx={{fontSize: 30}}/>*/}
-                    {/*    </Button>*/}
-                    {/*}*/}
-                    {/*{objectAttributes.length === 0 && "],"}*/}
                 </CustomTypography>
                 {
                     objectAttributes.length > 0 &&

@@ -129,11 +129,11 @@ function Event({eventKeys, eventValues, eventsType, setEventsItem, events, event
                 {/*</Box>*/}
                 <CustomTypography>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"attributes": [
-                    {
-                        <Button onClick={handleAddEventAttribute}>
-                            <AddBoxIcon sx={{fontSize: 30}}/>
-                        </Button>
-                    }
+                    {/*{*/}
+                    {/*    <Button onClick={handleAddEventAttribute}>*/}
+                    {/*        <AddBoxIcon sx={{fontSize: 30}}/>*/}
+                    {/*    </Button>*/}
+                    {/*}*/}
                     {eventAttributes.length === 0 && "],"}
                 </CustomTypography>
                 {
@@ -154,11 +154,11 @@ function Event({eventKeys, eventValues, eventsType, setEventsItem, events, event
                 }
                 <CustomTypography>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"relationships": [
-                    {
-                        <Button onClick={handleAddEventRelationships}>
-                            <AddBoxIcon sx={{fontSize: 30}}/>
-                        </Button>
-                    }
+                    {/*{*/}
+                    {/*    <Button onClick={handleAddEventRelationships}>*/}
+                    {/*        <AddBoxIcon sx={{fontSize: 30}}/>*/}
+                    {/*    </Button>*/}
+                    {/*}*/}
                     {eventRelationships.length === 0 && "],"}
                 </CustomTypography>
                 {

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Box, Button, Stack, Typography} from "@mui/material";
+import {Box, Button, Stack, Tab, Tabs, Typography} from "@mui/material";
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import {Link} from "react-router-dom";
 
@@ -11,6 +11,7 @@ import PageLayout from "../layouts/PageLayout";
 import ObjectOCEL from "../components/objects/ObjectOCEL";
 import {_downloadOCEL} from "../api/services";
 import useDataContext from "../dataContext/useDataContext";
+import ActivityEventType from "../components/eventTypes/ActivityEventType";
 
 const getAllKeys = (jsonLog, set) => {
     if (Array.isArray(jsonLog)) {
@@ -63,10 +64,31 @@ const getAllValues = (jsonLog, set) => {
     }
 }
 
+function CustomTabPanel(props) {
+    const {children, value, index, ...other} = props;
+
+    return (
+        <div
+            role="tabpanel"
+            hidden={value !== index}
+            id={`simple-tabpanel-${index}`}
+            aria-labelledby={`simple-tab-${index}`}
+            {...other}
+        >
+            {value === index && (
+                <Box sx={{paddingX: 3}}>
+                    {children}
+                </Box>
+            )}
+        </div>
+    );
+}
+
 function OcelFormatting() {
 
-    const {results, ocel} = useDataContext()
+    const {results} = useDataContext()
 
+    const [tab, setTab] = useState(0)
 
     const [jsonKeys, setJsonKeys] = useState([])
     const [jsonValues, setJsonValues] = useState([])
@@ -93,7 +115,7 @@ function OcelFormatting() {
     }, [results]);
 
     const handleAddEventType = () => {
-        setEventTypesItem([...eventsTypesItem, {name: "", attributes: [], names: [], id:  ""}])
+        setEventTypesItem([...eventsTypesItem, {name: "", attributes: [], names: [], id: ""}])
     }
 
     const handleAddObjectType = () => {
@@ -108,126 +130,148 @@ function OcelFormatting() {
     //     setObjectsItem([...objectsItem, {id: "", type: "", attributes: []}])
     // }
 
+    const handleTabs = (event, newTab) => {
+        setTab(newTab);
+    };
+
     return (
         <PageLayout>
-            <Box display="flex" justifyContent="center" height="100%">
+            <Box display="flex" justifyContent="center">
                 <Box position="relative" height="100%" width={520} paddingBottom={2}>
                     <Typography variant="h3">
                         Data Formatting
                     </Typography>
-                    <Stack marginY={3}>
-                        <CustomTypography>
-                            {"{"}
-                        </CustomTypography>
-                        <CustomTypography>
-                            &nbsp;&nbsp;&nbsp;"eventTypes": [
+                    <Box>
+                        <Tabs value={tab} onChange={handleTabs} aria-label="basic tabs example">
+                            <Tab label="Automatic Mapping"/>
+                            <Tab label="Manual Mapping"/>
+                        </Tabs>
+                    </Box>
+                    <CustomTabPanel value={tab} index={0}>
+                        <Stack marginY={3} height="calc(100vh - 300px)" overflow="auto">
+                            <CustomTypography>
+                                {"{"}
+                            </CustomTypography>
+                            <CustomTypography>
+                                &nbsp;&nbsp;&nbsp;"eventTypes": [
+                            </CustomTypography>
                             {
-                                <Button onClick={handleAddEventType}>
-                                    <AddBoxIcon sx={{fontSize: 30}}/>
-                                </Button>
+                                tab === 0 && (
+                                    <>
+                                        <ActivityEventType setEventsItem={setEventsItem} />
+                                        <CustomTypography>
+                                            &nbsp;&nbsp;&nbsp;],
+                                        </CustomTypography>
+                                    </>
+                                )
                             }
-                            {eventsTypesItem.length === 0 && "],"}
-                        </CustomTypography>
-                        {eventsTypesItem.length > 0 &&
-                            (
-                                <>
-                                    {eventsTypesItem.map((eventType, index) => (
-                                        <EventType key={`${index}_event`} eventsKey={jsonKeys} eventsValue={jsonValues}
-                                                   setEventTypesItem={setEventTypesItem} setEventsItem={setEventsItem}
-                                                   eventsTypesItem={eventsTypesItem} eventType={eventType}
-                                                   index={index}/>
-                                    ))}
-                                    <CustomTypography>
-                                        &nbsp;&nbsp;&nbsp;],
-                                    </CustomTypography>
-                                </>
-                            )
-                        }
-                        <CustomTypography>
-                            &nbsp;&nbsp;&nbsp;"objectTypes": [
-                            {
-                                <Button onClick={handleAddObjectType}>
-                                    <AddBoxIcon sx={{fontSize: 30}}/>
-                                </Button>
+                            {eventsTypesItem.length > 0 &&
+                                (
+                                    <>
+                                        {eventsTypesItem.map((eventType, index) => (
+                                            <EventType key={`${index}_event`} eventsKey={jsonKeys}
+                                                       eventsValue={jsonValues}
+                                                       setEventTypesItem={setEventTypesItem}
+                                                       setEventsItem={setEventsItem}
+                                                       eventsTypesItem={eventsTypesItem} eventType={eventType}
+                                                       index={index}/>
+                                        ))}
+                                        <CustomTypography>
+                                            &nbsp;&nbsp;&nbsp;],
+                                        </CustomTypography>
+                                    </>
+                                )
                             }
-                            {objectsTypesItem.length === 0 && "],"}
-                        </CustomTypography>
-                        {objectsTypesItem.length > 0 &&
-                            (
-                                <>
-                                    {objectsTypesItem.map((objectType, index) => (
-                                        <ObjectType key={`${index}_object`} objectsKeys={jsonKeys}
-                                                    objectsValue={jsonValues}
-                                                    setObjectsTypesItem={setObjectsTypesItem} setObjectsItem={setObjectsItem}
-                                                    objectsTypesItem={objectsTypesItem} objectType={objectType}
-                                                    index={index}/>
-                                    ))}
-                                    <CustomTypography>
-                                        &nbsp;&nbsp;&nbsp;],
-                                    </CustomTypography>
-                                </>
-                            )
-                        }
-                        <CustomTypography>
-                            &nbsp;&nbsp;&nbsp;"events": []
+                            <CustomTypography>
+                                &nbsp;&nbsp;&nbsp;"objectTypes": [
+                                {
+                                    <Button onClick={handleAddObjectType}>
+                                        <AddBoxIcon sx={{fontSize: 30}}/>
+                                    </Button>
+                                }
+                                {objectsTypesItem.length === 0 && "],"}
+                            </CustomTypography>
+                            {objectsTypesItem.length > 0 &&
+                                (
+                                    <>
+                                        {objectsTypesItem.map((objectType, index) => (
+                                            <ObjectType key={`${index}_object`} objectsKeys={jsonKeys}
+                                                        objectsValue={jsonValues}
+                                                        setObjectsTypesItem={setObjectsTypesItem}
+                                                        setObjectsItem={setObjectsItem}
+                                                        objectsTypesItem={objectsTypesItem} objectType={objectType}
+                                                        index={index}/>
+                                        ))}
+                                        <CustomTypography>
+                                            &nbsp;&nbsp;&nbsp;],
+                                        </CustomTypography>
+                                    </>
+                                )
+                            }
+                            <CustomTypography>
+                                &nbsp;&nbsp;&nbsp;"events": []
+                                {/*{*/}
+                                {/*    <Button onClick={handleAddEvent}>*/}
+                                {/*        <AddBoxIcon sx={{fontSize: 30}}/>*/}
+                                {/*    </Button>*/}
+                                {/*}*/}
+                                {/*{eventsItem.length === 0 && "],"}*/}
+                            </CustomTypography>
                             {/*{*/}
-                            {/*    <Button onClick={handleAddEvent}>*/}
-                            {/*        <AddBoxIcon sx={{fontSize: 30}}/>*/}
-                            {/*    </Button>*/}
-                            {/*}*/}
-                            {/*{eventsItem.length === 0 && "],"}*/}
-                        </CustomTypography>
-                        {/*{*/}
-                        {/*    eventsItem.length > 0 &&*/}
-                        {/*    (*/}
-                        {/*        <>*/}
-                        {/*            {*/}
-                        {/*                eventsItem.map((event, index) => (*/}
-                        {/*                    <Event key={`${index}_event`} eventKeys={jsonKeys}*/}
-                        {/*                           eventValues={jsonValues} eventsType={eventsTypesItem}*/}
-                        {/*                           setEventsItem={setEventsItem} events={eventsItem} event={event}*/}
-                        {/*                           index={index} objects={objectsItem}*/}
-                        {/*                    />*/}
-                        {/*                ))*/}
-                        {/*            }*/}
-                        {/*            <CustomTypography>*/}
-                        {/*                &nbsp;&nbsp;&nbsp;],*/}
-                        {/*            </CustomTypography>*/}
-                        {/*        </>*/}
-                        {/*    )*/}
-                        {/*}*/}
-                        <CustomTypography>
-                            &nbsp;&nbsp;&nbsp;"objects": []
-                            {/*{*/}
-                            {/*    <Button onClick={handleAddObject}>*/}
-                            {/*        <AddBoxIcon sx={{fontSize: 30}}/>*/}
-                            {/*    </Button>*/}
-                            {/*}*/}
-                            {/*{objectsItem.length === 0 && "],"}*/}
-                            {/*{*/}
-                            {/*    objectsItem.length > 0 &&*/}
+                            {/*    eventsItem.length > 0 &&*/}
                             {/*    (*/}
                             {/*        <>*/}
                             {/*            {*/}
-                            {/*                objectsItem.map((object, index) => (*/}
-                            {/*                    <ObjectOCEL key={`${index}_object`} objectKeys={jsonKeys}*/}
-                            {/*                                objectValues={jsonValues}*/}
-                            {/*                                setObject={setObjectsItem} objectsType={objectsTypesItem}*/}
-                            {/*                                objects={objectsItem} object={object} index={index}*/}
+                            {/*                eventsItem.map((event, index) => (*/}
+                            {/*                    <Event key={`${index}_event`} eventKeys={jsonKeys}*/}
+                            {/*                           eventValues={jsonValues} eventsType={eventsTypesItem}*/}
+                            {/*                           setEventsItem={setEventsItem} events={eventsItem} event={event}*/}
+                            {/*                           index={index} objects={objectsItem}*/}
                             {/*                    />*/}
                             {/*                ))*/}
                             {/*            }*/}
                             {/*            <CustomTypography>*/}
-                            {/*                &nbsp;&nbsp;&nbsp;]*/}
+                            {/*                &nbsp;&nbsp;&nbsp;],*/}
                             {/*            </CustomTypography>*/}
                             {/*        </>*/}
                             {/*    )*/}
                             {/*}*/}
-                        </CustomTypography>
-                        <CustomTypography>
-                            {"}"}
-                        </CustomTypography>
-                    </Stack>
+                            <CustomTypography>
+                                &nbsp;&nbsp;&nbsp;"objects": []
+                                {/*{*/}
+                                {/*    <Button onClick={handleAddObject}>*/}
+                                {/*        <AddBoxIcon sx={{fontSize: 30}}/>*/}
+                                {/*    </Button>*/}
+                                {/*}*/}
+                                {/*{objectsItem.length === 0 && "],"}*/}
+                                {/*{*/}
+                                {/*    objectsItem.length > 0 &&*/}
+                                {/*    (*/}
+                                {/*        <>*/}
+                                {/*            {*/}
+                                {/*                objectsItem.map((object, index) => (*/}
+                                {/*                    <ObjectOCEL key={`${index}_object`} objectKeys={jsonKeys}*/}
+                                {/*                                objectValues={jsonValues}*/}
+                                {/*                                setObject={setObjectsItem} objectsType={objectsTypesItem}*/}
+                                {/*                                objects={objectsItem} object={object} index={index}*/}
+                                {/*                    />*/}
+                                {/*                ))*/}
+                                {/*            }*/}
+                                {/*            <CustomTypography>*/}
+                                {/*                &nbsp;&nbsp;&nbsp;]*/}
+                                {/*            </CustomTypography>*/}
+                                {/*        </>*/}
+                                {/*    )*/}
+                                {/*}*/}
+                            </CustomTypography>
+                            <CustomTypography>
+                                {"}"}
+                            </CustomTypography>
+                        </Stack>
+                    </CustomTabPanel>
+                    <CustomTabPanel value={tab} index={1}>
+                        Developing...
+                    </CustomTabPanel>
                 </Box>
             </Box>
         </PageLayout>
