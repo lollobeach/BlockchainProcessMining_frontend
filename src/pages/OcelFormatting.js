@@ -119,7 +119,7 @@ function OcelFormatting() {
     }
 
     const handleAddObjectType = () => {
-        setObjectsTypesItem([...objectsTypesItem, {name: "", attributes: [], names: [], id: ""}])
+        setObjectsTypesItem([...objectsTypesItem, {name: "", names: []}])
     }
 
     // const handleAddEvent = () => {
