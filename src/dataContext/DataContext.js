@@ -3,7 +3,7 @@ import React, {useMemo, useReducer} from 'react';
 import JsonLog from "../mock/jsonLog.json"
 
 const initialState = {
-    results: JsonLog,
+    results: null,
     ocel: {
         eventTypes: [],
         objectTypes: [],

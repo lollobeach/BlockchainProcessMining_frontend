@@ -14,52 +14,57 @@ function ActivityEventType({setEventsItem}) {
         const values = []
         const temporaryEvents = []
 
-        results.forEach((log) => {
-            findValue(log, "activity", values)
-            temporaryEvents.push({
-                // relationships: log.storageState.map(variable => ({
-                //     objectId: variable.variableId,
-                //     qualifier: variable.variableName
-                // })),
-                id: log.txHash,
-                relationships: [],
-                timestamp: log.timestamp,
-                name: log.activity,
-                gasUsed: log.gasUsed,
-                sender: log.sender,
-                attributes: [{name: "gasUsed", type: "string"}, {name: "sender", type: "string"}]
+        if (!results) {
+            setOcel({eventTypes: [], objectTypes: [], events: [], objects: []})
+        } else {
+            results?.forEach((log) => {
+                findValue(log, "activity", values)
+                temporaryEvents.push({
+                    // relationships: log.storageState.map(variable => ({
+                    //     objectId: variable.variableId,
+                    //     qualifier: variable.variableName
+                    // })),
+                    id: log.txHash,
+                    relationships: [],
+                    timestamp: log.timestamp,
+                    name: log.activity,
+                    gasUsed: log.gasUsed,
+                    sender: log.sender,
+                    attributes: [{name: "gasUsed", type: "string"}, {name: "sender", type: "string"}]
+                })
             })
-        })
 
-        let newEventTypes = [...ocel.eventTypes]
+            let newEventTypes = [...ocel.eventTypes]
 
-        const valuesSet = temporaryEvents.filter((value, index, self) => self.map(item => item.name).indexOf(value.name) === index)
-        valuesSet.forEach(value => {
-            newEventTypes.push({name: value.name, attributes: value.attributes})
-        })
-
-        const events = []
-        temporaryEvents.forEach((value) => {
-            events.push({
-                id: value.id,
-                key: "activity",
-                type: value.name,
-                time: value.timestamp,
-                attributes: [{name: "gasUsed", value: value.gasUsed}, {name: "sender", value: value.sender}],
-                relationships: value.relationships
+            const valuesSet = temporaryEvents.filter((value, index, self) => self.map(item => item.name).indexOf(value.name) === index)
+            valuesSet.forEach(value => {
+                newEventTypes.push({name: value.name, attributes: value.attributes})
             })
-        })
-        setEventsItem((oldEvents) => [...oldEvents, ...events])
 
-        setOcel({
-            ...ocel,
-            eventTypes: newEventTypes,
-            events: [...ocel.events, ...events.map(({key, ...rest}) => rest)]
-        })
-    }, [])
+            const events = []
+            temporaryEvents.forEach((value) => {
+                events.push({
+                    id: value.id,
+                    key: "activity",
+                    type: value.name,
+                    time: value.timestamp,
+                    attributes: [{name: "gasUsed", value: value.gasUsed}, {name: "sender", value: value.sender}],
+                    relationships: value.relationships
+                })
+            })
+            setEventsItem((oldEvents) => [...oldEvents, ...events])
+
+            setOcel({
+                ...ocel,
+                eventTypes: newEventTypes,
+                events: [...ocel.events, ...events.map(({key, ...rest}) => rest)]
+            })
+        }
+
+    }, [results])
 
     return (
-        <Box display="flex" >
+        <Box display="flex">
             <Box>
                 <CustomTypography>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"{"}
