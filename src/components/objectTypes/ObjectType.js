@@ -9,7 +9,7 @@ import {
     handleEventNameObjects,
     handleInputNameObjects,
     handleCallTypeObjects, handleSelectEventsObjects, handleSelectInputsObjects,
-    handleVariableNameObjects, handleSelectInternalTxsObjects, handleSelectStorageStateObjects
+    handleVariableNameObjects, handleSelectInternalTxsObjects, handleSelectStorageStateObjects, handleSenderObjects
 } from "./selectObjectTypes";
 
 function ObjectType({
@@ -54,6 +54,9 @@ function ObjectType({
 
     const handleSelectObjectTypeName = (e) => {
         switch (e.target.value) {
+            case "sender":
+                handleSenderObjects(results, ocel, setObjectsTypesItem, objectsTypesItem, objectType, setObjectsItem, setOcel)
+                break;
             case "inputName":
                 handleInputNameObjects(results, ocel, setObjectsTypesItem, objectsTypesItem, objectType, setObjectsItem, setOcel)
                 break;
@@ -102,7 +105,7 @@ function ObjectType({
     //
     // }
 
-    const objectTypesOptions = ["inputName", "variableName", "eventName", "callType", "events", "inputs", "internalTxs", "storageState"]
+    const objectTypesOptions = ["sender", "inputName", "variableName", "eventName", "callType", "events", "inputs", "internalTxs", "storageState"]
 
     return (
         <Box display="flex">

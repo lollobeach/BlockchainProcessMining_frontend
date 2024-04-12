@@ -1,3 +1,64 @@
+export const handleSenderObjects = (results, ocel, setObjectsTypesItem, objectsTypesItem, objectType, setObjectsItem, setOcel) => {
+    const senders = []
+
+    results?.forEach((log) => {
+        senders.push({
+            time: log.timestamp,
+            id: log.sender,
+            name: "sender",
+            value: log.sender,
+            type: "string"
+        })
+    })
+
+    let newObjectTypes = [...ocel.objectTypes]
+    const valuesSet = senders.filter((value, index, self) => index === self.findIndex((t) => t.name === value.name))
+    valuesSet.forEach(value => {
+            newObjectTypes.push({
+                name: value.name,
+                attributes: [{name: "value", type: value.type}]
+            })
+        }
+    )
+
+    setObjectsTypesItem(objectsTypesItem.map(item => item === objectType ? {
+        ...item,
+        name: "sender",
+        names: senders.map(value => ({name: value.name, id: value.id}))
+    } : item))
+
+    const objects = []
+    senders.forEach(value => {
+        let attributeValues = []
+        attributeValues = [{name: "value", time: value.time, value: value.value}]
+
+        objects.push({
+            id: value.id,
+            key: "senders",
+            type: value.name,
+            attributes: attributeValues
+        })
+    })
+
+    setObjectsItem((oldObjects) => [...oldObjects, ...objects])
+    setOcel({
+        ...ocel,
+        objectTypes: newObjectTypes,
+        objects: [...ocel.objects, ...objects.map(({key, ...rest}) => rest)],
+        events: [...ocel.events]
+    })
+
+    const events = [...ocel.events]
+    events.forEach((event) => {
+        objects.forEach((object) => {
+            if (object.attributes[0].time === event.time) {
+                event.relationships.push({objectId: object.id, qualifier: "sender"})
+            }
+        })
+    })
+}
+
+
 export const handleInputNameObjects = (results, ocel, setObjectsTypesItem, objectsTypesItem, objectType, setObjectsItem, setOcel) => {
     const variables = []
 
@@ -266,7 +327,7 @@ export const handleSelectEventsObjects = (results, ocel, setObjectsTypesItem, ob
     let newObjectTypes = [...ocel.objectTypes]
     newObjectTypes.push({
         name: "events",
-        attributes: Array.from(events).map((_, index) => ({name: `eventName_${index+1}`, type: "string"}))
+        attributes: Array.from(events).map((_, index) => ({name: `eventName_${index + 1}`, type: "string"}))
     })
 
     const objects = []
@@ -279,7 +340,7 @@ export const handleSelectEventsObjects = (results, ocel, setObjectsTypesItem, ob
             }
 
             attributes.push({
-                name: `eventName_${i+1}`,
+                name: `eventName_${i + 1}`,
                 time: log.timestamp,
                 value: value
             })
@@ -326,7 +387,7 @@ export const handleSelectInputsObjects = (results, ocel, setObjectsTypesItem, ob
     let newObjectTypes = [...ocel.objectTypes]
     newObjectTypes.push({
         name: "inputs",
-        attributes: Array.from(inputs).map((_, index) => ({name: `inputName_${index+1}`, type: "string"}))
+        attributes: Array.from(inputs).map((_, index) => ({name: `inputName_${index + 1}`, type: "string"}))
     })
 
     const objects = []
@@ -339,7 +400,7 @@ export const handleSelectInputsObjects = (results, ocel, setObjectsTypesItem, ob
             }
 
             attributes.push({
-                name: `inputName_${i+1}`,
+                name: `inputName_${i + 1}`,
                 time: log.timestamp,
                 value: value
             })
@@ -381,14 +442,14 @@ export const handleSelectInternalTxsObjects = (results, ocel, setObjectsTypesIte
     results?.forEach((log) => {
         log.internalTxs.forEach((internalTx, index) => {
             internalTxs.add(internalTx.callType)
-            internalTxsSize.add(`internalTx_${index+1}`)
+            internalTxsSize.add(`internalTx_${index + 1}`)
         })
     })
 
     let newObjectTypes = [...ocel.objectTypes]
     newObjectTypes.push({
         name: "internalTxs",
-        attributes: Array.from(internalTxsSize).map((_, index) => ({name: `internalTx_${index+1}`, type: "string"}))
+        attributes: Array.from(internalTxsSize).map((_, index) => ({name: `internalTx_${index + 1}`, type: "string"}))
     })
 
     const objects = []
@@ -401,7 +462,7 @@ export const handleSelectInternalTxsObjects = (results, ocel, setObjectsTypesIte
             }
 
             attributes.push({
-                name: `internalTx_${i+1}`,
+                name: `internalTx_${i + 1}`,
                 time: log.timestamp,
                 value: value
             })
@@ -443,14 +504,14 @@ export const handleSelectStorageStateObjects = (results, ocel, setObjectsTypesIt
     results?.forEach((log) => {
         log.storageState.forEach((variable, index) => {
             variables.add(variable.variableName)
-            variableSize.add(`variableName_${index+1}`)
+            variableSize.add(`variableName_${index + 1}`)
         })
     })
 
     let newObjectTypes = [...ocel.objectTypes]
     newObjectTypes.push({
         name: "storageState",
-        attributes: Array.from(variableSize).map((_, index) => ({name: `variableName_${index+1}`, type: "string"}))
+        attributes: Array.from(variableSize).map((_, index) => ({name: `variableName_${index + 1}`, type: "string"}))
     })
 
     const objects = []
@@ -463,7 +524,7 @@ export const handleSelectStorageStateObjects = (results, ocel, setObjectsTypesIt
             }
 
             attributes.push({
-                name: `variableName_${i+1}`,
+                name: `variableName_${i + 1}`,
                 time: log.timestamp,
                 value: value
             })

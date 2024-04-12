@@ -19,7 +19,7 @@ import useDataContext from "../dataContext/useDataContext";
 
 function HomePage() {
 
-    const {results, setResults} = useDataContext()
+    const {setResults} = useDataContext()
 
     const [contractName, setContractName] = useState("CakeOFT")
     const [contractAddress, setContractAddress] = useState("0x152649eA73beAb28c5b49B26eb48f7EAD6d4c898")
@@ -34,6 +34,7 @@ function HomePage() {
     const sendData = async () => {
         setLoading(true)
         const response = await _sendData(contractName, contractAddress, fromBlock, toBlock)
+        console.log(response)
         setResults(response)
         setLoading(false)
     }
