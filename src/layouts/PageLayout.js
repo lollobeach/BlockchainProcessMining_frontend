@@ -13,9 +13,10 @@ import {
 import JsonView from "@uiw/react-json-view";
 import {darkTheme} from "@uiw/react-json-view/dark";
 import {Download, FileUpload, Delete} from "@mui/icons-material";
-import {_downloadCSV, _downloadJson, _downloadOCEL} from "../api/services";
+import {_downloadCSV, _downloadJson, _downloadJSONOCEL, _downloadOCEL} from "../api/services";
 import useDataContext from "../dataContext/useDataContext";
 import {Link} from "react-router-dom";
+import {HiddenInput} from "../components/HiddenInput";
 
 const CardContentNoPadding = styled(CardContent)(
     `
@@ -25,18 +26,6 @@ const CardContentNoPadding = styled(CardContent)(
     }
     `
 )
-
-const VisuallyHiddenInput = styled('input')({
-    clip: 'rect(0 0 0 0)',
-    clipPath: 'inset(50%)',
-    height: 1,
-    overflow: 'hidden',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    whiteSpace: 'nowrap',
-    width: 1,
-});
 
 function PageLayout({children, loading, setLoading}) {
 
@@ -99,7 +88,7 @@ function PageLayout({children, loading, setLoading}) {
     }
 
     const downloadJSONOcel = async () => {
-        const response = await _downloadOCEL(ocel)
+        const response = await _downloadJSONOCEL(ocel)
         const href = window.URL.createObjectURL(response)
         const anchor = document.createElement('a')
         anchor.href = href
@@ -155,7 +144,7 @@ function PageLayout({children, loading, setLoading}) {
                                         <Button component="label" variant="contained" startIcon={<FileUpload/>}
                                                 sx={{padding: 1, height: "55px"}}>
                                             Upload File
-                                            <VisuallyHiddenInput type="file" onChange={handleFileChange}/>
+                                            <HiddenInput type="file" onChange={handleFileChange} />
                                         </Button>
                                         <Button variant="contained" onClick={downloadOcel} sx={{padding: 1, width: "125px", height: "55px"}}>
                                             <Typography color="white">Download JSON</Typography>

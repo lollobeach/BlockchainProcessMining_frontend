@@ -531,7 +531,7 @@ export const handleSelectStorageStateObjects = (results, ocel, setObjectsTypesIt
         }
 
         objects.push({
-            id: `variable_${index}`,
+            id: `storageStateVariable`,
             type: "storageState",
             attributes: attributes
         })
@@ -552,7 +552,7 @@ export const handleSelectStorageStateObjects = (results, ocel, setObjectsTypesIt
     const ocelEvents = [...ocel.events]
     ocelEvents.forEach((event) => {
         objects.forEach((object) => {
-            if (object.attributes[0].time === event.time) {
+            if (object.attributes[0]?.time === event?.time) {
                 event.relationships.push({objectId: object.id, qualifier: "update"})
             }
         })
