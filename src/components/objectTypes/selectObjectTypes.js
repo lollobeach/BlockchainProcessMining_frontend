@@ -1,3 +1,123 @@
+export const handleContractAddressObjects = (results, ocel, setObjectsTypesItem, objectsTypesItem, objectType, setObjectsItem, setOcel) => {
+    const contractAddress = []
+
+    results?.forEach((log) => {
+        contractAddress.push({
+            time: log.timestamp,
+            id: log.contractAddress,
+            name: "contractAddress",
+            value: log.sender,
+            type: "string"
+        })
+    })
+
+    let newObjectTypes = [...ocel.objectTypes]
+    const valuesSet = contractAddress.filter((value, index, self) => index === self.findIndex((t) => t.name === value.name))
+    valuesSet.forEach(value => {
+            newObjectTypes.push({
+                name: value.name,
+                attributes: [{name: "sender", type: value.type}]
+            })
+        }
+    )
+
+    setObjectsTypesItem(objectsTypesItem.map(item => item === objectType ? {
+        ...item,
+        name: "contractAddress",
+        names: contractAddress.map(value => ({name: value.name, id: value.id}))
+    } : item))
+
+    const objects = []
+    contractAddress.forEach(value => {
+        let attributeValues = []
+        attributeValues = [{name: "sender", time: value.time, value: value.value}]
+
+        objects.push({
+            id: value.id,
+            key: "contractAddress",
+            type: value.name,
+            attributes: attributeValues
+        })
+    })
+
+    setObjectsItem((oldObjects) => [...oldObjects, ...objects])
+    setOcel({
+        ...ocel,
+        objectTypes: newObjectTypes,
+        objects: [...ocel.objects, ...objects.map(({key, ...rest}) => rest)],
+        events: [...ocel.events]
+    })
+
+    const events = [...ocel.events]
+    events.forEach((event) => {
+        objects.forEach((object) => {
+            if (object.attributes[0].time === event.time) {
+                event.relationships.push({objectId: object.id, qualifier: "contractAddress"})
+            }
+        })
+    })
+}
+
+export const handleTxHashObjects = (results, ocel, setObjectsTypesItem, objectsTypesItem, objectType, setObjectsItem, setOcel) => {
+    const txHashes = []
+
+    results?.forEach((log) => {
+        txHashes.push({
+            time: log.timestamp,
+            id: log.txHash,
+            name: "txHash",
+            value: log.sender,
+            type: "string"
+        })
+    })
+
+    let newObjectTypes = [...ocel.objectTypes]
+    const valuesSet = txHashes.filter((value, index, self) => index === self.findIndex((t) => t.name === value.name))
+    valuesSet.forEach(value => {
+            newObjectTypes.push({
+                name: value.name,
+                attributes: [{name: "sender", type: value.type}]
+            })
+        }
+    )
+
+    setObjectsTypesItem(objectsTypesItem.map(item => item === objectType ? {
+        ...item,
+        name: "txHash",
+        names: txHashes.map(value => ({name: value.name, id: value.id}))
+    } : item))
+
+    const objects = []
+    txHashes.forEach(value => {
+        let attributeValues = []
+        attributeValues = [{name: "sender", time: value.time, value: value.value}]
+
+        objects.push({
+            id: value.id,
+            key: "txHash",
+            type: value.name,
+            attributes: attributeValues
+        })
+    })
+
+    setObjectsItem((oldObjects) => [...oldObjects, ...objects])
+    setOcel({
+        ...ocel,
+        objectTypes: newObjectTypes,
+        objects: [...ocel.objects, ...objects.map(({key, ...rest}) => rest)],
+        events: [...ocel.events]
+    })
+
+    const events = [...ocel.events]
+    events.forEach((event) => {
+        objects.forEach((object) => {
+            if (object.attributes[0].time === event.time) {
+                event.relationships.push({objectId: object.id, qualifier: "txHash"})
+            }
+        })
+    })
+}
+
 export const handleSenderObjects = (results, ocel, setObjectsTypesItem, objectsTypesItem, objectType, setObjectsItem, setOcel) => {
     const senders = []
 

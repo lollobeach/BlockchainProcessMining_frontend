@@ -1,10 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import {
+    Alert,
     Box,
-    Button,
+    Button, Dialog, DialogContent, DialogTitle,
     FilledInput,
-    FormControl,
-    InputLabel, MenuItem, Select,
+    FormControl, IconButton,
+    InputLabel, MenuItem, Select, Slide, Slider, Snackbar,
     Stack,
     Typography,
 } from "@mui/material";
@@ -14,11 +15,14 @@ import {Link} from "react-router-dom";
 import {_sendData} from "../api/services";
 import PageLayout from "../layouts/PageLayout";
 
-import JsonResults from "../mock/jsonLog.json"
 import useDataContext from "../dataContext/useDataContext";
 import {HiddenInput} from "../components/HiddenInput";
-import {FileUpload} from "@mui/icons-material";
+import {FileUpload, FilterList} from "@mui/icons-material";
 import DeleteIcon from "@mui/icons-material/Delete";
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="down" ref={ref} {...props} />;
+});
 
 function HomePage() {
 
@@ -33,11 +37,21 @@ function HomePage() {
     const [loading, setLoading] = useState(false)
     const [smartContract, setSmartContract] = useState(null)
 
+    const [error, setError] = useState()
+
+    const [openFilters, setOpenFilters] = useState(false)
+    const [gasUsed, setGasUsed] = useState([0, 1000000])
+
     const sendData = async () => {
         setLoading(true)
         const response = await _sendData(contractName, contractAddress, fromBlock, toBlock, network, smartContract)
-        setResults(response)
-        setLoading(false)
+        if (response.status === 200) {
+            setResults(response.data)
+            setLoading(false)
+        } else {
+            setError(response.data)
+            setLoading(false)
+        }
     }
 
     const networks = ["Mainnet", "Sepolia", "Polygon", "Mumbai"]
@@ -84,98 +98,154 @@ function HomePage() {
         e.target.value = null
     }
 
+    window.onclick = function (event) {
+        setError(null)
+    }
+
     return (
-        <PageLayout loading={loading} setLoading={setLoading}>
-            <FormControl fullWidth sx={{width: 200}}>
-                <InputLabel>Network</InputLabel>
-                <Select
-                    value={network}
-                    label="name"
-                    onChange={(e) => handleNetworkChange(e)}
-                >
-                    {
-                        networks.map((name, index) => (
-                            <MenuItem key={index} value={name}>
-                                <Typography>{name}</Typography>
-                            </MenuItem>
-                        ))
-                    }
-                </Select>
-            </FormControl>
-            <Stack justifyContent="space-evenly" height="100%">
-                <Typography textAlign="center" variant="h3">
-                    Data Extraction
-                </Typography>
-                <Stack spacing={2} minWidth={500} justifyContent="center">
-                    <FormControl variant="filled">
-                        <InputLabel sx={{fontWeight: "700", fontSize: "18px"}}>Contract Name</InputLabel>
-                        <FilledInput value={contractName} label="Contract Name"
-                                     onChange={(e) => setContractName(e.target.value)}/>
-                    </FormControl>
-                    <FormControl variant="filled">
-                        <InputLabel sx={{fontWeight: "700", fontSize: "18px"}}>Contract Address</InputLabel>
-                        <FilledInput value={contractAddress} label="Contract Address"
-                                     onChange={(e) => setContractAddress(e.target.value)}/>
-                    </FormControl>
-                    <FormControl variant="filled">
-                        <InputLabel sx={{fontWeight: "700", fontSize: "18px"}}>From Block</InputLabel>
-                        <FilledInput value={fromBlock} label="From Block"
-                                     onChange={(e) => setFromBlock(e.target.value)}/>
-                    </FormControl>
-                    <FormControl variant="filled">
-                        <InputLabel sx={{fontWeight: "700", fontSize: "18px"}}>To Block</InputLabel>
-                        <FilledInput value={toBlock} label="To Block"
-                                     onChange={(e) => setToBlock(e.target.value)}/>
-                    </FormControl>
-                </Stack>
-                <Stack spacing={1} width="100%">
-                    <Box height="24px" display="flex" width="50%" gap={2}>
-                        {smartContract &&
-                            <>
-                                <Typography>{smartContract.name}</Typography>
-                                <Button onClick={() => setSmartContract(null)}>
-                                    <DeleteIcon sx={{color: "red"}}/>
-                                </Button>
-                            </>
-                        }
-                    </Box>
-                    <Box display="flex" width="100%" gap={1}>
-                        <Button fullWidth component="label" startIcon={<FileUpload/>} variant="contained"
-                                disabled={loading}
-                                sx={{
-                                    backgroundColor: "#86469C",
-                                    '&:hover': {backgroundColor: "#512960"}
-                                }}
+        <>
+            <Snackbar open={error} anchorOrigin={{vertical: 'top', horizontal: 'center'}}>
+                <Alert severity="error" variant="filled" sx={{width: "100%"}}>
+                    {error}
+                </Alert>
+            </Snackbar>
+            <Dialog
+                TransitionComponent={Transition}
+                keepMounted
+                open={openFilters}
+                onClose={() => setOpenFilters(false)}
+            >
+                <DialogTitle>
+                    <Typography variant="h5">Filters</Typography>
+                </DialogTitle>
+                <DialogContent>
+                    <Typography fontWeight={700}>Gas Used</Typography>
+                    <Slider
+                        value={gasUsed}
+                        onChange={(e, newValue) => setGasUsed(newValue)}
+                        valueLabelDisplay="auto"
+                        getAriaValueText={(value) => `${value}`}
+                    />
+                </DialogContent>
+            </Dialog>
+            <PageLayout loading={loading} setLoading={setLoading}>
+                <Box display="flex" justifyContent="space-between">
+                    <IconButton size="large" sx={{color: "#ffb703"}} onClick={() => setOpenFilters(true)}>
+                        <FilterList fontSize="large"/>
+                    </IconButton>
+                    <FormControl fullWidth sx={{width: 200}}>
+                        <InputLabel>Network</InputLabel>
+                        <Select
+                            value={network}
+                            label="name"
+                            onChange={(e) => handleNetworkChange(e)}
                         >
-                            Upload Smart Contract
-                            <HiddenInput type="file" accept=".sol" onChange={handleContractUpload}/>
-                        </Button>
-                        <Button fullWidth variant="contained" disabled={loading} onClick={sendData}
-                                sx={{
-                                    padding: 1,
-                                    height: "40px",
-                                    backgroundColor: "#66cdaa",
-                                    '&:hover': {backgroundColor: "#6fa287"}
-                                }}>
-                            <Box width="100%">
-                                {loading ?
-                                    <LinearProgress/>
-                                    :
-                                    <>
-                                        Extract Data
-                                    </>
-                                }
-                            </Box>
-                        </Button>
+                            {
+                                networks.map((name, index) => (
+                                    <MenuItem key={index} value={name}>
+                                        <Typography>{name}</Typography>
+                                    </MenuItem>
+                                ))
+                            }
+                        </Select>
+                    </FormControl>
+                </Box>
+                <Stack justifyContent="space-evenly" height="100%">
+                    <Box display="flex" justifyContent="space-between" gap={5}>
+                        <Box width="100%">
+                            <Typography textAlign="center" variant="h3">
+                                Data Extraction
+                            </Typography>
+                            <Stack spacing={2} justifyContent="center">
+                                <FormControl variant="filled">
+                                    <InputLabel sx={{fontWeight: "700", fontSize: "18px"}}>Contract Name</InputLabel>
+                                    <FilledInput value={contractName} label="Contract Name"
+                                                 onChange={(e) => setContractName(e.target.value)}/>
+                                </FormControl>
+                                <FormControl variant="filled">
+                                    <InputLabel sx={{fontWeight: "700", fontSize: "18px"}}>Contract Address</InputLabel>
+                                    <FilledInput value={contractAddress} label="Contract Address"
+                                                 onChange={(e) => setContractAddress(e.target.value)}/>
+                                </FormControl>
+                                <FormControl variant="filled">
+                                    <InputLabel sx={{fontWeight: "700", fontSize: "18px"}}>From Block</InputLabel>
+                                    <FilledInput value={fromBlock} label="From Block"
+                                                 onChange={(e) => setFromBlock(e.target.value)}/>
+                                </FormControl>
+                                <FormControl variant="filled">
+                                    <InputLabel sx={{fontWeight: "700", fontSize: "18px"}}>To Block</InputLabel>
+                                    <FilledInput value={toBlock} label="To Block"
+                                                 onChange={(e) => setToBlock(e.target.value)}/>
+                                </FormControl>
+                            </Stack>
+                        </Box>
+                        {/*<Box width="100%">*/}
+                        {/*    <Typography variant="h6" color="gray">filters</Typography>*/}
+                        {/*    <Stack spacing={1} marginTop={1}>*/}
+                        {/*        <Typography fontWeight={700}>Gas Used</Typography>*/}
+                        {/*        <Box display="flex" gap={1}>*/}
+                        {/*            <TextField type="number" label="From"/>*/}
+                        {/*            <TextField type="number" label="To"/>*/}
+                        {/*        </Box>*/}
+                        {/*        <Typography fontWeight={700}>Sender</Typography>*/}
+                        {/*        <TextField label="Address"/>*/}
+                        {/*        <Typography fontWeight={700}>Timestamp</Typography>*/}
+                        {/*        <Box display="flex" gap={1}>*/}
+                        {/*            <TextField type="number" label="From"/>*/}
+                        {/*            <TextField type="number" label="To"/>*/}
+                        {/*        </Box>*/}
+                        {/*    </Stack>*/}
+                        {/*</Box>*/}
                     </Box>
-                    <Link to="/ocel" style={{textDecoration: "none"}}>
-                        <Button variant="contained" sx={{padding: 1, width: "100%"}}>
-                            <Typography color="white">Map data</Typography>
-                        </Button>
-                    </Link>
+                    <Stack spacing={1} width="100%">
+                        <Box height="24px" display="flex" width="50%" gap={2}>
+                            {smartContract &&
+                                <>
+                                    <Typography>{smartContract.name}</Typography>
+                                    <Button onClick={() => setSmartContract(null)}>
+                                        <DeleteIcon sx={{color: "red"}}/>
+                                    </Button>
+                                </>
+                            }
+                        </Box>
+                        <Box display="flex" width="100%" gap={1}>
+                            <Button fullWidth component="label" startIcon={<FileUpload/>} variant="contained"
+                                    disabled={loading}
+                                    sx={{
+                                        backgroundColor: "#86469C",
+                                        '&:hover': {backgroundColor: "#512960"}
+                                    }}
+                            >
+                                Upload Smart Contract
+                                <HiddenInput type="file" accept=".sol" onChange={handleContractUpload}/>
+                            </Button>
+                            <Button fullWidth variant="contained" disabled={loading} onClick={sendData}
+                                    sx={{
+                                        padding: 1,
+                                        height: "40px",
+                                        backgroundColor: "#66cdaa",
+                                        '&:hover': {backgroundColor: "#6fa287"}
+                                    }}>
+                                <Box width="100%">
+                                    {loading ?
+                                        <LinearProgress/>
+                                        :
+                                        <>
+                                            Extract Data
+                                        </>
+                                    }
+                                </Box>
+                            </Button>
+                        </Box>
+                        <Link to="/ocel" style={{textDecoration: "none"}}>
+                            <Button variant="contained" sx={{padding: 1, width: "100%"}}>
+                                <Typography color="white">Map data</Typography>
+                            </Button>
+                        </Link>
+                    </Stack>
                 </Stack>
-            </Stack>
-        </PageLayout>
+            </PageLayout>
+        </>
     )
 }
 

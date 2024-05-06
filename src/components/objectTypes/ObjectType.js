@@ -8,8 +8,14 @@ import useDataContext from "../../dataContext/useDataContext";
 import {
     handleEventNameObjects,
     handleInputNameObjects,
-    handleCallTypeObjects, handleSelectEventsObjects, handleSelectInputsObjects,
-    handleVariableNameObjects, handleSelectInternalTxsObjects, handleSelectStorageStateObjects, handleSenderObjects
+    handleCallTypeObjects,
+    handleSelectEventsObjects,
+    handleSelectInputsObjects,
+    handleVariableNameObjects,
+    handleSelectInternalTxsObjects,
+    handleSelectStorageStateObjects,
+    handleSenderObjects,
+    handleContractAddressObjects, handleTxHashObjects
 } from "./selectObjectTypes";
 
 function ObjectType({
@@ -54,6 +60,12 @@ function ObjectType({
 
     const handleSelectObjectTypeName = (e) => {
         switch (e.target.value) {
+            case "contractAddress":
+                handleContractAddressObjects(results, ocel, setObjectsTypesItem, objectsTypesItem, objectType, setObjectsItem, setOcel)
+                break;
+            case "txHash":
+                handleTxHashObjects(results, ocel, setObjectsTypesItem, objectsTypesItem, objectType, setObjectsItem, setOcel)
+                break
             case "sender":
                 handleSenderObjects(results, ocel, setObjectsTypesItem, objectsTypesItem, objectType, setObjectsItem, setOcel)
                 break;
@@ -105,7 +117,7 @@ function ObjectType({
     //
     // }
 
-    const objectTypesOptions = ["sender", "inputName", "variableName", "eventName", "callType", "events", "inputs", "internalTxs", "storageState"]
+    const objectTypesOptions = ["contractAddress", "txHash", "sender", "inputName", "variableName", "eventName", "callType", "events", "inputs", "internalTxs", "storageState"]
 
     return (
         <Box display="flex">

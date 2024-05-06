@@ -13,9 +13,10 @@ export const _sendData = async (contractName, contractAddress, fromBlock, toBloc
 
     try {
         const response = await axios.post(serverUrl + "/submit", formData)
-        return response.data
+        return {status: response.status, data: response.data}
     } catch (error) {
         console.error(error)
+        return {status: error.response.status, data: error.response.data}
     }
 }
 
