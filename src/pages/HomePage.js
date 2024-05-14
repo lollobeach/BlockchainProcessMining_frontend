@@ -2,11 +2,11 @@ import React, {useState, useEffect} from 'react';
 import {
     Alert,
     Box,
-    Button, Dialog, DialogContent, DialogTitle,
+    Button, Checkbox, Dialog, DialogContent, DialogTitle,
     FilledInput,
-    FormControl, IconButton,
+    FormControl, IconButton, Input,
     InputLabel, MenuItem, Select, Slide, Slider, Snackbar,
-    Stack,
+    Stack, TextField,
     Typography,
 } from "@mui/material";
 import LinearProgress from "@mui/material/LinearProgress";
@@ -19,6 +19,7 @@ import useDataContext from "../dataContext/useDataContext";
 import {HiddenInput} from "../components/HiddenInput";
 import {FileUpload, FilterList} from "@mui/icons-material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import AddBoxIcon from "@mui/icons-material/AddBox";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="down" ref={ref} {...props} />;
@@ -40,11 +41,26 @@ function HomePage() {
     const [error, setError] = useState()
 
     const [openFilters, setOpenFilters] = useState(false)
-    const [gasUsed, setGasUsed] = useState([0, 1000000])
+
+    const [filterGasUsed, setFilterGasUsed] = useState(false)
+    const [gasUsed, setGasUsed] = useState([0, 10000000])
+    const [filterTimestamp, setFilterTimestamp] = useState(false)
+    const [timestamp, setTimestamp] = useState([1454646411, 2913301104])
+    const [senders, setSenders] = useState([])
+    const [senderToAdd, setSenderToAdd] = useState("")
+    const [functions, setFunctions] = useState([])
+    const [functionToAdd, setFunctionToAdd] = useState("")
 
     const sendData = async () => {
         setLoading(true)
-        const response = await _sendData(contractName, contractAddress, fromBlock, toBlock, network, smartContract)
+
+        const filters = {
+            gasUsed: filterGasUsed ? gasUsed : null,
+            timestamp: filterTimestamp ? timestamp : null,
+            senders: senders,
+            functions: functions
+        }
+        const response = await _sendData(contractName, contractAddress, fromBlock, toBlock, network, smartContract, filters)
         if (response.status === 200) {
             setResults(response.data)
             setLoading(false)
@@ -102,6 +118,46 @@ function HomePage() {
         setError(null)
     }
 
+    const handleGasUsedBlur = () => {
+        if (gasUsed[0] < 0) setGasUsed([0, gasUsed[1]])
+        if (gasUsed[1] < 0) setGasUsed([gasUsed[0], 0])
+    }
+
+    const handleGasUsedChange = (event, newValue) => {
+        if (!Array.isArray(newValue)) return
+        setGasUsed([newValue[0], newValue[1]])
+    }
+
+    const handleTimestampBlur = () => {
+        if (timestamp[0] < 0) setTimestamp([0, timestamp[1]])
+        if (timestamp[1] < 0) setTimestamp([timestamp[0], 0])
+    }
+
+    const handleTimestampChange = (event, newValue) => {
+        if (!Array.isArray(newValue)) return
+        setTimestamp([newValue[0], newValue[1]])
+    }
+
+    const handleAddSenders = () => {
+        setSenders([...senders, senderToAdd.toLowerCase()])
+        setSenderToAdd("")
+    }
+
+    const handleAddFunctions = () => {
+        setFunctions([...functions, functionToAdd])
+        setFunctionToAdd("")
+    }
+
+    const handleDeleteSender = (e) => {
+        const newSenders = senders.filter(sender => sender !== e.currentTarget.name.toLowerCase())
+        setSenders(newSenders)
+    }
+
+    const handleDeleteFunction = (e) => {
+        const newFunctions = functions.filter(func => func !== e.currentTarget.name)
+        setFunctions(newFunctions)
+    }
+
     return (
         <>
             <Snackbar open={error} anchorOrigin={{vertical: 'top', horizontal: 'center'}}>
@@ -116,16 +172,138 @@ function HomePage() {
                 onClose={() => setOpenFilters(false)}
             >
                 <DialogTitle>
-                    <Typography variant="h5">Filters</Typography>
+                    Filters
                 </DialogTitle>
                 <DialogContent>
-                    <Typography fontWeight={700}>Gas Used</Typography>
-                    <Slider
-                        value={gasUsed}
-                        onChange={(e, newValue) => setGasUsed(newValue)}
-                        valueLabelDisplay="auto"
-                        getAriaValueText={(value) => `${value}`}
-                    />
+                    <Box display="flex" justifyContent="space-between" gap={3}>
+                        <Box>
+                            <Box display="flex" alignItems="center">
+                                <Checkbox checked={filterGasUsed} onChange={() => setFilterGasUsed(!filterGasUsed)}/>
+                                <Typography fontWeight={700}>Gas Used</Typography>
+                            </Box>
+                            <Box display="flex" justifyContent="space-between" gap={1}>
+                                <Input
+                                    disabled={!filterGasUsed}
+                                    sx={{width: 120}}
+                                    value={gasUsed[0]}
+                                    onChange={(e) => setGasUsed([e.target.value, gasUsed[1]])}
+                                    onBlur={handleGasUsedBlur}
+                                    type="number"
+                                    inputProps={{
+                                        step: 50,
+                                        min: 0,
+                                    }}
+                                />
+                                <Input
+                                    disabled={!filterGasUsed}
+                                    sx={{width: 120}}
+                                    value={gasUsed[1]}
+                                    onChange={(e) => setGasUsed([gasUsed[0], e.target.value])}
+                                    onBlur={handleGasUsedBlur}
+                                    type="number"
+                                    inputProps={{
+                                        step: 50,
+                                        min: 0,
+                                    }}
+                                />
+                            </Box>
+                            <Slider
+                                disabled={!filterGasUsed}
+                                value={gasUsed}
+                                onChange={handleGasUsedChange}
+                                max={10000000}
+                            />
+                        </Box>
+                        <Box>
+                            <Typography fontWeight={700}>Senders</Typography>
+                            <Box height={100} overflow="auto">
+                                <Box display="flex" gap={1}>
+                                    <TextField value={senderToAdd}
+                                               onChange={(event) => setSenderToAdd(event.target.value)}/>
+                                    <IconButton onClick={handleAddSenders}>
+                                        <AddBoxIcon color="primary" fontSize="large"/>
+                                    </IconButton>
+                                </Box>
+                                {
+                                    senders.map((sender, index) => (
+                                        <Box key={index} display="flex" justifyContent="space-between"
+                                             alignItems="center">
+                                            <Typography width={220} overflow="hidden"
+                                                        textOverflow="ellipsis">{sender}</Typography>
+                                            <IconButton name={sender} onClick={(e) => handleDeleteSender(e)}>
+                                                <DeleteIcon color="error" fontSize="medium"/>
+                                            </IconButton>
+                                        </Box>
+                                    ))
+                                }
+                            </Box>
+                        </Box>
+                    </Box>
+                    <Box display="flex" justifyContent="space-between" gap={3} marginTop={2}>
+                        <Box>
+                            <Box display="flex" alignItems="center">
+                                <Checkbox checked={filterTimestamp}
+                                          onChange={() => setFilterTimestamp(!filterTimestamp)}/>
+                                <Typography fontWeight={700}>Timestamp</Typography>
+                            </Box>
+                            <Box display="flex" justifyContent="space-between" gap={1}>
+                                <Input
+                                    disabled={!filterTimestamp}
+                                    sx={{width: 120}}
+                                    value={timestamp[0]}
+                                    onChange={(e) => setTimestamp([e.target.value, gasUsed[1]])}
+                                    onBlur={handleTimestampBlur}
+                                    type="number"
+                                    inputProps={{
+                                        step: 50,
+                                        min: 0,
+                                    }}
+                                />
+                                <Input
+                                    disabled={!filterTimestamp}
+                                    sx={{width: 120}}
+                                    value={timestamp[1]}
+                                    onChange={(e) => setTimestamp([gasUsed[0], e.target.value])}
+                                    onBlur={handleTimestampBlur}
+                                    type="number"
+                                    inputProps={{
+                                        step: 50,
+                                        min: 0,
+                                    }}
+                                />
+                            </Box>
+                            <Slider
+                                disabled={!filterTimestamp}
+                                value={timestamp}
+                                onChange={handleTimestampChange}
+                                max={10000000000}
+                            />
+                        </Box>
+                        <Box height="110px">
+                            <Typography fontWeight={700}>Functions</Typography>
+                            <Box height={100} overflow="auto">
+                                <Box display="flex" gap={1}>
+                                    <TextField value={functionToAdd}
+                                               onChange={(event) => setFunctionToAdd(event.target.value)}/>
+                                    <IconButton onClick={handleAddFunctions}>
+                                        <AddBoxIcon color="primary" fontSize="large"/>
+                                    </IconButton>
+                                </Box>
+                                {
+                                    functions.map((func, index) => (
+                                        <Box key={index} display="flex" justifyContent="space-between"
+                                             alignItems="center">
+                                            <Typography width={220} overflow="hidden"
+                                                        textOverflow="ellipsis">{func}</Typography>
+                                            <IconButton name={func} onClick={(e) => handleDeleteFunction(e)}>
+                                                <DeleteIcon color="error" fontSize="medium"/>
+                                            </IconButton>
+                                        </Box>
+                                    ))
+                                }
+                            </Box>
+                        </Box>
+                    </Box>
                 </DialogContent>
             </Dialog>
             <PageLayout loading={loading} setLoading={setLoading}>

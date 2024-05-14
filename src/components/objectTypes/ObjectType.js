@@ -58,43 +58,26 @@ function ObjectType({
         setObjectsTypesItem(objectsTypesItem.filter(item => item.name !== object.name))
     }
 
+    const handlers = {
+        "contractAddress": handleContractAddressObjects,
+        "txHash": handleTxHashObjects,
+        "sender": handleSenderObjects,
+        "inputName": handleInputNameObjects,
+        "variableName": handleVariableNameObjects,
+        "eventName": handleEventNameObjects,
+        "callType": handleCallTypeObjects,
+        "events": handleSelectEventsObjects,
+        "inputs": handleSelectInputsObjects,
+        "internalTxs": handleSelectInternalTxsObjects,
+        "storageState": handleSelectStorageStateObjects
+    }
+
     const handleSelectObjectTypeName = (e) => {
-        switch (e.target.value) {
-            case "contractAddress":
-                handleContractAddressObjects(results, ocel, setObjectsTypesItem, objectsTypesItem, objectType, setObjectsItem, setOcel)
-                break;
-            case "txHash":
-                handleTxHashObjects(results, ocel, setObjectsTypesItem, objectsTypesItem, objectType, setObjectsItem, setOcel)
-                break
-            case "sender":
-                handleSenderObjects(results, ocel, setObjectsTypesItem, objectsTypesItem, objectType, setObjectsItem, setOcel)
-                break;
-            case "inputName":
-                handleInputNameObjects(results, ocel, setObjectsTypesItem, objectsTypesItem, objectType, setObjectsItem, setOcel)
-                break;
-            case "variableName":
-                handleVariableNameObjects(results, ocel, setObjectsTypesItem, objectsTypesItem, objectType, setObjectsItem, setOcel)
-                break;
-            case "eventName":
-                handleEventNameObjects(results, ocel, setObjectsTypesItem, objectsTypesItem, objectType, setObjectsItem, setOcel)
-                break;
-            case "callType":
-                handleCallTypeObjects(results, ocel, setObjectsTypesItem, objectsTypesItem, objectType, setObjectsItem, setOcel)
-                break;
-            case "events":
-                handleSelectEventsObjects(results, ocel, setObjectsTypesItem, objectsTypesItem, objectType, setObjectsItem, setOcel)
-                break;
-            case "inputs":
-                handleSelectInputsObjects(results, ocel, setObjectsTypesItem, objectsTypesItem, objectType, setObjectsItem, setOcel)
-                break;
-            case "internalTxs":
-                handleSelectInternalTxsObjects(results, ocel, setObjectsTypesItem, objectsTypesItem, objectType, setObjectsItem, setOcel)
-                break;
-            case "storageState":
-                handleSelectStorageStateObjects(results, ocel, setObjectsTypesItem, objectsTypesItem, objectType, setObjectsItem, setOcel)
-                break;
-            default:
-                console.log("Choose a valid object type")
+        const handler = handlers[e.target.value]
+        if (handler) {
+            handler(results, ocel, setObjectsTypesItem, objectsTypesItem, objectType, setObjectsItem, setOcel)
+        } else {
+            console.error("Handler not found")
         }
     }
 
