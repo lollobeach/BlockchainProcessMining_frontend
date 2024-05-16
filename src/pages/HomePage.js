@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {
     Alert,
     Box,
-    Button, Checkbox, Dialog, DialogContent, DialogTitle,
+    Button, Checkbox, Chip, Dialog, DialogContent, DialogTitle,
     FilledInput,
     FormControl, IconButton, Input,
     InputLabel, MenuItem, Select, Slide, Slider, Snackbar,
@@ -20,12 +20,22 @@ import {HiddenInput} from "../components/HiddenInput";
 import {FileUpload, FilterList} from "@mui/icons-material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddBoxIcon from "@mui/icons-material/AddBox";
+import {DateTimePicker, LocalizationProvider} from "@mui/x-date-pickers";
+import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
+import {DemoContainer} from "@mui/x-date-pickers/internals/demo";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="down" ref={ref} {...props} />;
 });
 
 function HomePage() {
+
+    dayjs.extend(utc)
+
+    const defaultDate = new Date().getFullYear() + '-' + (new Date().getMonth() + 1) + '-' + new Date().getDate()
+    const defaultTime = new Date().getHours() + ':' + new Date().getMinutes()
 
     const {setResults} = useDataContext()
 
@@ -43,19 +53,23 @@ function HomePage() {
     const [openFilters, setOpenFilters] = useState(false)
 
     const [filterGasUsed, setFilterGasUsed] = useState(false)
-    const [gasUsed, setGasUsed] = useState([0, 10000000])
+    const [gasUsed, setGasUsed] = useState([0, 1000000])
+    const [filterGasPrice, setFilterGasPrice] = useState(false)
+    const [gasPrice, setGasPrice] = useState([0, 10000000000])
     const [filterTimestamp, setFilterTimestamp] = useState(false)
-    const [timestamp, setTimestamp] = useState([1454646411, 2913301104])
+    const [timestamp, setTimestamp] = useState([dayjs.utc(defaultDate + 'T' + defaultTime), dayjs.utc(defaultDate + 'T' + defaultTime)])
     const [senders, setSenders] = useState([])
     const [senderToAdd, setSenderToAdd] = useState("")
     const [functions, setFunctions] = useState([])
     const [functionToAdd, setFunctionToAdd] = useState("")
+    const [activeFilter, setActiveFilter] = useState(new Set())
 
     const sendData = async () => {
         setLoading(true)
 
         const filters = {
             gasUsed: filterGasUsed ? gasUsed : null,
+            gasPrice: filterGasPrice ? gasPrice : null,
             timestamp: filterTimestamp ? timestamp : null,
             senders: senders,
             functions: functions
@@ -104,6 +118,22 @@ function HomePage() {
 
     }, [network, smartContract]);
 
+    const deletItemFromSet = (item) => {
+        setActiveFilter(prevState => {
+            const newSet = new Set(prevState)
+            newSet.delete(item)
+            return newSet
+        })
+    }
+
+    const addItemToSet = (item) => {
+        setActiveFilter(prevState => {
+            const newSet = new Set(prevState)
+            newSet.add(item)
+            return newSet
+        })
+    }
+
     const handleNetworkChange = (e) => {
         setNetwork(e.target.value)
     }
@@ -128,34 +158,88 @@ function HomePage() {
         setGasUsed([newValue[0], newValue[1]])
     }
 
-    const handleTimestampBlur = () => {
-        if (timestamp[0] < 0) setTimestamp([0, timestamp[1]])
-        if (timestamp[1] < 0) setTimestamp([timestamp[0], 0])
+    const handleGasUsedCheck = () => {
+        if (!filterGasUsed) {
+            addItemToSet("gasUsed")
+        } else {
+            deletItemFromSet("gasUsed")
+        }
+        setFilterGasUsed(!filterGasUsed)
     }
 
-    const handleTimestampChange = (event, newValue) => {
+    const handleGasPriceChange = (event, newValue) => {
         if (!Array.isArray(newValue)) return
-        setTimestamp([newValue[0], newValue[1]])
+        setGasPrice([newValue[0], newValue[1]])
+    }
+
+    const handleGasPriceBlur = () => {
+        if (gasPrice[0] < 0) setGasPrice([0, gasPrice[1]])
+        if (gasPrice[1] < 0) setGasPrice([gasPrice[0], 0])
+    }
+
+    const handleGasPriceCheck = () => {
+        if (!filterGasPrice) {
+            addItemToSet("gasPrice")
+        } else {
+            deletItemFromSet("gasPrice")
+        }
+        setFilterGasPrice(!filterGasPrice)
+    }
+
+    const handleTimestampCheck = () => {
+        if (!filterTimestamp) {
+            addItemToSet("timestamp")
+        } else {
+            deletItemFromSet("timestamp")
+        }
+        setFilterTimestamp(!filterTimestamp)
     }
 
     const handleAddSenders = () => {
         setSenders([...senders, senderToAdd.toLowerCase()])
         setSenderToAdd("")
+        addItemToSet("senders")
     }
 
     const handleAddFunctions = () => {
         setFunctions([...functions, functionToAdd])
         setFunctionToAdd("")
+        addItemToSet("functions")
     }
 
     const handleDeleteSender = (e) => {
         const newSenders = senders.filter(sender => sender !== e.currentTarget.name.toLowerCase())
         setSenders(newSenders)
+        if (newSenders.length === 0) {
+            deletItemFromSet("senders")
+        }
     }
 
     const handleDeleteFunction = (e) => {
         const newFunctions = functions.filter(func => func !== e.currentTarget.name)
         setFunctions(newFunctions)
+        if (newFunctions.length === 0) {
+            deletItemFromSet("functions")
+        }
+    }
+
+    const handleDeleteFilter = (filter) => {
+        deletItemFromSet(filter)
+        if (filter === "gasUsed") {
+            setFilterGasUsed(false)
+        }
+        if (filter === "gasPrice") {
+            setFilterGasPrice(false)
+        }
+        if (filter === "timestamp") {
+            setFilterTimestamp(false)
+        }
+        if (filter === "senders") {
+            setSenders([])
+        }
+        if (filter === "functions") {
+            setFunctions([])
+        }
     }
 
     return (
@@ -170,21 +254,22 @@ function HomePage() {
                 keepMounted
                 open={openFilters}
                 onClose={() => setOpenFilters(false)}
+                maxWidth=""
             >
                 <DialogTitle>
                     Filters
                 </DialogTitle>
                 <DialogContent>
                     <Box display="flex" justifyContent="space-between" gap={3}>
-                        <Box>
+                        <Box width={550}>
+                            {/*Gas Used*/}
                             <Box display="flex" alignItems="center">
-                                <Checkbox checked={filterGasUsed} onChange={() => setFilterGasUsed(!filterGasUsed)}/>
+                                <Checkbox checked={filterGasUsed} onChange={handleGasUsedCheck}/>
                                 <Typography fontWeight={700}>Gas Used</Typography>
                             </Box>
                             <Box display="flex" justifyContent="space-between" gap={1}>
                                 <Input
                                     disabled={!filterGasUsed}
-                                    sx={{width: 120}}
                                     value={gasUsed[0]}
                                     onChange={(e) => setGasUsed([e.target.value, gasUsed[1]])}
                                     onBlur={handleGasUsedBlur}
@@ -196,7 +281,6 @@ function HomePage() {
                                 />
                                 <Input
                                     disabled={!filterGasUsed}
-                                    sx={{width: 120}}
                                     value={gasUsed[1]}
                                     onChange={(e) => setGasUsed([gasUsed[0], e.target.value])}
                                     onBlur={handleGasUsedBlur}
@@ -211,11 +295,48 @@ function HomePage() {
                                 disabled={!filterGasUsed}
                                 value={gasUsed}
                                 onChange={handleGasUsedChange}
-                                max={10000000}
+                                max={1000000}
+                            />
+                            {/*GAS PRICE*/}
+                            <Box display="flex" alignItems="center">
+                                <Checkbox checked={filterGasPrice} onChange={handleGasPriceCheck}/>
+                                <Typography fontWeight={700}>Gas Price</Typography>
+                            </Box>
+                            <Box display="flex" justifyContent="space-between" gap={1}>
+                                <Input
+                                    disabled={!filterGasPrice}
+                                    value={gasPrice[0]}
+                                    onChange={(e) => setGasPrice([e.target.value, gasPrice[1]])}
+                                    onBlur={handleGasPriceBlur}
+                                    type="number"
+                                    inputProps={{
+                                        step: 50,
+                                        min: 0,
+                                    }}
+                                />
+                                <Input
+                                    disabled={!filterGasPrice}
+                                    value={gasPrice[1]}
+                                    onChange={(e) => setGasPrice([gasPrice[0], e.target.value])}
+                                    onBlur={handleGasPriceBlur}
+                                    type="number"
+                                    inputProps={{
+                                        step: 50,
+                                        min: 0,
+                                    }}
+                                />
+                            </Box>
+                            <Slider
+                                disabled={!filterGasPrice}
+                                value={gasPrice}
+                                onChange={handleGasPriceChange}
+                                max={10000000000}
                             />
                         </Box>
                         <Box>
-                            <Typography fontWeight={700}>Senders</Typography>
+                            <Box height={42} display="flex" alignItems="center">
+                                <Typography fontWeight={700}>Senders</Typography>
+                            </Box>
                             <Box height={100} overflow="auto">
                                 <Box display="flex" gap={1}>
                                     <TextField value={senderToAdd}
@@ -239,48 +360,36 @@ function HomePage() {
                             </Box>
                         </Box>
                     </Box>
-                    <Box display="flex" justifyContent="space-between" gap={3} marginTop={2}>
-                        <Box>
+                    <Box display="flex" justifyContent="space-between" alignItems="baseline" gap={3} marginTop={2}>
+                        <Box width={550}>
                             <Box display="flex" alignItems="center">
                                 <Checkbox checked={filterTimestamp}
-                                          onChange={() => setFilterTimestamp(!filterTimestamp)}/>
+                                          onChange={handleTimestampCheck}/>
                                 <Typography fontWeight={700}>Timestamp</Typography>
                             </Box>
                             <Box display="flex" justifyContent="space-between" gap={1}>
-                                <Input
-                                    disabled={!filterTimestamp}
-                                    sx={{width: 120}}
-                                    value={timestamp[0]}
-                                    onChange={(e) => setTimestamp([e.target.value, gasUsed[1]])}
-                                    onBlur={handleTimestampBlur}
-                                    type="number"
-                                    inputProps={{
-                                        step: 50,
-                                        min: 0,
-                                    }}
-                                />
-                                <Input
-                                    disabled={!filterTimestamp}
-                                    sx={{width: 120}}
-                                    value={timestamp[1]}
-                                    onChange={(e) => setTimestamp([gasUsed[0], e.target.value])}
-                                    onBlur={handleTimestampBlur}
-                                    type="number"
-                                    inputProps={{
-                                        step: 50,
-                                        min: 0,
-                                    }}
-                                />
+                                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                    <DemoContainer components={['DateTimePicker']}>
+                                        <DateTimePicker value={timestamp[0]} onChange={(newValue) => setTimestamp([newValue, timestamp[1]])} label="Start" disabled={!filterTimestamp}/>
+                                    </DemoContainer>
+                                </LocalizationProvider>
+                                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                    <DemoContainer components={['DateTimePicker']}>
+                                        <DateTimePicker value={timestamp[1]} onChange={(newValue) => setTimestamp([timestamp[0], newValue])} label="End" disabled={!filterTimestamp}/>
+                                    </DemoContainer>
+                                </LocalizationProvider>
                             </Box>
-                            <Slider
-                                disabled={!filterTimestamp}
-                                value={timestamp}
-                                onChange={handleTimestampChange}
-                                max={10000000000}
-                            />
+                            {/*<Slider*/}
+                            {/*    disabled={!filterTimestamp}*/}
+                            {/*    value={timestamp}*/}
+                            {/*    onChange={handleTimestampChange}*/}
+                            {/*    max={10000000000}*/}
+                            {/*/>*/}
                         </Box>
-                        <Box height="110px">
-                            <Typography fontWeight={700}>Functions</Typography>
+                        <Box>
+                            <Box height={42} display="flex" alignItems="center">
+                                <Typography fontWeight={700}>Functions</Typography>
+                            </Box>
                             <Box height={100} overflow="auto">
                                 <Box display="flex" gap={1}>
                                     <TextField value={functionToAdd}
@@ -307,10 +416,16 @@ function HomePage() {
                 </DialogContent>
             </Dialog>
             <PageLayout loading={loading} setLoading={setLoading}>
-                <Box display="flex" justifyContent="space-between">
+                <Box display="flex" alignItems="center" justifyContent="space-between">
                     <IconButton size="large" sx={{color: "#ffb703"}} onClick={() => setOpenFilters(true)}>
                         <FilterList fontSize="large"/>
                     </IconButton>
+                    {
+                        [...activeFilter].map((filter, index) => (
+                            <Chip key={index} color="error" name={filter} label={filter}
+                                  onDelete={() => handleDeleteFilter(filter)}/>
+                        ))
+                    }
                     <FormControl fullWidth sx={{width: 200}}>
                         <InputLabel>Network</InputLabel>
                         <Select
