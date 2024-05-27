@@ -41,7 +41,7 @@ function PageLayout({children, loading, setLoading}) {
 
     const handleDelete = () => {
         setResults(null)
-        window.history.replaceState({}, '')
+        window.history.replaceState({}, '', path)
     }
 
     const handleFileChange = (e) => {

@@ -11,6 +11,7 @@ import BodyLayout from "./layouts/BodyLayout";
 import {ThemeProvider} from "@mui/material";
 import {customTheme} from "./theme/customTheme";
 import DataProvider from "./dataContext/DataContext";
+import Query from "./pages/Query";
 
 const router = createBrowserRouter([
     {
@@ -18,6 +19,7 @@ const router = createBrowserRouter([
         children: [
             {path: "/", element: <HomePage/>},
             {path: "/ocel", element: <OcelFormatting/>},
+            {path: "/query", element: <Query/>}
         ]
     }
 ]);
