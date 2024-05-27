@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const serverUrl = "http://localhost:8000";
+const serverUrl = process.env.SERVER_URL;
 
 export const _sendData = async (contractName, contractAddress, fromBlock, toBlock, network, sc, filters) => {
     const formData = new FormData()
@@ -72,3 +72,35 @@ export const _downloadJSONOCEL = async (ocel) => {
         console.error(error)
     }
 }
+
+export const _queryGetFields = async (query) => {
+    try {
+        const response = await axios.get(serverUrl + "/query/api/fields", query)
+        return {status: response.status, data: response.data}
+    } catch (error) {
+        console.error(error)
+        return {status: error.response.status, data: error.response.data}
+    }
+}
+
+export const _queryGetAllTransaction = async (query) => {
+    try {
+        const response = await axios.post(serverUrl + "/query/api/all", query)
+        return {status: response.status, data: response.data}
+    } catch (error) {
+        console.error(error)
+        return {status: error.response.status, data: error.response.data}
+    }
+}
+
+export const _queryGetByQuery = async (query) => {
+    try {
+        const response = await axios.post(serverUrl + "/query/api/query", query)
+        return {status: response.status, data: response.data}
+    } catch (error) {
+        console.error(error)
+        return {status: error.response.status, data: error.response.data}
+    }
+}
+
+//TODO: API per backend
