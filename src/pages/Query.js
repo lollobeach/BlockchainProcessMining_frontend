@@ -3,9 +3,7 @@ import {
     Box,
     Button,
     Stack,
-    Typography,
-    Switch,
-    FormControlLabel,
+    Typography
 } from "@mui/material";
 import {Delete} from '@mui/icons-material';
 import LinearProgress from "@mui/material/LinearProgress";

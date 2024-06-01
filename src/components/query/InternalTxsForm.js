@@ -22,15 +22,17 @@ const InternalTxsForm = ({ internalTxs, setInternalTxs }) => {
         setInternalTxs(newInternalTxs);
     };
 
+
+
     return (
         <Box>
             <Typography variant="h6">Internal Transactions</Typography>
-            {internalTxs.map((tx, index) => (
+            {internalTxs.map((internalTxs, index) => (
                 <Box key={index} mb={2} display="flex" alignItems="center">
                     <Box flexGrow={1}>
-                        <NestedField label="Call ID" name="callId" value={tx.callId} onChange={(e) => handleInternalTxChange(index, e)} />
-                        <NestedField label="Call Type" name="callType" value={tx.callType} onChange={(e) => handleInternalTxChange(index, e)} />
-                        <NestedField label="To" name="to" value={tx.to} onChange={(e) => handleInternalTxChange(index, e)} />
+                        <NestedField label="Call ID" name="callId" value={internalTxs.callId} onChange={(e) => handleInternalTxChange(index, e)} />
+                        <NestedField label="Call Type" name="callType" value={internalTxs.callType} onChange={(e) => handleInternalTxChange(index, e)} />
+                        <NestedField label="To" name="to" value={internalTxs.to} onChange={(e) => handleInternalTxChange(index, e)} />
                     </Box>
                     <IconButton onClick={() => handleDeleteInternalTx(index)} color="error">
                         <Delete />
