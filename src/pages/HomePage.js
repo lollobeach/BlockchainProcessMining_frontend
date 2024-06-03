@@ -530,11 +530,6 @@ function HomePage() {
                                 </Box>
                             </Button>
                         </Box>
-                        <Link to="/ocel" style={{textDecoration: "none"}}>
-                            <Button variant="contained" sx={{padding: 1, width: "100%"}}>
-                                <Typography color="white">Map data</Typography>
-                            </Button>
-                        </Link>
                     </Stack>
                 </Stack>
             </PageLayout>
