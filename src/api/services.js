@@ -72,3 +72,23 @@ export const _downloadJSONOCEL = async (ocel) => {
         console.error(error)
     }
 }
+
+export const _queryGetFields = async (query) => {
+    try {
+        const response = await axios.get(serverUrl + "/query/api/fields", query)
+        return {status: response.status, data: response.data}
+    } catch (error) {
+        console.error(error)
+        return {status: error.response.status, data: error.response.data}
+    }
+}
+
+export const _queryGetByQuery = async (query) => {
+    try {
+        const response = await axios.post(serverUrl + "/query/api/query", query)
+        return {status: response.status, data: response.data}
+    } catch (error) {
+        console.error(error)
+        return {status: error.response.status, data: error.response.data}
+    }
+}
