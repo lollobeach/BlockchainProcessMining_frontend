@@ -1,45 +1,50 @@
-import React from 'react';
-import { Box, Typography, IconButton } from "@mui/material";
+import React, {useState} from 'react';
+import {Box, Typography, IconButton} from "@mui/material";
 import NestedField from './NestedField';
-import AddButton from './AddQueryButton';
-import { Delete } from '@mui/icons-material';
+import {Delete} from '@mui/icons-material';
+import AddQueryButton from './AddQueryButton';
 
-const StorageStateForm = ({ storageState, setStorageState }) => {
-    const handleAddStorageState = () => {
-        setStorageState([...storageState, { variableId: '', variableName: '', type: '', variableValue: '', variableRawValue: '' }]);
+const StorageStateForm = ({storageState, setStorageState}) => {
+    const [showStorageState, setShowStorageState] = useState(false);
+
+    const handleAddInput = () => {
+        setShowStorageState(true);
+    }
+
+    const handleStorageStateChange = (event) => {
+        const {name, value} = event.target;
+        setStorageState({...storageState, [name]: value});
     };
 
-    const handleStorageStateChange = (index, event) => {
-        const { name, value } = event.target;
-        const newStorageState = [...storageState];
-        newStorageState[index][name] = value;
-        setStorageState(newStorageState);
-    };
-
-    const handleDeleteStorageState = (index) => {
-        const newStorageState = [...storageState];
-        newStorageState.splice(index, 1);
-        setStorageState(newStorageState);
+    const handleDeleteStorageState = () => {
+        setStorageState({variableId: '', variableName: '', type: '', variableValue: '', variableRawValue: ''});
+        setShowStorageState(false);
     };
 
     return (
         <Box>
             <Typography variant="h6">Storage State</Typography>
-            {storageState.map((state, index) => (
-                <Box key={index} mb={2} display="flex" alignItems="center">
+            {showStorageState ? (
+                <Box mb={2} display="flex" alignItems="center">
                     <Box flexGrow={1}>
-                        <NestedField label="Variable ID" name="variableId" value={state.variableId} onChange={(e) => handleStorageStateChange(index, e)} />
-                        <NestedField label="Variable Name" name="variableName" value={state.variableName} onChange={(e) => handleStorageStateChange(index, e)} />
-                        <NestedField label="Type" name="type" value={state.type} onChange={(e) => handleStorageStateChange(index, e)} />
-                        <NestedField label="Variable Value" name="variableValue" value={state.variableValue} onChange={(e) => handleStorageStateChange(index, e)} />
-                        <NestedField label="Variable Raw Value" name="variableRawValue" value={state.variableRawValue} onChange={(e) => handleStorageStateChange(index, e)} />
+                        <NestedField label="Variable ID" name="variableId" value={storageState.variableId}
+                                     onChange={handleStorageStateChange}/>
+                        <NestedField label="Variable Name" name="variableName" value={storageState.variableName}
+                                     onChange={handleStorageStateChange}/>
+                        <NestedField label="Type" name="type" value={storageState.type}
+                                     onChange={handleStorageStateChange}/>
+                        <NestedField label="Variable Value" name="variableValue" value={storageState.variableValue}
+                                     onChange={handleStorageStateChange}/>
+                        <NestedField label="Variable Raw Value" name="variableRawValue"
+                                     value={storageState.variableRawValue} onChange={handleStorageStateChange}/>
                     </Box>
-                    <IconButton onClick={() => handleDeleteStorageState(index)} color="error">
-                        <Delete />
+                    <IconButton onClick={handleDeleteStorageState} color="error">
+                        <Delete/>
                     </IconButton>
                 </Box>
-            ))}
-            <AddButton onClick={handleAddStorageState} label="Add Storage State" />
+            ) : (
+                <AddQueryButton label="Add Storage State" onClick={handleAddInput}/>
+            )}
         </Box>
     );
 };

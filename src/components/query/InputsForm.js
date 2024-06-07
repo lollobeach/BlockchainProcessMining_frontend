@@ -1,44 +1,44 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Typography, IconButton } from "@mui/material";
 import NestedField from './NestedField';
-import AddButton from './AddQueryButton';
 import { Delete } from '@mui/icons-material';
+import AddQueryButton from "./AddQueryButton";
 
 const InputsForm = ({ inputs, setInputs }) => {
+    const [showInputs, setShowInputs] = useState(false);
+
     const handleAddInput = () => {
-        setInputs([...inputs, { inputId: '', inputName: '', type: '', inputValue: '' }]);
+        setShowInputs(true);
     };
 
-    const handleInputChange = (index, event) => {
+    const handleInputChange = (event) => {
         const { name, value } = event.target;
-        const newInputs = [...inputs];
-        newInputs[index][name] = value;
-        setInputs(newInputs);
+        setInputs({ ...inputs, [name]: value });
     };
 
-    const handleDeleteInput = (index) => {
-        const newInputs = [...inputs];
-        newInputs.splice(index, 1);
-        setInputs(newInputs);
+    const handleDeleteInput = () => {
+        setInputs({ inputId: '', inputName: '', type: '', inputValue: '' });
+        setShowInputs(false);
     };
 
     return (
         <Box>
             <Typography variant="h6">Inputs</Typography>
-            {inputs.map((input, index) => (
-                <Box key={index} mb={2} display="flex" alignItems="center">
+            {showInputs ? (
+                <Box mb={2} display="flex" alignItems="center">
                     <Box flexGrow={1}>
-                        <NestedField label="Input ID" name="inputId" value={input.inputId} onChange={(e) => handleInputChange(index, e)} />
-                        <NestedField label="Input Name" name="inputName" value={input.inputName} onChange={(e) => handleInputChange(index, e)} />
-                        <NestedField label="Type" name="type" value={input.type} onChange={(e) => handleInputChange(index, e)} />
-                        <NestedField label="Input Value" name="inputValue" value={input.inputValue} onChange={(e) => handleInputChange(index, e)} />
+                        <NestedField label="Input ID" name="inputId" value={inputs.inputId} onChange={handleInputChange} />
+                        <NestedField label="Input Name" name="inputName" value={inputs.inputName} onChange={handleInputChange} />
+                        <NestedField label="Type" name="type" value={inputs.type} onChange={handleInputChange} />
+                        <NestedField label="Input Value" name="inputValue" value={inputs.inputValue} onChange={handleInputChange} />
                     </Box>
-                    <IconButton onClick={() => handleDeleteInput(index)} color="error">
+                    <IconButton onClick={handleDeleteInput} color="error">
                         <Delete />
                     </IconButton>
                 </Box>
-            ))}
-            <AddButton onClick={handleAddInput} label="Add Input" />
+            ) : (
+                <AddQueryButton label="Add Input" onClick={handleAddInput} />
+            )}
         </Box>
     );
 };
