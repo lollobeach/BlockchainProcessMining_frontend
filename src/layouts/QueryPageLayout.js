@@ -25,9 +25,6 @@ const CardContentNoPadding = styled(CardContent)(
 );
 
 function QueryPageLayout({ children, loading, setLoading, results, setResults }) {
-
-    console.log(results)
-
     const path = window.location.pathname;
 
     const handleDelete = () => {

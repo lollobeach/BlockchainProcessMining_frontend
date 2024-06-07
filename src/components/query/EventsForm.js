@@ -1,42 +1,44 @@
-import React from 'react';
-import { Box, Typography, IconButton } from "@mui/material";
+import React, {useState} from 'react';
+import {Box, Typography, IconButton} from "@mui/material";
 import NestedField from './NestedField';
-import AddButton from './AddQueryButton';
-import { Delete } from '@mui/icons-material';
+import {Delete} from '@mui/icons-material';
+import AddQueryButton from "./AddQueryButton";
 
-const EventsForm = ({ events, setEvents }) => {
-    const handleAddEvent = () => {
-        setEvents([...events, { eventId: '', eventName: '', eventValues: {} }]);
+const EventsForm = ({events, setEvents}) => {
+    const [showEvents, setShowEvents] = useState(false);
+
+    const handleAddInput = () => {
+        setShowEvents(true);
     };
 
-    const handleEventChange = (index, event) => {
-        const { name, value } = event.target;
-        const newEvents = [...events];
-        newEvents[index][name] = value;
-        setEvents(newEvents);
+    const handleEventsChange = (event) => {
+        const {name, value} = event.target;
+        setEvents({...events, [name]: value});
     };
 
-    const handleDeleteEvent = (index) => {
-        const newEvents = [...events];
-        newEvents.splice(index, 1);
-        setEvents(newEvents);
+    const handleDeleteEvents = () => {
+        setEvents({eventId: '', eventName: ''});
+        setShowEvents(false);
     };
 
     return (
         <Box>
             <Typography variant="h6">Events</Typography>
-            {events.map((event, index) => (
-                <Box key={index} mb={2} display="flex" alignItems="center">
+            {showEvents ? (
+                <Box mb={2} display="flex" alignItems="center">
                     <Box flexGrow={1}>
-                        <NestedField label="Event ID" name="eventId" value={event.eventId} onChange={(e) => handleEventChange(index, e)} />
-                        <NestedField label="Event Name" name="eventName" value={event.eventName} onChange={(e) => handleEventChange(index, e)} />
+                        <NestedField label="Event ID" name="eventId" value={events.eventId}
+                                     onChange={handleEventsChange}/>
+                        <NestedField label="Event Name" name="eventName" value={events.eventName}
+                                     onChange={handleEventsChange}/>
                     </Box>
-                    <IconButton onClick={() => handleDeleteEvent(index)} color="error">
-                        <Delete />
+                    <IconButton onClick={handleDeleteEvents} color="error">
+                        <Delete/>
                     </IconButton>
                 </Box>
-            ))}
-            <AddButton onClick={handleAddEvent} label="Add Event" />
+            ) : (
+                <AddQueryButton label="Add Event" onClick={handleAddInput}/>
+            )}
         </Box>
     );
 };

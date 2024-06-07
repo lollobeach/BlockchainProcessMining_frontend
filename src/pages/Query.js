@@ -1,10 +1,5 @@
 import React, {useState} from 'react';
-import {
-    Box,
-    Button,
-    Stack,
-    Typography
-} from "@mui/material";
+import {Box, Button, Stack, Typography} from "@mui/material";
 import {Delete} from '@mui/icons-material';
 import LinearProgress from "@mui/material/LinearProgress";
 import {_queryGetByQuery} from "../api/services";
@@ -31,14 +26,29 @@ function Query() {
         blockNumberTo: '',
         timestampFrom: '',
         timestampTo: '',
-        inputs: [],
-        storageState: [],
-        internalTxs: [],
-        events: []
+        inputs: {
+            inputId: '',
+            inputName: '',
+            type: '',
+            inputValue: ''
+        },
+        storageState: {
+            variableId: '',
+            variableName: '',
+            type: '',
+            variableValue: '',
+            variableRawValue: ''
+        },
+        internalTxs: {
+            callId: '',
+            callType: '',
+            to: ''
+        },
+        events: {
+            eventId: '',
+            eventName: ''
+        }
     });
-
-    const [showGasUsedRange, setShowGasUsedRange] = useState(false);
-    const [showBlockNumberRange, setShowBlockNumberRange] = useState(false);
 
     const [results, setResults] = useState([]);
 
@@ -47,40 +57,39 @@ function Query() {
         setFormData({...formData, [name]: value});
     };
 
-    const handleSwitchChange = (setter) => (event) => {
-        setter(event.target.checked);
+    const handleNestedChange = (field, subField, value) => {
+        setFormData(prevFormData => ({
+            ...prevFormData,
+            [field]: {
+                ...prevFormData[field],
+                [subField]: value
+            }
+        }));
     };
 
     const handleSubmit = (event) => {
         event.preventDefault();
         setLoading(true);
 
-        const filterEmptyFields = (obj) => {
-            if (Array.isArray(obj)) {
-                return obj.filter(item => {
-                    return Object.values(item).some(value => value !== '' && value !== null && value !== undefined);
-                });
-            } else if (typeof obj === 'object' && obj !== null) {
-                return Object.keys(obj).reduce((acc, key) => {
-                    const value = obj[key];
-                    if (value !== '' && value !== null && value !== undefined) {
-                        if (typeof value === 'object') {
-                            const nestedObject = filterEmptyFields(value);
-                            if (Object.keys(nestedObject).length > 0) {
-                                acc[key] = nestedObject;
-                            }
-                        } else {
-                            acc[key] = value;
-                        }
+        const filterEmptyFields = (obj, parentKey = '') => {
+            return Object.keys(obj).reduce((acc, key) => {
+                const value = obj[key];
+                const newKey = parentKey ? `${parentKey}.${key}` : key;
+
+                if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+                    const nestedObject = filterEmptyFields(value, newKey);
+                    if (Object.keys(nestedObject).length > 0) {
+                        acc = {...acc, ...nestedObject};
                     }
-                    return acc;
-                }, {});
-            }
-            return obj;
+                } else if (value !== '' && value !== null && value !== undefined) {
+                    acc[newKey] = value;
+                }
+                return acc;
+            }, {});
         };
 
         const filteredData = filterEmptyFields(formData);
-        console.log(filteredData)
+        console.log(filteredData);
 
         _queryGetByQuery(filteredData)
             .then(response => {
@@ -185,25 +194,46 @@ function Query() {
                                     <Button
                                         fullWidth
                                         variant="contained"
-                                        onClick={() => setFormData({
-                                            txHash: '',
-                                            contractAddress: '',
-                                            sender: '',
-                                            gasUsed: '',
-                                            gasUsedFrom: '',
-                                            gasUsedTo: '',
-                                            activity: '',
-                                            blockNumber: '',
-                                            blockNumberFrom: '',
-                                            blockNumberTo: '',
-                                            timestamp: '',
-                                            timestampFrom: '',
-                                            timestampTo: '',
-                                            inputs: [],
-                                            storageState: [],
-                                            internalTxs: [],
-                                            events: []
-                                        })}
+                                        onClick={() => {
+                                            setFormData({
+                                                txHash: '',
+                                                contractAddress: '',
+                                                sender: '',
+                                                gasUsed: '',
+                                                gasUsedFrom: '',
+                                                gasUsedTo: '',
+                                                activity: '',
+                                                blockNumber: '',
+                                                blockNumberFrom: '',
+                                                blockNumberTo: '',
+                                                timestamp: '',
+                                                timestampFrom: '',
+                                                timestampTo: '',
+                                                inputs: {
+                                                    inputId: '',
+                                                    inputName: '',
+                                                    type: '',
+                                                    inputValue: ''
+                                                },
+                                                storageState: {
+                                                    variableId: '',
+                                                    variableName: '',
+                                                    type: '',
+                                                    variableValue: '',
+                                                    variableRawValue: ''
+                                                },
+                                                internalTxs: {
+                                                    callId: '',
+                                                    callType: '',
+                                                    to: ''
+                                                },
+                                                events: {
+                                                    eventId: '',
+                                                    eventName: ''
+                                                }
+                                            });
+
+                                        }}
                                         sx={{
                                             padding: 1,
                                             height: "40px",
@@ -215,7 +245,6 @@ function Query() {
                                         Svuota tutti i campi
                                     </Button>
                                 </Box>
-
                             </Stack>
                         </form>
                     </Box>

@@ -1,45 +1,45 @@
-import React from 'react';
-import { Box, Typography, IconButton } from "@mui/material";
+import React, {useState} from 'react';
+import {Box, Typography, IconButton} from "@mui/material";
 import NestedField from './NestedField';
-import AddButton from './AddQueryButton';
-import { Delete } from '@mui/icons-material';
+import {Delete} from '@mui/icons-material';
+import AddQueryButton from './AddQueryButton';
 
-const InternalTxsForm = ({ internalTxs, setInternalTxs }) => {
-    const handleAddInternalTx = () => {
-        setInternalTxs([...internalTxs, { callId: '', callType: '', to: '', inputsCall: [''] }]);
+const InternalTxsForm = ({internalTxs, setInternalTxs}) => {
+    const [showInternalTxs, setShowInternalTxs] = useState(false);
+
+    const handleAddInput = () => {
+        setShowInternalTxs(true);
+    }
+
+    const handleInternalTxsChange = (event) => {
+        const {name, value} = event.target;
+        setInternalTxs({...internalTxs, [name]: value});
     };
 
-    const handleInternalTxChange = (index, event) => {
-        const { name, value } = event.target;
-        const newInternalTxs = [...internalTxs];
-        newInternalTxs[index][name] = value;
-        setInternalTxs(newInternalTxs);
+    const handleDeleteInternalTxs = () => {
+        setInternalTxs({callId: '', callType: '', to: ''});
+        setShowInternalTxs(false);
     };
-
-    const handleDeleteInternalTx = (index) => {
-        const newInternalTxs = [...internalTxs];
-        newInternalTxs.splice(index, 1);
-        setInternalTxs(newInternalTxs);
-    };
-
-
 
     return (
         <Box>
             <Typography variant="h6">Internal Transactions</Typography>
-            {internalTxs.map((internalTxs, index) => (
-                <Box key={index} mb={2} display="flex" alignItems="center">
+            {showInternalTxs ? (
+                <Box mb={2} display="flex" alignItems="center">
                     <Box flexGrow={1}>
-                        <NestedField label="Call ID" name="callId" value={internalTxs.callId} onChange={(e) => handleInternalTxChange(index, e)} />
-                        <NestedField label="Call Type" name="callType" value={internalTxs.callType} onChange={(e) => handleInternalTxChange(index, e)} />
-                        <NestedField label="To" name="to" value={internalTxs.to} onChange={(e) => handleInternalTxChange(index, e)} />
+                        <NestedField label="Call ID" name="callId" value={internalTxs.callId}
+                                     onChange={handleInternalTxsChange}/>
+                        <NestedField label="Call Type" name="callType" value={internalTxs.callType}
+                                     onChange={handleInternalTxsChange}/>
+                        <NestedField label="To" name="to" value={internalTxs.to} onChange={handleInternalTxsChange}/>
                     </Box>
-                    <IconButton onClick={() => handleDeleteInternalTx(index)} color="error">
-                        <Delete />
+                    <IconButton onClick={handleDeleteInternalTxs} color="error">
+                        <Delete/>
                     </IconButton>
                 </Box>
-            ))}
-            <AddButton onClick={handleAddInternalTx} label="Add Internal Transaction" />
+            ) : (
+                <AddQueryButton label="Add Internal Transaction" onClick={handleAddInput}/>
+            )}
         </Box>
     );
 };
