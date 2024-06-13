@@ -1,8 +1,17 @@
-import React, {useState} from 'react';
-import {Box, Button, Stack, Typography} from "@mui/material";
+import React, {useEffect, useState} from 'react';
+import {
+    Box,
+    Button,
+    FormControl,
+    InputLabel,
+    MenuItem,
+    Select,
+    Stack,
+    Typography
+} from "@mui/material";
 import {Delete} from '@mui/icons-material';
 import LinearProgress from "@mui/material/LinearProgress";
-import {_queryGetByQuery} from "../api/services";
+import {_searchTransactionByQuery} from "../api/services";
 import NestedField from '../components/query/NestedField';
 import RangeFields from '../components/query/RangeFields';
 import InputsForm from '../components/query/InputsForm';
@@ -57,16 +66,6 @@ function Query() {
         setFormData({...formData, [name]: value});
     };
 
-    const handleNestedChange = (field, subField, value) => {
-        setFormData(prevFormData => ({
-            ...prevFormData,
-            [field]: {
-                ...prevFormData[field],
-                [subField]: value
-            }
-        }));
-    };
-
     const handleSubmit = (event) => {
         event.preventDefault();
         setLoading(true);
@@ -89,9 +88,10 @@ function Query() {
         };
 
         const filteredData = filterEmptyFields(formData);
-        console.log(filteredData);
 
-        _queryGetByQuery(filteredData)
+        filteredData.network = network;
+
+        _searchTransactionByQuery(filteredData)
             .then(response => {
                 setResults(response.data);
                 setLoading(false);
@@ -102,15 +102,55 @@ function Query() {
             });
     };
 
+    const [network, setNetwork] = useState("Mainnet")
+
+    const networks = ["Mainnet", "Sepolia", "Polygon", "Mumbai"]
+
+    useEffect(() => {
+        switch (network) {
+            case "Mainnet":
+                break
+            case "Sepolia":
+                break
+            case "Polygon":
+                break
+            case "Mumbai":
+                break
+            default:
+                console.log("Change Network")
+        }
+
+    }, [network]);
+
+    const handleNetworkChange = (e) => {
+        setNetwork(e.target.value)
+    }
+
     return (
         <QueryPageLayout loading={loading} setLoading={setLoading} results={results} setResults={setResults}>
             <Stack justifyContent="space-evenly" height="100%">
                 <Box display="flex" justifyContent="space-between" gap={5}>
                     <Box width="100%">
-                        <Box mb={4}>
+                        <Box mb={4} display="flex" justifyContent="space-between">
                             <Typography textAlign="center" variant="h3">
                                 Transaction Extractor
                             </Typography>
+                            <FormControl fullWidth sx={{width: 200}}>
+                                <InputLabel>Network</InputLabel>
+                                <Select
+                                    value={network}
+                                    label="name"
+                                    onChange={handleNetworkChange}
+                                >
+                                    {
+                                        networks.map((name, index) => (
+                                            <MenuItem key={index} value={name}>
+                                                <Typography>{name}</Typography>
+                                            </MenuItem>
+                                        ))
+                                    }
+                                </Select>
+                            </FormControl>
                         </Box>
                         <form onSubmit={handleSubmit}>
                             <Stack spacing={2} justifyContent="center">
@@ -188,7 +228,7 @@ function Query() {
                                         }}
                                     >
                                         <Box width="100%">
-                                            {loading ? <LinearProgress/> : <>Cerca</>}
+                                            {loading ? <LinearProgress/> : <>Search</>}
                                         </Box>
                                     </Button>
                                     <Button
@@ -242,7 +282,7 @@ function Query() {
                                         }}
                                         startIcon={<Delete/>}
                                     >
-                                        Svuota tutti i campi
+                                        Clear all fields
                                     </Button>
                                 </Box>
                             </Stack>
