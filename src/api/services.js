@@ -73,6 +73,19 @@ export const _downloadJSONOCEL = async (ocel) => {
     }
 }
 
+export const _downloadCSVOCEL = async (ocel) => {
+    const body = {
+        ocel
+    }
+
+    try {
+        const response = await axios.post(serverUrl + "/csvocel-download", body, {responseType: 'blob'})
+        return response.data
+    } catch (error) {
+        console.error(error)
+    }
+}
+
 export const _queryGetFields = async (query) => {
     try {
         const response = await axios.get(serverUrl + "/query/api/fields", query)

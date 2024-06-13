@@ -13,7 +13,7 @@ import {
 import JsonView from "@uiw/react-json-view";
 import {darkTheme} from "@uiw/react-json-view/dark";
 import {Download, FileUpload, Delete} from "@mui/icons-material";
-import {_downloadCSV, _downloadJson, _downloadJSONOCEL, _downloadOCEL} from "../api/services";
+import {_downloadCSV, _downloadCSVOCEL, _downloadJson, _downloadJSONOCEL, _downloadOCEL} from "../api/services";
 import useDataContext from "../dataContext/useDataContext";
 import {Link} from "react-router-dom";
 import {HiddenInput} from "../components/HiddenInput";
@@ -97,6 +97,16 @@ function PageLayout({children, loading, setLoading}) {
         window.URL.revokeObjectURL(href)
     }
 
+    const downloadCSVOcel = async () => {
+        const response = await _downloadCSVOCEL(ocel)
+        const href = window.URL.createObjectURL(response)
+        const anchor = document.createElement('a')
+        anchor.href = href
+        anchor.download = "ocel.csv"
+        anchor.click()
+        window.URL.revokeObjectURL(href)
+    }
+
     return (
         <Box display="flex" justifyContent="center" marginTop={5} paddingX={5} height="100%">
             <Grid container spacing={2}>
@@ -156,6 +166,9 @@ function PageLayout({children, loading, setLoading}) {
                                         </Link>
                                         <Button variant="contained" onClick={downloadJSONOcel} sx={{padding: 1, width: "125px", height: "55px", backgroundColor: "#5316ec"}}>
                                             <Typography color="white">Download JSONOCEL</Typography>
+                                        </Button>
+                                        <Button variant="contained" onClick={downloadCSVOcel} sx={{padding: 1, width: "125px", height: "55px", backgroundColor: "#1dec16"}}>
+                                            <Typography color="white">Download CSV OCEL</Typography>
                                         </Button>
                                     </Box>
                                 )
