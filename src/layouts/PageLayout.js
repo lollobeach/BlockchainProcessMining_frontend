@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
     Box,
     Button,
@@ -12,11 +12,9 @@ import {
 } from "@mui/material";
 import JsonView from "@uiw/react-json-view";
 import {darkTheme} from "@uiw/react-json-view/dark";
-import {Download, FileUpload, Delete} from "@mui/icons-material";
+import {Download, Delete} from "@mui/icons-material";
 import {_downloadCSV, _downloadJson} from "../api/services";
 import useDataContext from "../dataContext/useDataContext";
-import {Link} from "react-router-dom";
-import {HiddenInput} from "../components/HiddenInput";
 
 const CardContentNoPadding = styled(CardContent)(
     `
@@ -31,9 +29,11 @@ function PageLayout({children, loading, setLoading}) {
 
     const {results, ocel, setResults} = useDataContext()
 
+    const path = window.location.pathname
+
     const handleDelete = () => {
         setResults(null)
-        window.history.replaceState({}, '')
+        window.history.replaceState({}, '', path)
     }
 
     const downloadJson = async () => {

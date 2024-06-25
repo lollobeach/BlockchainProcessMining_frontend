@@ -10,12 +10,14 @@ import BodyLayout from "./layouts/BodyLayout";
 import {ThemeProvider} from "@mui/material";
 import {customTheme} from "./theme/customTheme";
 import DataProvider from "./dataContext/DataContext";
+import Query from "./pages/Query";
 
 const router = createBrowserRouter([
     {
         path: "/", element: <BodyLayout/>,
         children: [
             {path: "/", element: <HomePage/>},
+            {path: "/query", element: <Query/>}
         ]
     }
 ]);

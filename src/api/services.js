@@ -46,3 +46,13 @@ export const _downloadCSV = async (jsonLog) => {
         console.error(error)
     }
 }
+
+export const _searchTransactionByQuery = async (query) => {
+    try {
+        const response = await axios.post(serverUrl + "/api/query", query)
+        return {status: response.status, data: response.data}
+    } catch (error) {
+        console.error(error)
+        return {status: error.response.status, data: error.response.data}
+    }
+}

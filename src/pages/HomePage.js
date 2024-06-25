@@ -10,7 +10,6 @@ import {
     Typography,
 } from "@mui/material";
 import LinearProgress from "@mui/material/LinearProgress";
-import {Link} from "react-router-dom";
 
 import {_sendData} from "../api/services";
 import PageLayout from "../layouts/PageLayout";
@@ -379,12 +378,6 @@ function HomePage() {
                                     </DemoContainer>
                                 </LocalizationProvider>
                             </Box>
-                            {/*<Slider*/}
-                            {/*    disabled={!filterTimestamp}*/}
-                            {/*    value={timestamp}*/}
-                            {/*    onChange={handleTimestampChange}*/}
-                            {/*    max={10000000000}*/}
-                            {/*/>*/}
                         </Box>
                         <Box>
                             <Box height={42} display="flex" alignItems="center">
@@ -472,23 +465,6 @@ function HomePage() {
                                 </FormControl>
                             </Stack>
                         </Box>
-                        {/*<Box width="100%">*/}
-                        {/*    <Typography variant="h6" color="gray">filters</Typography>*/}
-                        {/*    <Stack spacing={1} marginTop={1}>*/}
-                        {/*        <Typography fontWeight={700}>Gas Used</Typography>*/}
-                        {/*        <Box display="flex" gap={1}>*/}
-                        {/*            <TextField type="number" label="From"/>*/}
-                        {/*            <TextField type="number" label="To"/>*/}
-                        {/*        </Box>*/}
-                        {/*        <Typography fontWeight={700}>Sender</Typography>*/}
-                        {/*        <TextField label="Address"/>*/}
-                        {/*        <Typography fontWeight={700}>Timestamp</Typography>*/}
-                        {/*        <Box display="flex" gap={1}>*/}
-                        {/*            <TextField type="number" label="From"/>*/}
-                        {/*            <TextField type="number" label="To"/>*/}
-                        {/*        </Box>*/}
-                        {/*    </Stack>*/}
-                        {/*</Box>*/}
                     </Box>
                     <Stack spacing={1} width="100%">
                         <Box height="24px" display="flex" width="50%" gap={2}>
