@@ -443,8 +443,8 @@ function HomePage() {
                         </Select>
                     </FormControl>
                 </Box>
-                <Stack justifyContent="space-evenly" height="100%">
-                    <Box display="flex" justifyContent="space-between" gap={5}>
+                <Stack justifyContent="space-evenly">
+                    <Box display="flex" justifyContent="space-between" gap={5} marginBottom={1}>
                         <Box width="100%">
                             <Typography textAlign="center" variant="h3">
                                 Data Extraction

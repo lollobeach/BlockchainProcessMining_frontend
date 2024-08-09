@@ -6,7 +6,7 @@ export const handleContractAddressObjects = (results, ocel, setObjectsTypesItem,
             time: log.timestamp,
             id: log.contractAddress,
             name: "contractAddress",
-            value: log.sender,
+            value: log.contractAddress,
             type: "string"
         })
     })
@@ -16,7 +16,7 @@ export const handleContractAddressObjects = (results, ocel, setObjectsTypesItem,
     valuesSet.forEach(value => {
             newObjectTypes.push({
                 name: value.name,
-                attributes: [{name: "sender", type: value.type}]
+                attributes: [{name: "contractAddress", type: value.type}]
             })
         }
     )
@@ -30,7 +30,7 @@ export const handleContractAddressObjects = (results, ocel, setObjectsTypesItem,
     const objects = []
     contractAddress.forEach(value => {
         let attributeValues = []
-        attributeValues = [{name: "sender", time: value.time, value: value.value}]
+        attributeValues = [{name: "contractAddress", time: value.time, value: value.value}]
 
         objects.push({
             id: value.id,
@@ -307,17 +307,31 @@ export const handleEventNameObjects = (results, ocel, setObjectsTypesItem, objec
 
     results?.forEach((log) => {
         log.events.forEach((event) => {
-            variables.push({
+
+            const variable = {
                 time: log.timestamp,
                 id: event.eventId,
                 name: event.eventName,
-                owner: event.eventValues.owner,
-                ownerType: "string",
-                spender: event.eventValues.spender,
-                spenderType: "string",
-                value: event.eventValues.value,
-                valueType: "integer"
-            })
+                attributes: [],
+                attributesValue: []
+            }
+
+            const attributesNumber = event.eventValues.__length__
+            for (let i = attributesNumber + 1; i < Object.keys(event.eventValues).length; i++) {
+                const attributeName = Object.keys(event.eventValues)[i]
+                variable.attributes.push({
+                    name: attributeName,
+                    type: typeof event.eventValues[Object.keys(event.eventValues)[i]] === "number" ? "integer" : "string"
+                })
+
+                variable.attributesValue.push({
+                    name: attributeName,
+                    time: log.timestamp,
+                    value: event.eventValues[Object.keys(event.eventValues)[i]]
+                })
+            }
+            variables.push(variable)
+
         })
     })
 
@@ -326,11 +340,7 @@ export const handleEventNameObjects = (results, ocel, setObjectsTypesItem, objec
     valuesSet.forEach(value => {
             newObjectTypes.push({
                 name: value.name,
-                attributes: [
-                    {name: "owner", type: value.ownerType},
-                    {name: "spender", type: value.spenderType},
-                    {name: "value", type: value.valueType}
-                ]
+                attributes: value.attributes
             })
         }
     )
@@ -343,18 +353,12 @@ export const handleEventNameObjects = (results, ocel, setObjectsTypesItem, objec
 
     const objects = []
     variables.forEach(value => {
-        let attributeValues = []
-        attributeValues = [{name: "owner", time: value.time, value: value.owner}, {
-            name: "spender",
-            time: value.time,
-            value: value.spender
-        }, {name: "value", time: value.time, value: value.value}]
 
         objects.push({
             id: value.id,
             key: "eventName",
             type: value.name,
-            attributes: attributeValues
+            attributes: value.attributesValue
         })
     })
 
@@ -467,7 +471,7 @@ export const handleSelectEventsObjects = (results, ocel, setObjectsTypesItem, ob
         }
 
         objects.push({
-            id: `event_${index}`,
+            id: `event_${index + 1}`,
             type: "events",
             attributes: attributes
         })
@@ -527,7 +531,7 @@ export const handleSelectInputsObjects = (results, ocel, setObjectsTypesItem, ob
         }
 
         objects.push({
-            id: `input_${index}`,
+            id: `input_${index + 1}`,
             type: "inputs",
             attributes: attributes
         })
@@ -589,7 +593,7 @@ export const handleSelectInternalTxsObjects = (results, ocel, setObjectsTypesIte
         }
 
         objects.push({
-            id: `internalTx_${index}`,
+            id: `internalTx_${index + 1}`,
             type: "internalTxs",
             attributes: attributes
         })
