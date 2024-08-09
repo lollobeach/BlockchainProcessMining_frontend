@@ -1,15 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import {Box, Button, Stack, Tab, Tabs, Typography} from "@mui/material";
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import {Link} from "react-router-dom";
 
 import EventType from "../components/eventTypes/EventType";
 import CustomTypography from "../components/CustomTypography";
 import ObjectType from "../components/objectTypes/ObjectType";
-import Event from "../components/events/Event";
 import PageLayout from "../layouts/PageLayout";
-import ObjectOCEL from "../components/objects/ObjectOCEL";
-import {_downloadOCEL} from "../api/services";
 import useDataContext from "../dataContext/useDataContext";
 import ActivityEventType from "../components/eventTypes/ActivityEventType";
 
