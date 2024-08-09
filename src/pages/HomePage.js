@@ -506,6 +506,9 @@ function HomePage() {
                                 </Box>
                             </Button>
                         </Box>
+                        <Button href="/query" variant="contained" sx={{padding: 1, width: "100%"}}>
+                            <Typography color="white">Query Page</Typography>
+                        </Button>
                     </Stack>
                 </Stack>
             </PageLayout>
