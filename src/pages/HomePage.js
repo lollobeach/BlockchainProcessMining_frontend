@@ -10,7 +10,6 @@ import {
     Typography,
 } from "@mui/material";
 import LinearProgress from "@mui/material/LinearProgress";
-import {Link} from "react-router-dom";
 
 import {_sendData} from "../api/services";
 import PageLayout from "../layouts/PageLayout";
@@ -370,12 +369,16 @@ function HomePage() {
                             <Box display="flex" justifyContent="space-between" gap={1}>
                                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                                     <DemoContainer components={['DateTimePicker']}>
-                                        <DateTimePicker value={timestamp[0]} onChange={(newValue) => setTimestamp([newValue, timestamp[1]])} label="Start" disabled={!filterTimestamp}/>
+                                        <DateTimePicker value={timestamp[0]}
+                                                        onChange={(newValue) => setTimestamp([newValue, timestamp[1]])}
+                                                        label="Start" disabled={!filterTimestamp}/>
                                     </DemoContainer>
                                 </LocalizationProvider>
                                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                                     <DemoContainer components={['DateTimePicker']}>
-                                        <DateTimePicker value={timestamp[1]} onChange={(newValue) => setTimestamp([timestamp[0], newValue])} label="End" disabled={!filterTimestamp}/>
+                                        <DateTimePicker value={timestamp[1]}
+                                                        onChange={(newValue) => setTimestamp([timestamp[0], newValue])}
+                                                        label="End" disabled={!filterTimestamp}/>
                                     </DemoContainer>
                                 </LocalizationProvider>
                             </Box>
@@ -530,11 +533,14 @@ function HomePage() {
                                 </Box>
                             </Button>
                         </Box>
-                        <Link to="/ocel" style={{textDecoration: "none"}}>
-                            <Button variant="contained" sx={{padding: 1, width: "100%"}}>
+                        <Box display="flex" width="100%" gap={1}>
+                            <Button href="/query" variant="contained" sx={{padding: 1, width: "100%", bgcolor: "#f1a706"}}>
+                                <Typography color="white">Query Page</Typography>
+                            </Button>
+                            <Button href="/ocel" variant="contained" sx={{padding: 1, width: "100%"}}>
                                 <Typography color="white">Map data</Typography>
                             </Button>
-                        </Link>
+                        </Box>
                     </Stack>
                 </Stack>
             </PageLayout>
