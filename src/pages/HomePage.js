@@ -446,7 +446,7 @@ function HomePage() {
                         </Select>
                     </FormControl>
                 </Box>
-                <Stack justifyContent="space-evenly">
+                <Stack justifyContent="space-between" height="calc(100% - 59px)">
                     <Box display="flex" justifyContent="space-between" gap={5} marginBottom={1}>
                         <Box width="100%">
                             <Typography textAlign="center" variant="h3">
@@ -504,10 +504,12 @@ function HomePage() {
                                 </>
                             }
                         </Box>
-                        <Box display="flex" width="100%" gap={1}>
+                        <Box display="flex" gap={1}>
                             <Button fullWidth component="label" startIcon={<FileUpload/>} variant="contained"
                                     disabled={loading}
                                     sx={{
+                                        padding: 1,
+                                        height: "40px",
                                         backgroundColor: "#86469C",
                                         '&:hover': {backgroundColor: "#512960"}
                                     }}
@@ -533,11 +535,16 @@ function HomePage() {
                                 </Box>
                             </Button>
                         </Box>
-                        <Box display="flex" width="100%" gap={1}>
-                            <Button href="/query" variant="contained" sx={{padding: 1, width: "100%", bgcolor: "#f1a706"}}>
+                        <Box display="flex" gap={1}>
+                            <Button href="/query" fullWidth variant="contained" sx={{
+                                padding: 1,
+                                height: "40px",
+                                backgroundColor: "#f1a706",
+                                '&:hover': {backgroundColor: "#bd850c"}
+                            }}>
                                 <Typography color="white">Query Page</Typography>
                             </Button>
-                            <Button href="/ocel" variant="contained" sx={{padding: 1, width: "100%"}}>
+                            <Button href="/ocel" fullWidth variant="contained" sx={{padding: 1, height: "40px"}}>
                                 <Typography color="white">Map data</Typography>
                             </Button>
                         </Box>
