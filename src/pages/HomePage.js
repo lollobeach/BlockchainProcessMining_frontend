@@ -24,6 +24,7 @@ import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {DemoContainer} from "@mui/x-date-pickers/internals/demo";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
+import {Link} from "react-router-dom";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="down" ref={ref} {...props} />;
@@ -544,7 +545,7 @@ function HomePage() {
                             }}>
                                 <Typography color="white">Query Page</Typography>
                             </Button>
-                            <Button href="/ocel" fullWidth variant="contained" sx={{padding: 1, height: "40px"}}>
+                            <Button component={Link} to="/ocel" fullWidth variant="contained" sx={{padding: 1, height: "40px"}}>
                                 <Typography color="white">Map data</Typography>
                             </Button>
                         </Box>
