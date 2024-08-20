@@ -537,7 +537,7 @@ function HomePage() {
                             </Button>
                         </Box>
                         <Box display="flex" gap={1}>
-                            <Button href="/query" fullWidth variant="contained" sx={{
+                            <Button component={Link} to="/query" fullWidth variant="contained" sx={{
                                 padding: 1,
                                 height: "40px",
                                 backgroundColor: "#f1a706",
