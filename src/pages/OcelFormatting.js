@@ -10,7 +10,7 @@ import useDataContext from "../dataContext/useDataContext";
 import ActivityEventType from "../components/eventTypes/ActivityEventType";
 
 const getAllKeys = (jsonLog, set) => {
-    if (Array.isArray(jsonLog)) {
+    if (jsonLog && Array.isArray(jsonLog)) {
         jsonLog.forEach((log) => {
             if (log) {
                 Object.keys(log).forEach((key) => {
@@ -23,7 +23,7 @@ const getAllKeys = (jsonLog, set) => {
                 })
             }
         })
-    } else if (typeof jsonLog === "object") {
+    } else if (jsonLog && typeof jsonLog === "object") {
         Object.keys(jsonLog).forEach((key) => {
             set.add(key)
             if (Array.isArray(jsonLog[key]) || typeof jsonLog[key] === "object") {
@@ -34,7 +34,7 @@ const getAllKeys = (jsonLog, set) => {
 }
 
 const getAllValues = (jsonLog, set) => {
-    if (Array.isArray(jsonLog)) {
+    if (jsonLog && Array.isArray(jsonLog)) {
         jsonLog.forEach((log) => {
             if (log) {
                 if (typeof log === "string") set.add(log)
@@ -49,7 +49,7 @@ const getAllValues = (jsonLog, set) => {
                 }
             }
         })
-    } else if (typeof jsonLog === "object") {
+    } else if (jsonLog && typeof jsonLog === "object") {
         Object.values(jsonLog).forEach((value) => {
             if (Array.isArray(value) || typeof value === "object") {
                 getAllValues(value, set)

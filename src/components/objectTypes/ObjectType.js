@@ -116,6 +116,7 @@ function ObjectType({
                         <FormControl fullWidth sx={{width: 200}}>
                             <InputLabel>Key</InputLabel>
                             <Select
+                                name={`${index}`}
                                 value={objectType.name}
                                 label="name"
                                 onChange={(e) => handleSelectObjectTypeName(e)}

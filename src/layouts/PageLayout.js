@@ -51,6 +51,7 @@ function PageLayout({children, loading, setLoading}) {
             setResults(JSON.parse(content))
         }
         fileReader.readAsText(e.target.files[0])
+        e.target.value = null
     }
 
     const downloadJson = async () => {

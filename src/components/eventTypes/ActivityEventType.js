@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {Box, FormControl, InputLabel, MenuItem, Select, Stack} from "@mui/material";
 import CustomTypography from "../CustomTypography";
 import ActivityEventAttribute from "./ActivityEventAttribute";
-import {findValue} from "../../utils";
+// import {findValue} from "../../utils";
 import useDataContext from "../../dataContext/useDataContext";
 
 function ActivityEventType({setEventsItem}) {
@@ -18,7 +18,7 @@ function ActivityEventType({setEventsItem}) {
             setOcel({eventTypes: [], objectTypes: [], events: [], objects: []})
         } else {
             results?.forEach((log) => {
-                findValue(log, "activity", values)
+                // findValue(log, "activity", values)
                 temporaryEvents.push({
                     // relationships: log.storageState.map(variable => ({
                     //     objectId: variable.variableId,
@@ -27,7 +27,7 @@ function ActivityEventType({setEventsItem}) {
                     id: log.txHash,
                     relationships: [],
                     timestamp: log.timestamp,
-                    name: log.activity,
+                    name: log.activity || "",
                     gasUsed: log.gasUsed,
                     sender: log.sender,
                     attributes: [{name: "gasUsed", type: "string"}, {name: "sender", type: "string"}]

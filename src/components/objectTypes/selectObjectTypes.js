@@ -317,8 +317,8 @@ export const handleEventNameObjects = (results, ocel, setObjectsTypesItem, objec
             }
 
             const attributesNumber = event.eventValues.__length__
-            for (let i = attributesNumber + 1; i < Object.keys(event.eventValues).length; i++) {
-                const attributeName = Object.keys(event.eventValues)[i]
+            for (let i = 0; i < attributesNumber; i++) {
+                const attributeName = Object.keys(event.eventValues)[i + attributesNumber + 1] || Object.keys(event.eventValues)[i]
                 variable.attributes.push({
                     name: attributeName,
                     type: typeof event.eventValues[Object.keys(event.eventValues)[i]] === "number" ? "integer" : "string"
