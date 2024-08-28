@@ -6,7 +6,7 @@ import {
 
 import './App.css';
 import HomePage from "./pages/HomePage";
-import OcelFormatting from "./pages/OcelFormatting";
+import OcelMapping from "./pages/OcelMapping";
 import BodyLayout from "./layouts/BodyLayout";
 import {ThemeProvider} from "@mui/material";
 import {customTheme} from "./theme/customTheme";
@@ -18,7 +18,7 @@ const router = createBrowserRouter([
         path: "/", element: <BodyLayout/>,
         children: [
             {path: "/", element: <HomePage/>},
-            {path: "/ocel", element: <OcelFormatting/>},
+            {path: "/ocel", element: <OcelMapping/>},
             {path: "/query", element: <Query/>}
         ]
     }

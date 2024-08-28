@@ -80,7 +80,7 @@ function CustomTabPanel(props) {
     );
 }
 
-function OcelFormatting() {
+function OcelMapping() {
 
     const {results} = useDataContext()
 
@@ -135,15 +135,15 @@ function OcelFormatting() {
             <Box display="flex" justifyContent="center">
                 <Box position="relative" height="100%" width={520} paddingBottom={2}>
                     <Typography variant="h3">
-                        Data Formatting
+                        Data Mapping
                     </Typography>
-                    <Box>
-                        <Tabs value={tab} onChange={handleTabs} aria-label="basic tabs example">
-                            <Tab label="Automatic Mapping"/>
-                            <Tab label="Manual Mapping"/>
-                        </Tabs>
-                    </Box>
-                    <CustomTabPanel value={tab} index={0}>
+                    {/*<Box>*/}
+                    {/*    <Tabs value={tab} onChange={handleTabs} aria-label="basic tabs example">*/}
+                    {/*        <Tab label="Automatic Mapping"/>*/}
+                    {/*        <Tab label="Manual Mapping"/>*/}
+                    {/*    </Tabs>*/}
+                    {/*</Box>*/}
+                    {/*<CustomTabPanel value={tab} index={0}>*/}
                         <Stack marginY={3} height="calc(100vh - 300px)" overflow="auto">
                             <CustomTypography>
                                 {"{"}
@@ -264,14 +264,14 @@ function OcelFormatting() {
                                 {"}"}
                             </CustomTypography>
                         </Stack>
-                    </CustomTabPanel>
-                    <CustomTabPanel value={tab} index={1}>
-                        Developing...
-                    </CustomTabPanel>
+                    {/*</CustomTabPanel>*/}
+                    {/*<CustomTabPanel value={tab} index={1}>*/}
+                    {/*    Developing...*/}
+                    {/*</CustomTabPanel>*/}
                 </Box>
             </Box>
         </PageLayout>
     )
 }
 
-export default OcelFormatting;
+export default OcelMapping;
