@@ -448,94 +448,77 @@ function HomePage() {
                     </FormControl>
                 </Box>
                 <Stack justifyContent="space-between" height="calc(100% - 59px)">
-                    <Box display="flex" justifyContent="space-between" gap={5} marginBottom={1}>
-                        <Box width="100%">
-                            <Typography textAlign="center" variant="h3">
-                                Data Extraction
-                            </Typography>
-                            <Stack spacing={2} justifyContent="center">
-                                <FormControl variant="filled">
-                                    <InputLabel sx={{fontWeight: "700", fontSize: "18px"}}>Contract Name</InputLabel>
-                                    <FilledInput value={contractName} label="Contract Name"
-                                                 onChange={(e) => setContractName(e.target.value)}/>
-                                </FormControl>
-                                <FormControl variant="filled">
-                                    <InputLabel sx={{fontWeight: "700", fontSize: "18px"}}>Contract Address</InputLabel>
-                                    <FilledInput value={contractAddress} label="Contract Address"
-                                                 onChange={(e) => setContractAddress(e.target.value)}/>
-                                </FormControl>
-                                <FormControl variant="filled">
-                                    <InputLabel sx={{fontWeight: "700", fontSize: "18px"}}>From Block</InputLabel>
-                                    <FilledInput value={fromBlock} label="From Block"
-                                                 onChange={(e) => setFromBlock(e.target.value)}/>
-                                </FormControl>
-                                <FormControl variant="filled">
-                                    <InputLabel sx={{fontWeight: "700", fontSize: "18px"}}>To Block</InputLabel>
-                                    <FilledInput value={toBlock} label="To Block"
-                                                 onChange={(e) => setToBlock(e.target.value)}/>
-                                </FormControl>
-                            </Stack>
-                        </Box>
-                        {/*<Box width="100%">*/}
-                        {/*    <Typography variant="h6" color="gray">filters</Typography>*/}
-                        {/*    <Stack spacing={1} marginTop={1}>*/}
-                        {/*        <Typography fontWeight={700}>Gas Used</Typography>*/}
-                        {/*        <Box display="flex" gap={1}>*/}
-                        {/*            <TextField type="number" label="From"/>*/}
-                        {/*            <TextField type="number" label="To"/>*/}
-                        {/*        </Box>*/}
-                        {/*        <Typography fontWeight={700}>Sender</Typography>*/}
-                        {/*        <TextField label="Address"/>*/}
-                        {/*        <Typography fontWeight={700}>Timestamp</Typography>*/}
-                        {/*        <Box display="flex" gap={1}>*/}
-                        {/*            <TextField type="number" label="From"/>*/}
-                        {/*            <TextField type="number" label="To"/>*/}
-                        {/*        </Box>*/}
-                        {/*    </Stack>*/}
-                        {/*</Box>*/}
+                    <Box width="100%">
+                        <Typography textAlign="center" variant="h3">
+                            Data Extraction
+                        </Typography>
+                        <Stack spacing={2} justifyContent="center">
+                            <FormControl variant="filled">
+                                <InputLabel sx={{fontWeight: "700", fontSize: "18px"}}>Contract Name</InputLabel>
+                                <FilledInput value={contractName} label="Contract Name"
+                                             onChange={(e) => setContractName(e.target.value)}/>
+                            </FormControl>
+                            <FormControl variant="filled">
+                                <InputLabel sx={{fontWeight: "700", fontSize: "18px"}}>Contract Address</InputLabel>
+                                <FilledInput value={contractAddress} label="Contract Address"
+                                             onChange={(e) => setContractAddress(e.target.value)}/>
+                            </FormControl>
+                            <FormControl variant="filled">
+                                <InputLabel sx={{fontWeight: "700", fontSize: "18px"}}>From Block</InputLabel>
+                                <FilledInput value={fromBlock} label="From Block"
+                                             onChange={(e) => setFromBlock(e.target.value)}/>
+                            </FormControl>
+                            <FormControl variant="filled">
+                                <InputLabel sx={{fontWeight: "700", fontSize: "18px"}}>To Block</InputLabel>
+                                <FilledInput value={toBlock} label="To Block"
+                                             onChange={(e) => setToBlock(e.target.value)}/>
+                            </FormControl>
+                        </Stack>
+                        <Stack>
+                            <Box height="35px" display="flex" alignItems="center" width="50%" gap={2}>
+                                {smartContract &&
+                                    <>
+                                        <Typography>{smartContract.name}</Typography>
+                                        <Button sx={{color: "#de1616", '&:hover': {backgroundColor: "rgba(245,133,133,0.5)"}}} onClick={() => setSmartContract(null)}>
+                                            <DeleteIcon sx={{color: "red"}}/>
+                                        </Button>
+                                    </>
+                                }
+                            </Box>
+                            <Box display="flex" gap={1}>
+                                <Button fullWidth component="label" startIcon={<FileUpload/>} variant="contained"
+                                        disabled={loading}
+                                        sx={{
+                                            padding: 1,
+                                            height: "40px",
+                                            backgroundColor: "#86469C",
+                                            '&:hover': {backgroundColor: "#512960"}
+                                        }}
+                                >
+                                    Upload Smart Contract
+                                    <HiddenInput type="file" accept=".sol" onChange={handleContractUpload}/>
+                                </Button>
+                                <Button fullWidth variant="contained" disabled={loading} onClick={sendData}
+                                        sx={{
+                                            padding: 1,
+                                            height: "40px",
+                                            backgroundColor: "#66cdaa",
+                                            '&:hover': {backgroundColor: "#6fa287"}
+                                        }}>
+                                    <Box width="100%">
+                                        {loading ?
+                                            <LinearProgress/>
+                                            :
+                                            <>
+                                                Extract Data
+                                            </>
+                                        }
+                                    </Box>
+                                </Button>
+                            </Box>
+                        </Stack>
                     </Box>
-                    <Stack spacing={1} width="100%">
-                        <Box height="24px" display="flex" width="50%" gap={2}>
-                            {smartContract &&
-                                <>
-                                    <Typography>{smartContract.name}</Typography>
-                                    <Button onClick={() => setSmartContract(null)}>
-                                        <DeleteIcon sx={{color: "red"}}/>
-                                    </Button>
-                                </>
-                            }
-                        </Box>
-                        <Box display="flex" gap={1}>
-                            <Button fullWidth component="label" startIcon={<FileUpload/>} variant="contained"
-                                    disabled={loading}
-                                    sx={{
-                                        padding: 1,
-                                        height: "40px",
-                                        backgroundColor: "#86469C",
-                                        '&:hover': {backgroundColor: "#512960"}
-                                    }}
-                            >
-                                Upload Smart Contract
-                                <HiddenInput type="file" accept=".sol" onChange={handleContractUpload}/>
-                            </Button>
-                            <Button fullWidth variant="contained" disabled={loading} onClick={sendData}
-                                    sx={{
-                                        padding: 1,
-                                        height: "40px",
-                                        backgroundColor: "#66cdaa",
-                                        '&:hover': {backgroundColor: "#6fa287"}
-                                    }}>
-                                <Box width="100%">
-                                    {loading ?
-                                        <LinearProgress/>
-                                        :
-                                        <>
-                                            Extract Data
-                                        </>
-                                    }
-                                </Box>
-                            </Button>
-                        </Box>
+                    <Stack marginTop={1}>
                         <Box display="flex" gap={1}>
                             <Button component={Link} to="/query" fullWidth variant="contained" sx={{
                                 padding: 1,
@@ -545,7 +528,8 @@ function HomePage() {
                             }}>
                                 <Typography color="white">Query Page</Typography>
                             </Button>
-                            <Button component={Link} to="/ocel" fullWidth variant="contained" sx={{padding: 1, height: "40px"}}>
+                            <Button component={Link} to="/ocel" fullWidth variant="contained"
+                                    sx={{padding: 1, height: "40px"}}>
                                 <Typography color="white">Map data</Typography>
                             </Button>
                         </Box>

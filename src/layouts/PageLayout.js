@@ -117,10 +117,10 @@ function PageLayout({children, loading, setLoading}) {
                 <Grid item lg={6} md={12} width="100%">
                     <Stack spacing={1}>
                         <Card sx={{minWidth: "500px", height: "500px"}}>
-                            <Box display="flex" alignItems="center" justifyContent="space-between" padding={2}>
+                            <Box height="40px" display="flex" alignItems="center" justifyContent="space-between" padding={2}>
                                 <Typography variant="h5">Contract Logs</Typography>
-                                <Button variant="contained" sx={{padding: 1, width: "130px"}}
-                                        onClick={handleShowOcel}>{showOcel ? "Show Logs" : "Show OCEL"}</Button>
+                                {path === "/ocel" && <Button variant="contained" sx={{padding: 1, width: "130px"}}
+                                         onClick={handleShowOcel}>{showOcel ? "Show Logs" : "Show OCEL"}</Button>}
                                 <Button disabled={!results} color="error"
                                         onClick={handleDelete} sx={{padding: 0}}>
                                     <Delete/>
