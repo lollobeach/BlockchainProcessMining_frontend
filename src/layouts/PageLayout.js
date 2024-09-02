@@ -29,7 +29,7 @@ const CardContentNoPadding = styled(CardContent)(
 
 function PageLayout({children, loading, setLoading}) {
 
-    const {results, ocel, setResults} = useDataContext()
+    const {results, setResults, ocel, setOcel} = useDataContext()
 
     const [showOcel, setShowOcel] = useState(false)
 
@@ -161,7 +161,7 @@ function PageLayout({children, loading, setLoading}) {
                                             <Typography color="white">Download JSON</Typography>
                                         </Button>
                                         <Link to="/">
-                                            <Button color="error" variant="contained" sx={{padding: 1, width: "125px", height: "55px"}}>
+                                            <Button color="error" variant="contained" onClick={() => {setOcel({eventTypes: [],objectTypes: [],events: [],objects: []})}} sx={{padding: 1, width: "125px", height: "55px"}}>
                                                 <Typography>BACK</Typography>
                                             </Button>
                                         </Link>
