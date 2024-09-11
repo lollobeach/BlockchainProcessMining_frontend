@@ -30,7 +30,7 @@ function ActivityEventType({setEventsItem}) {
                     name: log.activity || "",
                     gasUsed: log.gasUsed,
                     sender: log.sender,
-                    attributes: [{name: "gasUsed", type: "string"}, {name: "sender", type: "string"}]
+                    attributes: [{name: "gasUsed", type: "integer"}, {name: "sender", type: "string"}]
                 })
             })
 

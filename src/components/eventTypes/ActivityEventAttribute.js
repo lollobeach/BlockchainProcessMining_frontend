@@ -1,7 +1,6 @@
 import React from 'react';
-import {Box, Button, FormControl, InputLabel, MenuItem, Select, Stack} from "@mui/material";
+import {Box, FormControl, InputLabel, MenuItem, Select, Stack} from "@mui/material";
 import CustomTypography from "../CustomTypography";
-import DeleteIcon from "@mui/icons-material/Delete";
 
 function ActivityEventAttribute() {
 
@@ -40,11 +39,11 @@ function ActivityEventAttribute() {
                                 <FormControl disabled fullWidth sx={{width: 200}}>
                                     <InputLabel>Type</InputLabel>
                                     <Select
-                                        value="string"
+                                        value={attribute === "gasUsed" ? "integer" : "string"}
                                         label="name"
                                     >
-                                        <MenuItem value="string"
-                                                  sx={{width: 400, overflow: "auto"}}>string</MenuItem>
+                                        <MenuItem value={attribute === "gasUsed" ? "integer" : "string"}
+                                                  sx={{width: 400, overflow: "auto"}}>{attribute === "gasUsed" ? "integer" : "string"}</MenuItem>
                                     </Select>
                                 </FormControl>
                             </Stack>
