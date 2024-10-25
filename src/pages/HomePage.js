@@ -41,6 +41,7 @@ function HomePage() {
 
     const [contractName, setContractName] = useState("CakeOFT")
     const [contractAddress, setContractAddress] = useState("0x152649eA73beAb28c5b49B26eb48f7EAD6d4c898")
+    const [impl_contract, setImplContractAddress] = useState()
     const [fromBlock, setFromBlock] = useState("18698008")
     const [toBlock, setToBlock] = useState("18698323")
 
@@ -74,7 +75,7 @@ function HomePage() {
             senders: senders,
             functions: functions
         }
-        const response = await _sendData(contractName, contractAddress, fromBlock, toBlock, network, smartContract, filters)
+        const response = await _sendData(contractName, contractAddress, impl_contract, fromBlock, toBlock, network, smartContract, filters)
         if (response.status === 200) {
             setResults(response.data)
             setLoading(false)
@@ -462,6 +463,11 @@ function HomePage() {
                                 <InputLabel sx={{fontWeight: "700", fontSize: "18px"}}>Contract Address</InputLabel>
                                 <FilledInput value={contractAddress} label="Contract Address"
                                              onChange={(e) => setContractAddress(e.target.value)}/>
+                            </FormControl>
+                            <FormControl variant="filled">
+                                <InputLabel sx={{fontWeight: "700", fontSize: "18px"}}>Implementation contract address</InputLabel>
+                                <FilledInput value={impl_contract} label="Implementation address"
+                                             onChange={(e) => setImplContractAddress(e.target.value)}/>
                             </FormControl>
                             <FormControl variant="filled">
                                 <InputLabel sx={{fontWeight: "700", fontSize: "18px"}}>From Block</InputLabel>

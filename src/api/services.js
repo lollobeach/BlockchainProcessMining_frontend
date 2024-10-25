@@ -2,10 +2,11 @@ import axios from "axios";
 
 const serverUrl = "http://localhost:8000";
 
-export const _sendData = async (contractName, contractAddress, fromBlock, toBlock, network, sc, filters) => {
+export const _sendData = async (contractName, contractAddress, impl_contract, fromBlock, toBlock, network, sc, filters) => {
     const formData = new FormData()
     formData.append('file', sc)
     formData.append('contractAddress', contractAddress)
+    formData.append('implementationContractAddress', impl_contract)
     formData.append('contractName', contractName)
     formData.append('fromBlock', fromBlock)
     formData.append('toBlock', toBlock)
