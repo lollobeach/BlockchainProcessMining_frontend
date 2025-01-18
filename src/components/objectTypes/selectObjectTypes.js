@@ -183,10 +183,10 @@ export const handleInputNameObjects = (results, ocel, setObjectsTypesItem, objec
     const variables = []
 
     results?.forEach((log) => {
-        log.inputs.forEach((input) => {
+        log.inputs.forEach((input, index) => {
             variables.push({
                 time: log.timestamp,
-                id: input.inputId,
+                id: "inputName_" + index + "_" + log.txHash,
                 name: input.inputName,
                 value: input.inputValue,
                 type: typeof input.inputValue === "number" ? "integer" : typeof input.inputValue
@@ -248,7 +248,7 @@ export const handleVariableNameObjects = (results, ocel, setObjectsTypesItem, ob
         log.storageState.forEach((variable) => {
             variables.push({
                 time: log.timestamp,
-                id: variable.variableId,
+                id: "variable_" + variable.variableName + "_" + log.contractAddress,
                 name: variable.variableName,
                 value: variable.variableValue,
                 type: typeof variable.variableValue === "number" ? "integer" : typeof variable.variableValue
@@ -317,11 +317,11 @@ export const handleEventNameObjects = (results, ocel, setObjectsTypesItem, objec
     const variables = []
 
     results?.forEach((log) => {
-        log.events.forEach((event) => {
+        log.events.forEach((event, index) => {
 
             const variable = {
                 time: log.timestamp,
-                id: event.eventId,
+                id: "event_" + index + "_" + log.txHash,
                 name: event.eventName,
                 attributes: [],
                 attributesValue: []
@@ -394,10 +394,10 @@ export const handleCallTypeObjects = (results, ocel, setObjectsTypesItem, object
     const variables = []
 
     results?.forEach((log) => {
-        log.internalTxs.forEach((internalTx) => {
+        log.internalTxs.forEach((internalTx, index) => {
             variables.push({
                 time: log.timestamp,
-                id: internalTx.callId,
+                id: "internalTx_" + index + "_" + log.txHash,
                 name: internalTx.callType,
                 value: internalTx.to,
                 type: "string"
