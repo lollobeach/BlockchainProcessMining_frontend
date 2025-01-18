@@ -66,7 +66,7 @@ export const handleTxHashObjects = (results, ocel, setObjectsTypesItem, objectsT
             time: log.timestamp,
             id: log.txHash,
             name: "txHash",
-            value: log.sender,
+            value: log.txHash,
             type: "string"
         })
     })
@@ -76,7 +76,7 @@ export const handleTxHashObjects = (results, ocel, setObjectsTypesItem, objectsT
     valuesSet.forEach(value => {
             newObjectTypes.push({
                 name: value.name,
-                attributes: [{name: "sender", type: value.type}]
+                attributes: [{name: "txHash", type: value.type}]
             })
         }
     )
@@ -90,7 +90,7 @@ export const handleTxHashObjects = (results, ocel, setObjectsTypesItem, objectsT
     const objects = []
     txHashes.forEach(value => {
         let attributeValues = []
-        attributeValues = [{name: "sender", time: value.time, value: value.value}]
+        attributeValues = [{name: "txHash", time: value.time, value: value.value}]
 
         objects.push({
             id: value.id,
