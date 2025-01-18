@@ -257,12 +257,24 @@ export const handleVariableNameObjects = (results, ocel, setObjectsTypesItem, ob
     })
 
     let newObjectTypes = [...ocel.objectTypes]
+    const objects = []
     const valuesSet = variables.filter((value, index, self) => index === self.findIndex((t) => t.name === value.name))
     valuesSet.forEach(value => {
             newObjectTypes.push({
                 name: value.name,
                 attributes: [{name: "value", type: value.type}]
             })
+            const varObject = {
+                id: value.id,
+                type: value.name,
+                attributes: []
+            }
+            variables.forEach(variable => {
+                if (variable.name === value.name) {
+                    varObject.attributes.push({name: "value", time: variable.time, value: variable.value})
+                }
+            })
+            objects.push(varObject)
         }
     )
 
@@ -272,18 +284,17 @@ export const handleVariableNameObjects = (results, ocel, setObjectsTypesItem, ob
         names: variables.map(value => ({name: value.name, id: value.id}))
     } : item))
 
-    const objects = []
-    variables.forEach(value => {
-        let attributeValues = []
-        attributeValues = [{name: "value", time: value.time, value: value.value}]
-
-        objects.push({
-            id: value.id,
-            key: "variableName",
-            type: value.name,
-            attributes: attributeValues
-        })
-    })
+    // variables.forEach(value => {
+    //     let attributeValues = []
+    //     attributeValues = [{name: "value", time: value.time, value: value.value}]
+    //
+    //     objects.push({
+    //         id: value.id,
+    //         key: "variableName",
+    //         type: value.name,
+    //         attributes: attributeValues
+    //     })
+    // })
 
     setObjectsItem((oldObjects) => [...oldObjects, ...objects])
     setOcel({
