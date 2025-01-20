@@ -136,7 +136,7 @@ export const handleSenderObjects = (results, ocel, setObjectsTypesItem, objectsT
     valuesSet.forEach(value => {
             newObjectTypes.push({
                 name: value.name,
-                attributes: [{name: "value", type: value.type}]
+                attributes: [{name: "address", type: value.type}]
             })
         }
     )
@@ -150,7 +150,7 @@ export const handleSenderObjects = (results, ocel, setObjectsTypesItem, objectsT
     const objects = []
     senders.forEach(value => {
         let attributeValues = []
-        attributeValues = [{name: "value", time: value.time, value: value.value}]
+        attributeValues = [{name: "address", time: value.time, value: value.value}]
 
         objects.push({
             id: value.id,

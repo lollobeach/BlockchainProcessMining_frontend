@@ -30,6 +30,8 @@ function ObjectType({
 
     const {results, ocel, setOcel} = useDataContext()
 
+    const [objectChosen, setObjectChosen] = useState("")
+
     const [objectAttributes, setObjectsAttributes] = useState([])
 
     useEffect(() => {
@@ -62,17 +64,18 @@ function ObjectType({
         "contractAddress": handleContractAddressObjects,
         "txHash": handleTxHashObjects,
         "sender": handleSenderObjects,
-        "inputName": handleInputNameObjects,
-        "variableName": handleVariableNameObjects,
-        "eventName": handleEventNameObjects,
-        "callType": handleCallTypeObjects,
-        "events": handleSelectEventsObjects,
-        "inputs": handleSelectInputsObjects,
-        "internalTxs": handleSelectInternalTxsObjects,
-        "storageState": handleSelectStorageStateObjects
+        "input": handleInputNameObjects,
+        "stateVariable": handleVariableNameObjects,
+        "event": handleEventNameObjects,
+        "internalTx": handleCallTypeObjects,
+        // "events": handleSelectEventsObjects,
+        // "inputs": handleSelectInputsObjects,
+        // "internalTxs": handleSelectInternalTxsObjects,
+        // "storageState": handleSelectStorageStateObjects
     }
 
     const handleSelectObjectTypeName = (e) => {
+        setObjectChosen(e.target.value)
         const handler = handlers[e.target.value]
         if (handler) {
             handler(results, ocel, setObjectsTypesItem, objectsTypesItem, objectType, setObjectsItem, setOcel)
@@ -100,7 +103,7 @@ function ObjectType({
     //
     // }
 
-    const objectTypesOptions = ["contractAddress", "txHash", "sender", "inputName", "variableName", "eventName", "callType", "events", "inputs", "internalTxs", "storageState"]
+    const objectTypesOptions = ["contractAddress", "txHash", "sender", "input", "stateVariable", "event", "internalTx"]
 
     return (
         <Box display="flex">
@@ -117,7 +120,7 @@ function ObjectType({
                             <InputLabel>Key</InputLabel>
                             <Select
                                 name={`${index}`}
-                                value={objectType.name}
+                                value = {objectChosen}
                                 label="name"
                                 onChange={(e) => handleSelectObjectTypeName(e)}
                             >
