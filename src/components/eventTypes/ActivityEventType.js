@@ -29,8 +29,9 @@ function ActivityEventType({setEventsItem}) {
                     timestamp: log.timestamp,
                     name: log.activity || "",
                     gasUsed: log.gasUsed,
+                    blockNumber: log.blockNumber,
                     sender: log.sender,
-                    attributes: [{name: "gasUsed", type: "integer"}, {name: "sender", type: "string"}]
+                    attributes: [{name: "gasUsed", type: "integer"}, {name: "blockNumber", type: "integer"}, {name: "sender", type: "string"}]
                 })
             })
 
@@ -48,7 +49,7 @@ function ActivityEventType({setEventsItem}) {
                     key: "activity",
                     type: value.name,
                     time: value.timestamp,
-                    attributes: [{name: "gasUsed", value: value.gasUsed}, {name: "sender", value: value.sender}],
+                    attributes: [{name: "gasUsed", value: value.gasUsed}, {name: "blockNumber", value: value.blockNumber}, {name: "sender", value: value.sender}],
                     relationships: value.relationships
                 })
             })
