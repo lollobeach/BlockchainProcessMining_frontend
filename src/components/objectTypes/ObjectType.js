@@ -9,11 +9,11 @@ import {
     handleEventNameObjects,
     handleInputNameObjects,
     handleCallTypeObjects,
-    handleSelectEventsObjects,
-    handleSelectInputsObjects,
+    // handleSelectEventsObjects,
+    // handleSelectInputsObjects,
     handleVariableNameObjects,
-    handleSelectInternalTxsObjects,
-    handleSelectStorageStateObjects,
+    // handleSelectInternalTxsObjects,
+    // handleSelectStorageStateObjects,
     handleSenderObjects,
     handleContractAddressObjects, handleTxHashObjects
 } from "./selectObjectTypes";
@@ -50,6 +50,7 @@ function ObjectType({
                 !object.names.map(name => name.id).includes(relationship.objectId)
             ))
         })
+
         setOcel({
             ...ocel,
             objectTypes: ocel.objectTypes.filter(item => !objectType.names.map(value => value.name).includes(item.name)),
@@ -120,9 +121,10 @@ function ObjectType({
                             <InputLabel>Key</InputLabel>
                             <Select
                                 name={`${index}`}
-                                value = {objectChosen}
+                                value = {objectType.name}
                                 label="name"
                                 onChange={(e) => handleSelectObjectTypeName(e)}
+                                variant='outlined'
                             >
                                 {
                                     objectTypesOptions.map((name, index) => (

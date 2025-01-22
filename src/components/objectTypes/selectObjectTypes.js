@@ -1,22 +1,33 @@
+import {
+    addContractAddressRelationships,
+    addEventRelationships,
+    addInputNameRelationships,
+    addInternalTxRelationships,
+    addSenderRelationships,
+    addTxHashRelationships,
+    addVariableRelationships
+} from "./obj2obj_relationships/addRelationships";
+
 export const handleContractAddressObjects = (results, ocel, setObjectsTypesItem, objectsTypesItem, objectType, setObjectsItem, setOcel) => {
+
     const contractAddress = []
 
     results?.forEach((log) => {
         contractAddress.push({
             time: log.timestamp,
-            id: log.contractAddress,
+            id: log.contractAddress + "_" + log.txHash,
             name: "contractAddress",
             value: log.contractAddress,
             type: "string"
         })
     })
 
-    let newObjectTypes = [...ocel.objectTypes]
+    const newObjectTypes = [...ocel.objectTypes]
     const valuesSet = contractAddress.filter((value, index, self) => index === self.findIndex((t) => t.name === value.name))
     valuesSet.forEach(value => {
             newObjectTypes.push({
                 name: value.name,
-                attributes: [{name: "contractAddress", type: value.type}]
+                attributes: [{name: "contractAddress", type: value.type}],
             })
         }
     )
@@ -29,24 +40,25 @@ export const handleContractAddressObjects = (results, ocel, setObjectsTypesItem,
 
     const objects = []
     contractAddress.forEach(value => {
-        let attributeValues = []
-        attributeValues = [{name: "contractAddress", time: value.time, value: value.value}]
-
-        objects.push({
+        const attributeValues = [{name: "contractAddress", time: value.time, value: value.value}]
+        const object = {
             id: value.id,
             key: "contractAddress",
             type: value.name,
             attributes: attributeValues
-        })
+        }
+
+        objects.push(object)
     })
 
     setObjectsItem((oldObjects) => [...oldObjects, ...objects])
-    setOcel({
+    const newOcel = {
         ...ocel,
         objectTypes: newObjectTypes,
         objects: [...ocel.objects, ...objects.map(({key, ...rest}) => rest)],
         events: [...ocel.events]
-    })
+    }
+    setOcel(newOcel)
 
     const events = [...ocel.events]
     events.forEach((event) => {
@@ -56,6 +68,8 @@ export const handleContractAddressObjects = (results, ocel, setObjectsTypesItem,
             }
         })
     })
+
+    addContractAddressRelationships(newOcel, setOcel, results);
 }
 
 export const handleTxHashObjects = (results, ocel, setObjectsTypesItem, objectsTypesItem, objectType, setObjectsItem, setOcel) => {
@@ -116,6 +130,8 @@ export const handleTxHashObjects = (results, ocel, setObjectsTypesItem, objectsT
             }
         })
     })
+
+    addTxHashRelationships(ocel, setOcel);
 }
 
 export const handleSenderObjects = (results, ocel, setObjectsTypesItem, objectsTypesItem, objectType, setObjectsItem, setOcel) => {
@@ -124,7 +140,7 @@ export const handleSenderObjects = (results, ocel, setObjectsTypesItem, objectsT
     results?.forEach((log) => {
         senders.push({
             time: log.timestamp,
-            id: log.sender,
+            id: log.sender + "_" + log.txHash,
             name: "sender",
             value: log.sender,
             type: "string"
@@ -161,12 +177,13 @@ export const handleSenderObjects = (results, ocel, setObjectsTypesItem, objectsT
     })
 
     setObjectsItem((oldObjects) => [...oldObjects, ...objects])
-    setOcel({
+    const newOcel = {
         ...ocel,
         objectTypes: newObjectTypes,
         objects: [...ocel.objects, ...objects.map(({key, ...rest}) => rest)],
         events: [...ocel.events]
-    })
+    }
+    setOcel(newOcel)
 
     const events = [...ocel.events]
     events.forEach((event) => {
@@ -176,8 +193,9 @@ export const handleSenderObjects = (results, ocel, setObjectsTypesItem, objectsT
             }
         })
     })
-}
 
+    addSenderRelationships(newOcel, setOcel);
+}
 
 export const handleInputNameObjects = (results, ocel, setObjectsTypesItem, objectsTypesItem, objectType, setObjectsItem, setOcel) => {
     const variables = []
@@ -206,7 +224,7 @@ export const handleInputNameObjects = (results, ocel, setObjectsTypesItem, objec
 
     setObjectsTypesItem(objectsTypesItem.map(item => item === objectType ? {
         ...item,
-        name: "inputName",
+        name: "input",
         names: variables.map(value => ({name: value.name, id: value.id}))
     } : item))
 
@@ -217,7 +235,7 @@ export const handleInputNameObjects = (results, ocel, setObjectsTypesItem, objec
 
         objects.push({
             id: value.id,
-            key: "inputName",
+            key: "input",
             type: value.name,
             attributes: attributeValues
         })
@@ -239,6 +257,8 @@ export const handleInputNameObjects = (results, ocel, setObjectsTypesItem, objec
             }
         })
     })
+
+    addInputNameRelationships(ocel, setOcel);
 }
 
 export const handleVariableNameObjects = (results, ocel, setObjectsTypesItem, objectsTypesItem, objectType, setObjectsItem, setOcel) => {
@@ -280,7 +300,7 @@ export const handleVariableNameObjects = (results, ocel, setObjectsTypesItem, ob
 
     setObjectsTypesItem(objectsTypesItem.map(item => item === objectType ? {
         ...item,
-        name: "variableName",
+        name: "stateVariable",
         names: variables.map(value => ({name: value.name, id: value.id}))
     } : item))
 
@@ -297,11 +317,13 @@ export const handleVariableNameObjects = (results, ocel, setObjectsTypesItem, ob
     // })
 
     setObjectsItem((oldObjects) => [...oldObjects, ...objects])
-    setOcel({
+    const newOcel = {
         ...ocel,
         objectTypes: newObjectTypes,
-        objects: [...ocel.objects, ...objects.map(({key, ...rest}) => rest)]
-    })
+        objects: [...ocel.objects, ...objects],
+        events: [...ocel.events]
+    }
+    setOcel(newOcel)
 
     const events = [...ocel.events]
     events.forEach((event) => {
@@ -311,6 +333,8 @@ export const handleVariableNameObjects = (results, ocel, setObjectsTypesItem, ob
             }
         })
     })
+
+    addVariableRelationships(newOcel, setOcel, results);
 }
 
 export const handleEventNameObjects = (results, ocel, setObjectsTypesItem, objectsTypesItem, objectType, setObjectsItem, setOcel) => {
@@ -358,7 +382,7 @@ export const handleEventNameObjects = (results, ocel, setObjectsTypesItem, objec
 
     setObjectsTypesItem(objectsTypesItem.map(item => item === objectType ? {
         ...item,
-        name: "eventName",
+        name: "event",
         names: variables.map(value => ({name: value.name, id: value.id}))
     } : item))
 
@@ -367,7 +391,7 @@ export const handleEventNameObjects = (results, ocel, setObjectsTypesItem, objec
 
         objects.push({
             id: value.id,
-            key: "eventName",
+            key: "event",
             type: value.name,
             attributes: value.attributesValue
         })
@@ -388,6 +412,8 @@ export const handleEventNameObjects = (results, ocel, setObjectsTypesItem, objec
             }
         })
     })
+
+    addEventRelationships(ocel, setOcel);
 }
 
 export const handleCallTypeObjects = (results, ocel, setObjectsTypesItem, objectsTypesItem, objectType, setObjectsItem, setOcel) => {
@@ -416,7 +442,7 @@ export const handleCallTypeObjects = (results, ocel, setObjectsTypesItem, object
 
     setObjectsTypesItem(objectsTypesItem.map(item => item === objectType ? {
         ...item,
-        name: "callType",
+        name: "internalTx",
         names: variables.map(value => ({name: value.name, id: value.id}))
     } : item))
 
@@ -427,7 +453,7 @@ export const handleCallTypeObjects = (results, ocel, setObjectsTypesItem, object
 
         objects.push({
             id: value.id,
-            key: "callType",
+            key: "internalTx",
             type: value.name,
             attributes: attributeValues
         })
@@ -448,6 +474,8 @@ export const handleCallTypeObjects = (results, ocel, setObjectsTypesItem, object
             }
         })
     })
+
+    addInternalTxRelationships(ocel, setOcel);
 }
 
 export const handleSelectEventsObjects = (results, ocel, setObjectsTypesItem, objectsTypesItem, objectType, setObjectsItem, setOcel) => {
