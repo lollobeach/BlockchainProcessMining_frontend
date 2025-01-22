@@ -115,12 +115,13 @@ export const handleTxHashObjects = (results, ocel, setObjectsTypesItem, objectsT
     })
 
     setObjectsItem((oldObjects) => [...oldObjects, ...objects])
-    setOcel({
+    const newOcel = {
         ...ocel,
         objectTypes: newObjectTypes,
         objects: [...ocel.objects, ...objects.map(({key, ...rest}) => rest)],
         events: [...ocel.events]
-    })
+    }
+    setOcel(newOcel)
 
     const events = [...ocel.events]
     events.forEach((event) => {
@@ -131,7 +132,7 @@ export const handleTxHashObjects = (results, ocel, setObjectsTypesItem, objectsT
         })
     })
 
-    addTxHashRelationships(ocel, setOcel);
+    addTxHashRelationships(newOcel, setOcel);
 }
 
 export const handleSenderObjects = (results, ocel, setObjectsTypesItem, objectsTypesItem, objectType, setObjectsItem, setOcel) => {
@@ -242,12 +243,13 @@ export const handleInputNameObjects = (results, ocel, setObjectsTypesItem, objec
     })
 
     setObjectsItem((oldObjects) => [...oldObjects, ...objects])
-    setOcel({
+    const newOcel = {
         ...ocel,
         objectTypes: newObjectTypes,
         objects: [...ocel.objects, ...objects.map(({key, ...rest}) => rest)],
         events: [...ocel.events]
-    })
+    }
+    setOcel(newOcel)
 
     const events = [...ocel.events]
     events.forEach((event) => {
@@ -258,7 +260,7 @@ export const handleInputNameObjects = (results, ocel, setObjectsTypesItem, objec
         })
     })
 
-    addInputNameRelationships(ocel, setOcel);
+    addInputNameRelationships(newOcel, setOcel);
 }
 
 export const handleVariableNameObjects = (results, ocel, setObjectsTypesItem, objectsTypesItem, objectType, setObjectsItem, setOcel) => {
@@ -398,11 +400,13 @@ export const handleEventNameObjects = (results, ocel, setObjectsTypesItem, objec
     })
 
     setObjectsItem((oldObjects) => [...oldObjects, ...objects])
-    setOcel({
+    const newOcel = {
         ...ocel,
         objectTypes: newObjectTypes,
-        objects: [...ocel.objects, ...objects.map(({key, ...rest}) => rest)]
-    })
+        objects: [...ocel.objects, ...objects.map(({key, ...rest}) => rest)],
+        events: [...ocel.events]
+    }
+    setOcel(newOcel)
 
     const events = [...ocel.events]
     events.forEach((event) => {
@@ -413,7 +417,7 @@ export const handleEventNameObjects = (results, ocel, setObjectsTypesItem, objec
         })
     })
 
-    addEventRelationships(ocel, setOcel);
+    addEventRelationships(newOcel, setOcel);
 }
 
 export const handleCallTypeObjects = (results, ocel, setObjectsTypesItem, objectsTypesItem, objectType, setObjectsItem, setOcel) => {
@@ -460,11 +464,13 @@ export const handleCallTypeObjects = (results, ocel, setObjectsTypesItem, object
     })
 
     setObjectsItem((oldObjects) => [...oldObjects, ...objects])
-    setOcel({
+    const newOcel = {
         ...ocel,
         objectTypes: newObjectTypes,
-        objects: [...ocel.objects, ...objects.map(({key, ...rest}) => rest)]
-    })
+        objects: [...ocel.objects, ...objects.map(({key, ...rest}) => rest)],
+        events: [...ocel.events]
+    }
+    setOcel(newOcel)
 
     const events = [...ocel.events]
     events.forEach((event) => {
@@ -475,7 +481,7 @@ export const handleCallTypeObjects = (results, ocel, setObjectsTypesItem, object
         })
     })
 
-    addInternalTxRelationships(ocel, setOcel);
+    addInternalTxRelationships(newOcel, setOcel);
 }
 
 export const handleSelectEventsObjects = (results, ocel, setObjectsTypesItem, objectsTypesItem, objectType, setObjectsItem, setOcel) => {
