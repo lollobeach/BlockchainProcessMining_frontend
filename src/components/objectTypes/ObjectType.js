@@ -17,6 +17,7 @@ import {
     handleSenderObjects,
     handleContractAddressObjects, handleTxHashObjects
 } from "./selectObjectTypes";
+import {removeRelationships} from "./obj2obj_relationships/removeRelationships";
 
 function ObjectType({
                         objectsKeys,
@@ -51,14 +52,17 @@ function ObjectType({
             ))
         })
 
-        setOcel({
+        const newOcel = {
             ...ocel,
             objectTypes: ocel.objectTypes.filter(item => !objectType.names.map(value => value.name).includes(item.name)),
             objects: ocel.objects.filter(item => !objectType.names.map(value => value.name).includes(item.type)),
             events: events
-        })
+        }
+        setOcel(newOcel)
         setObjectsItem((oldObjects) => oldObjects.filter(item => !objectType.names.map(value => value.name).includes(item.type)))
         setObjectsTypesItem(objectsTypesItem.filter(item => item.name !== object.name))
+
+        removeRelationships(object, newOcel, setOcel)
     }
 
     const handlers = {
