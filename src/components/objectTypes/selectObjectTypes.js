@@ -27,7 +27,7 @@ export const handleContractAddressObjects = (results, ocel, setObjectsTypesItem,
     valuesSet.forEach(value => {
             newObjectTypes.push({
                 name: value.name,
-                attributes: [{name: "contractAddress", type: value.type}],
+                attributes: [{name: "contractAddressValue", type: value.type}],
             })
         }
     )
@@ -40,7 +40,7 @@ export const handleContractAddressObjects = (results, ocel, setObjectsTypesItem,
 
     const objects = []
     contractAddress.forEach(value => {
-        const attributeValues = [{name: "contractAddress", time: value.time, value: value.value}]
+        const attributeValues = [{name: "contractAddressValue", time: value.time, value: value.value}]
         const object = {
             id: value.id,
             key: "contractAddress",
@@ -79,7 +79,7 @@ export const handleTxHashObjects = (results, ocel, setObjectsTypesItem, objectsT
         txHashes.push({
             time: log.timestamp,
             id: log.txHash,
-            name: "txHash",
+            name: "transactionHash",
             value: log.txHash,
             type: "string"
         })
@@ -90,7 +90,7 @@ export const handleTxHashObjects = (results, ocel, setObjectsTypesItem, objectsT
     valuesSet.forEach(value => {
             newObjectTypes.push({
                 name: value.name,
-                attributes: [{name: "txHash", type: value.type}]
+                attributes: [{name: "hashValue", type: value.type}]
             })
         }
     )
@@ -104,7 +104,7 @@ export const handleTxHashObjects = (results, ocel, setObjectsTypesItem, objectsT
     const objects = []
     txHashes.forEach(value => {
         let attributeValues = []
-        attributeValues = [{name: "txHash", time: value.time, value: value.value}]
+        attributeValues = [{name: "hashValue", time: value.time, value: value.value}]
 
         objects.push({
             id: value.id,
@@ -153,7 +153,7 @@ export const handleSenderObjects = (results, ocel, setObjectsTypesItem, objectsT
     valuesSet.forEach(value => {
             newObjectTypes.push({
                 name: value.name,
-                attributes: [{name: "address", type: value.type}]
+                attributes: [{name: "senderAddress", type: value.type}]
             })
         }
     )
@@ -167,7 +167,7 @@ export const handleSenderObjects = (results, ocel, setObjectsTypesItem, objectsT
     const objects = []
     senders.forEach(value => {
         let attributeValues = []
-        attributeValues = [{name: "address", time: value.time, value: value.value}]
+        attributeValues = [{name: "senderAddress", time: value.time, value: value.value}]
 
         objects.push({
             id: value.id,
@@ -218,7 +218,7 @@ export const handleInputNameObjects = (results, ocel, setObjectsTypesItem, objec
     valuesSet.forEach(value => {
             newObjectTypes.push({
                 name: value.name,
-                attributes: [{name: "value", type: value.type}]
+                attributes: [{name: "inputValue", type: value.type}]
             })
         }
     )
@@ -232,7 +232,7 @@ export const handleInputNameObjects = (results, ocel, setObjectsTypesItem, objec
     const objects = []
     variables.forEach(value => {
         let attributeValues = []
-        attributeValues = [{name: "value", time: value.time, value: value.value}]
+        attributeValues = [{name: "inputValue", time: value.time, value: value.value}]
 
         objects.push({
             id: value.id,
@@ -284,7 +284,7 @@ export const handleVariableNameObjects = (results, ocel, setObjectsTypesItem, ob
     valuesSet.forEach(value => {
             newObjectTypes.push({
                 name: value.name,
-                attributes: [{name: "value", type: value.type}]
+                attributes: [{name: "variableValue", type: value.type}]
             })
             const varObject = {
                 id: value.id,
@@ -293,7 +293,7 @@ export const handleVariableNameObjects = (results, ocel, setObjectsTypesItem, ob
             }
             variables.forEach(variable => {
                 if (variable.name === value.name) {
-                    varObject.attributes.push({name: "value", time: variable.time, value: variable.value})
+                    varObject.attributes.push({name: "variableValue", time: variable.time, value: variable.value})
                 }
             })
             objects.push(varObject)
@@ -427,7 +427,7 @@ export const handleCallTypeObjects = (results, ocel, setObjectsTypesItem, object
         log.internalTxs.forEach((internalTx, index) => {
             variables.push({
                 time: log.timestamp,
-                id: "internalTx_" + index + "_" + log.txHash,
+                id: "internalTransaction_" + index + "_" + log.txHash,
                 name: internalTx.callType,
                 value: internalTx.to,
                 type: "string"
