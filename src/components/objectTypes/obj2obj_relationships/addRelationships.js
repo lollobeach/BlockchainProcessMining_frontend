@@ -21,7 +21,7 @@ const addContractStateVariableRelationships = (ocel, setOcel, jsonLog) => {
             })
         }
 
-        if (!variableObjects.some(variableObj => variableObj.relationships?.some(relationship => relationship.qualifier.includes("is storage of")))) {
+        if (!variableObjects.some(variableObj => variableObj.relationships?.some(relationship => relationship.qualifier.includes("storage of")))) {
             objects.forEach(obj => {
                 if (obj.id.includes("variable")) {
                     const relationships = [...(obj.relationships || [])]
@@ -30,7 +30,7 @@ const addContractStateVariableRelationships = (ocel, setOcel, jsonLog) => {
                             const contractAddressToAdd = contractAddressObjects.find(contractAddressObj => contractAddressObj.id.split("_")[1] === log.txHash).id
                             relationships.push({
                                 objectId: contractAddressToAdd,
-                                qualifier: "is storage of"
+                                qualifier: "storage of"
                             })
                         }
                     })
@@ -53,7 +53,7 @@ const addContractEventRelationships = (ocel, setOcel) => {
         if (!contractAddressObjects.some(contractAddressObj => contractAddressObj.relationships?.some(relationship => relationship.qualifier.includes("defines")))) {
             objects.forEach(obj => {
                 if (obj.type.includes("contractAddress")) {
-                    const relationships = [...(obj.relationship || [])]
+                    const relationships = [...(obj.relationships || [])]
                     eventObjects.forEach(eventObj => {
                         if (eventObj.id.split("_")[2] === obj.id.split("_")[1]) {
                             relationships.push({
@@ -70,7 +70,7 @@ const addContractEventRelationships = (ocel, setOcel) => {
         if (!eventObjects.some(eventObj => eventObj.relationships?.some(relationship => relationship.qualifier.includes("member of")))) {
             objects.forEach(obj => {
                 if (obj.id.includes("event_")) {
-                    const relationships = [...(obj.relationship || [])]
+                    const relationships = [...(obj.relationships || [])]
                     const contractAddressToAdd = contractAddressObjects.find(contractAddressObj => contractAddressObj.id.split("_")[1] === obj.id.split("_")[2]).id
                     relationships.push({
                         objectId: contractAddressToAdd,
@@ -149,7 +149,7 @@ const addSenderInputRelationships = (ocel, setOcel) => {
         if (!senderObjects.some(senderObj => senderObj.relationships?.some(relationship => relationship.qualifier.includes("passes")))) {
             objects.forEach(obj => {
                 if (obj.type.includes("sender")) {
-                    const relationships = [...(obj.relationship || [])]
+                    const relationships = [...(obj.relationships || [])]
                     inputObjects.forEach(inputObj => {
                         if (inputObj.id.split("_")[2] === obj.id.split("_")[1]) {
                             relationships.push({
@@ -163,14 +163,14 @@ const addSenderInputRelationships = (ocel, setOcel) => {
             })
         }
 
-        if (!inputObjects.some(inputObj => inputObj.relationships?.some(relationship => relationship.qualifier.includes("is inserted by")))) {
+        if (!inputObjects.some(inputObj => inputObj.relationships?.some(relationship => relationship.qualifier.includes("inserted by")))) {
             objects.forEach(obj => {
                 if (obj.id.includes("inputName_")) {
-                    const relationships = [...(obj.relationship || [])]
+                    const relationships = [...(obj.relationships || [])]
                     const senderToAdd = senderObjects.find(senderObj => senderObj.id.split("_")[1] === obj.id.split("_")[2]).id
                     relationships.push({
                         objectId: senderToAdd,
-                        qualifier: "is inserted by"
+                        qualifier: "inserted by"
                     })
                     obj.relationships = relationships
                 }
@@ -185,12 +185,12 @@ const addSenderInputRelationships = (ocel, setOcel) => {
 const addSenderTxHashRelationships = (ocel, setOcel) => {
     const objects = ocel.objects;
     const senderObjects = objects.filter(obj => obj.type.includes("sender"));
-    const txHashObjects = objects.filter(obj => obj.type.includes("txHash"));
+    const txHashObjects = objects.filter(obj => obj.type.includes("transactionHash"));
     if (senderObjects.length > 0 && txHashObjects.length > 0) {
         if (!senderObjects.some(senderObj => senderObj.relationships?.some(relationship => relationship.qualifier.includes("generates")))) {
             objects.forEach(obj => {
                 if (obj.type.includes("sender")) {
-                    const relationships = [...(obj.relationship || [])]
+                    const relationships = [...(obj.relationships || [])]
                     const txHashToAdd = txHashObjects.find(txHashObj => txHashObj.id === obj.id.split("_")[1]).id
                     relationships.push({
                         objectId: txHashToAdd,
@@ -203,8 +203,8 @@ const addSenderTxHashRelationships = (ocel, setOcel) => {
 
         if (!txHashObjects.some(txHashObj => txHashObj.relationships?.some(relationship => relationship.qualifier.includes("created by")))) {
             objects.forEach(obj => {
-                if (obj.type.includes("txHash")) {
-                    const relationships = [...(obj.relationship || [])]
+                if (obj.type.includes("transactionHash")) {
+                    const relationships = [...(obj.relationships || [])]
                     const senderToAdd = senderObjects.find(senderObj => senderObj.id.split("_")[1] === obj.id).id
                     relationships.push({
                         objectId: senderToAdd,
@@ -231,20 +231,20 @@ export const addSenderRelationships = (ocel, setOcel, jsonLog) => {
         addSenderInputRelationships(ocel, setOcel);
     }
 
-    if (objects.some(obj => obj.type.includes("txHash"))) {
+    if (objects.some(obj => obj.type.includes("transactionHash"))) {
         addSenderTxHashRelationships(ocel, setOcel);
     }
 }
 
 const addTxHashInternalTxRelationships = (ocel, setOcel) => {
     const objects = ocel.objects;
-    const txHashObjects = objects.filter(obj => obj.type.includes("txHash"));
-    const internalTxObjects = objects.filter(obj => obj.id.includes("internalTx_"));
+    const txHashObjects = objects.filter(obj => obj.type.includes("transactionHash"));
+    const internalTxObjects = objects.filter(obj => obj.id.includes("internalTransaction_"));
     if (txHashObjects.length > 0 && internalTxObjects.length > 0) {
         if (!txHashObjects.some(txHashObj => txHashObj.relationships?.some(relationship => relationship.qualifier.includes("triggers")))) {
             objects.forEach(obj => {
-                if (obj.type.includes("txHash")) {
-                    const relationships = [...(obj.relationship || [])]
+                if (obj.type.includes("transactionHash")) {
+                    const relationships = [...(obj.relationships || [])]
                     internalTxObjects.forEach(internalTxObj => {
                         if (internalTxObj.id.split("_")[2] === obj.id) {
                             relationships.push({
@@ -258,14 +258,14 @@ const addTxHashInternalTxRelationships = (ocel, setOcel) => {
             })
         }
 
-        if (!internalTxObjects.some(internalTxObj => internalTxObj.relationships?.some(relationship => relationship.qualifier.includes("triggered by")))) {
+        if (!internalTxObjects.some(internalTxObj => internalTxObj.relationships?.some(relationship => relationship.qualifier.includes("triggered in")))) {
             objects.forEach(obj => {
-                if (obj.id.includes("internalTx_")) {
-                    const relationships = [...(obj.relationship || [])]
+                if (obj.id.includes("internalTransaction_")) {
+                    const relationships = [...(obj.relationships || [])]
                     const txHashToAdd = txHashObjects.find(txHashObj => txHashObj.id === obj.id.split("_")[2]).id
                     relationships.push({
                         objectId: txHashToAdd,
-                        qualifier: "triggered by"
+                        qualifier: "triggered in"
                     })
                     obj.relationships = relationships
                 }
@@ -282,7 +282,7 @@ export const addTxHashRelationships = (ocel, setOcel) => {
         addSenderTxHashRelationships(ocel, setOcel);
     }
 
-    if (ocel.objects.some(obj => obj.id.includes("internalTx_"))) {
+    if (ocel.objects.some(obj => obj.id.includes("internalTransaction_"))) {
         addTxHashInternalTxRelationships(ocel, setOcel);
     }
 }
@@ -306,7 +306,7 @@ export const addEventRelationships = (ocel, setOcel) => {
 }
 
 export const addInternalTxRelationships = (ocel, setOcel) => {
-    if (ocel.objects.some(obj => obj.type.includes("txHash"))) {
+    if (ocel.objects.some(obj => obj.type.includes("transactionHash"))) {
         addTxHashInternalTxRelationships(ocel, setOcel);
     }
 }

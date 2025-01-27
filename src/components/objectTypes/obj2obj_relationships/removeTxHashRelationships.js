@@ -4,7 +4,7 @@ export const removeTxHashRelationships = (ocel, setOcel) => {
     if (objects.some(obj => obj.type === "sender")) {
         removeTxHashSenderRelationships(ocel, setOcel)
     }
-    if (objects.some(obj => obj.id.includes("internalTx_"))) {
+    if (objects.some(obj => obj.id.includes("internalTransaction_"))) {
         removeTxHashInternalTxRelationships(ocel, setOcel)
     }
 }
@@ -30,9 +30,9 @@ const removeTxHashSenderRelationships = (ocel, setOcel) => {
 const removeTxHashInternalTxRelationships = (ocel, setOcel) => {
     const objects = ocel.objects
     objects.forEach((object) => {
-        if (object.id.includes("internalTx_")) {
+        if (object.id.includes("internalTransaction_")) {
             object.relationships = object.relationships.filter((relationship) => (
-                "triggered by" !== relationship.qualifier
+                "triggered in" !== relationship.qualifier
             ))
 
             if (object.relationships.length === 0) {

@@ -4,7 +4,6 @@ import {removeTxHashRelationships} from "./removeTxHashRelationships";
 
 export const removeRelationships = (objectToRemove, ocel, setOcel) => {
     const nameToRemove = objectToRemove.name
-    console.log("nameToRemove", nameToRemove)
 
     if (nameToRemove === "contractAddress") {
         removeContractAddressRelationships(ocel, setOcel)
@@ -80,7 +79,7 @@ const removeEventContractAddressRelationships = (ocel, setOcel) => {
 const removeInternalTxTxHashRelationships = (ocel, setOcel) => {
     const objects = ocel.objects
     objects.forEach((object) => {
-        if (object.type === "txHash") {
+        if (object.type === "transactionHash") {
             object.relationships = object.relationships.filter((relationship) => (
                 "triggers" !== relationship.qualifier
             ))

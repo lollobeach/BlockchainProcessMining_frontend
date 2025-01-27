@@ -7,7 +7,7 @@ export const removeSenderRelationships = (ocel, setOcel) => {
     if (objects.some(obj => obj.id.includes("inputName_"))) {
         removeSenderInputRelationships(ocel, setOcel)
     }
-    if (objects.some(obj => obj.type === "txHash")) {
+    if (objects.some(obj => obj.type === "transactionHash")) {
         removeSenderTxHashRelationships(ocel, setOcel)
     }
 }
@@ -35,7 +35,7 @@ const removeSenderInputRelationships = (ocel, setOcel) => {
     objects.forEach((object) => {
         if (object.id.includes("inputName_")) {
             object.relationships = object.relationships.filter((relationship) => (
-                "is inserted by" !== relationship.qualifier
+                "inserted by" !== relationship.qualifier
             ))
 
             if (object.relationships.length === 0) {
@@ -51,7 +51,7 @@ const removeSenderInputRelationships = (ocel, setOcel) => {
 const removeSenderTxHashRelationships = (ocel, setOcel) => {
     const objects = ocel.objects
     objects.forEach((object) => {
-        if (object.type === "txHash") {
+        if (object.type === "transactionHash") {
             object.relationships = object.relationships.filter((relationship) => (
                 "created by" !== relationship.qualifier
             ))

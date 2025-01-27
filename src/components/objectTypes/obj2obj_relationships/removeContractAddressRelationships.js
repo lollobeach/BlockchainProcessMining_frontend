@@ -35,7 +35,7 @@ const removeContractAddressVariableNameRelationships = (ocel, setOcel) => {
     objects.forEach((object) => {
         if (object.id.includes("variable_")) {
             object.relationships = object.relationships.filter((relationship) => (
-                !relationship.qualifier.includes("is storage of")
+                !relationship.qualifier.includes("storage of")
             ))
 
             if (object.relationships.length === 0) {
