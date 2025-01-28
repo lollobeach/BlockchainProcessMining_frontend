@@ -428,8 +428,8 @@ export const handleCallTypeObjects = (results, ocel, setObjectsTypesItem, object
             variables.push({
                 time: log.timestamp,
                 id: "internalTransaction_" + index + "_" + log.txHash,
-                name: internalTx.callType,
-                value: internalTx.to,
+                name: "internalTransaction",
+                value: internalTx.callType,
                 type: "string"
             })
         })
@@ -440,7 +440,7 @@ export const handleCallTypeObjects = (results, ocel, setObjectsTypesItem, object
     valuesSet.forEach(value => {
         newObjectTypes.push({
             name: value.name,
-            attributes: [{name: "to", type: "string"}]
+            attributes: [{name: "callType", type: "string"}]
         })
     })
 
@@ -453,7 +453,7 @@ export const handleCallTypeObjects = (results, ocel, setObjectsTypesItem, object
     const objects = []
     variables.forEach(value => {
         let attributeValues = []
-        attributeValues = [{name: "to", time: value.time, value: value.value}]
+        attributeValues = [{name: "callType", time: value.time, value: value.value}]
 
         objects.push({
             id: value.id,
