@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {
     Box,
     Button,
-    FormControl,
+    FormControl, Grid,
     InputLabel,
     MenuItem,
     Select,
@@ -127,170 +127,184 @@ function Query() {
     }
 
     return (
-        <QueryPageLayout loading={loading} setLoading={setLoading} results={results} setResults={setResults}>
-            <Stack justifyContent="space-evenly" height="100%">
-                <Box display="flex" justifyContent="space-between" gap={5}>
-                    <Box width="100%">
-                        <Box mb={4} display="flex" justifyContent="space-between">
-                            <Typography textAlign="center" variant="h3">
-                                Transaction Extractor
-                            </Typography>
-                            <FormControl fullWidth sx={{width: 200}}>
-                                <InputLabel>Network</InputLabel>
-                                <Select
-                                    value={network}
-                                    label="name"
-                                    onChange={handleNetworkChange}
-                                >
-                                    {
-                                        networks.map((name, index) => (
-                                            <MenuItem key={index} value={name}>
-                                                <Typography>{name}</Typography>
-                                            </MenuItem>
-                                        ))
-                                    }
-                                </Select>
-                            </FormControl>
+        <Box>
+            <QueryPageLayout loading={loading} setLoading={setLoading} results={results} setResults={setResults}>
+                <Stack justifyContent="space-evenly" height="100%">
+                    <Box display="flex" justifyContent="space-between" gap={5}>
+                        <Box width="100%">
+                            <Box mb={4} display="flex" justifyContent="space-between">
+                                <Typography textAlign="center" variant="h3">
+                                    Transaction Extractor
+                                </Typography>
+                                <FormControl fullWidth sx={{width: 200}}>
+                                    <InputLabel>Network</InputLabel>
+                                    <Select
+                                        value={network}
+                                        label="name"
+                                        onChange={handleNetworkChange}
+                                    >
+                                        {
+                                            networks.map((name, index) => (
+                                                <MenuItem key={index} value={name}>
+                                                    <Typography>{name}</Typography>
+                                                </MenuItem>
+                                            ))
+                                        }
+                                    </Select>
+                                </FormControl>
+                            </Box>
+                            <form onSubmit={handleSubmit}>
+                                <Stack spacing={2} justifyContent="center">
+                                    <Box display="flex" alignItems="center" gap={2}>
+                                        <NestedField label="Transaction Hash" name="txHash" value={formData.txHash}
+                                                     onChange={handleChange}/>
+                                    </Box>
+                                    <Box display="flex" alignItems="center" gap={2}>
+                                        <NestedField label="Contract Address" name="contractAddress"
+                                                     value={formData.contractAddress} onChange={handleChange}/>
+                                    </Box>
+                                    <Box display="flex" alignItems="center" gap={2}>
+                                        <NestedField label="Sender" name="sender" value={formData.sender}
+                                                     onChange={handleChange}/>
+                                    </Box>
+                                    <Box display="flex" alignItems="center" gap={2}>
+                                        <RangeFields
+                                            title="Gas Used"
+                                            name="gasUsed"
+                                            from={formData.gasUsedFrom}
+                                            to={formData.gasUsedTo}
+                                            type="number"
+                                            onChange={handleChange}
+                                        />
+                                    </Box>
+                                    <Box display="flex" alignItems="center" gap={2}>
+                                        <NestedField label="Activity" name="activity" value={formData.activity}
+                                                     onChange={handleChange}/>
+                                    </Box>
+                                    <Box display="flex" alignItems="center" gap={2}>
+                                        <RangeFields
+                                            title="Block Number"
+                                            name="blockNumber"
+                                            from={formData.blockNumberFrom}
+                                            to={formData.blockNumberTo}
+                                            type="number"
+                                            onChange={handleChange}
+                                        />
+                                    </Box>
+                                    <Box display="flex" alignItems="center" gap={2}>
+                                        <RangeFields
+                                            title="Timestamp"
+                                            name="timestamp"
+                                            from={formData.timestampFrom}
+                                            to={formData.timestampTo}
+                                            type="datetime-local"
+                                            onChange={handleChange}
+                                        />
+                                    </Box>
+                                </Stack>
+                            </form>
                         </Box>
-                        <form onSubmit={handleSubmit}>
-                            <Stack spacing={2} justifyContent="center">
-                                <Box display="flex" alignItems="center" gap={2}>
-                                    <NestedField label="Transaction Hash" name="txHash" value={formData.txHash}
-                                                 onChange={handleChange}/>
-                                </Box>
-                                <Box display="flex" alignItems="center" gap={2}>
-                                    <NestedField label="Contract Address" name="contractAddress"
-                                                 value={formData.contractAddress} onChange={handleChange}/>
-                                </Box>
-                                <Box display="flex" alignItems="center" gap={2}>
-                                    <NestedField label="Sender" name="sender" value={formData.sender}
-                                                 onChange={handleChange}/>
-                                </Box>
-                                <Box display="flex" alignItems="center" gap={2}>
-                                    <RangeFields
-                                        title="Gas Used"
-                                        name="gasUsed"
-                                        from={formData.gasUsedFrom}
-                                        to={formData.gasUsedTo}
-                                        type="number"
-                                        onChange={handleChange}
-                                    />
-                                </Box>
-                                <Box display="flex" alignItems="center" gap={2}>
-                                    <NestedField label="Activity" name="activity" value={formData.activity}
-                                                 onChange={handleChange}/>
-                                </Box>
-                                <Box display="flex" alignItems="center" gap={2}>
-                                    <RangeFields
-                                        title="Block Number"
-                                        name="blockNumber"
-                                        from={formData.blockNumberFrom}
-                                        to={formData.blockNumberTo}
-                                        type="number"
-                                        onChange={handleChange}
-                                    />
-                                </Box>
-                                <Box display="flex" alignItems="center" gap={2}>
-                                    <RangeFields
-                                        title="Timestamp"
-                                        name="timestamp"
-                                        from={formData.timestampFrom}
-                                        to={formData.timestampTo}
-                                        type="datetime-local"
-                                        onChange={handleChange}
-                                    />
-                                </Box>
-                                <InputsForm inputs={formData.inputs}
-                                            setInputs={(inputs) => setFormData({...formData, inputs})}/>
-                                <StorageStateForm storageState={formData.storageState}
-                                                  setStorageState={(storageState) => setFormData({
-                                                      ...formData,
-                                                      storageState
-                                                  })}/>
-                                <InternalTxsForm internalTxs={formData.internalTxs}
-                                                 setInternalTxs={(internalTxs) => setFormData({
-                                                     ...formData,
-                                                     internalTxs
-                                                 })}/>
-                                <EventsForm events={formData.events}
-                                            setEvents={(events) => setFormData({...formData, events})}/>
-                                <Box display="flex" justifyContent="space-between" gap={2}>
-                                    <Button
-                                        type="submit"
-                                        fullWidth
-                                        variant="contained"
-                                        disabled={loading}
-                                        sx={{
-                                            padding: 1,
-                                            height: "40px",
-                                            backgroundColor: "#66cdaa",
-                                            '&:hover': {backgroundColor: "#6fa287"}
-                                        }}
-                                    >
-                                        <Box width="100%">
-                                            {loading ? <LinearProgress/> : <>Search</>}
-                                        </Box>
-                                    </Button>
-                                    <Button
-                                        fullWidth
-                                        variant="contained"
-                                        onClick={() => {
-                                            setFormData({
-                                                txHash: '',
-                                                contractAddress: '',
-                                                sender: '',
-                                                gasUsed: '',
-                                                gasUsedFrom: '',
-                                                gasUsedTo: '',
-                                                activity: '',
-                                                blockNumber: '',
-                                                blockNumberFrom: '',
-                                                blockNumberTo: '',
-                                                timestamp: '',
-                                                timestampFrom: '',
-                                                timestampTo: '',
-                                                inputs: {
-                                                    inputId: '',
-                                                    inputName: '',
-                                                    type: '',
-                                                    inputValue: ''
-                                                },
-                                                storageState: {
-                                                    variableId: '',
-                                                    variableName: '',
-                                                    type: '',
-                                                    variableValue: '',
-                                                    variableRawValue: ''
-                                                },
-                                                internalTxs: {
-                                                    callId: '',
-                                                    callType: '',
-                                                    to: ''
-                                                },
-                                                events: {
-                                                    eventId: '',
-                                                    eventName: ''
-                                                }
-                                            });
-
-                                        }}
-                                        sx={{
-                                            padding: 1,
-                                            height: "40px",
-                                            backgroundColor: "#f44336",
-                                            '&:hover': {backgroundColor: "#d32f2f"}
-                                        }}
-                                        startIcon={<Delete/>}
-                                    >
-                                        Clear all fields
-                                    </Button>
-                                </Box>
-                            </Stack>
-                        </form>
                     </Box>
+                </Stack>
+            </QueryPageLayout>
+            <Box marginTop={2} paddingX={5}>
+                <Grid container columnSpacing={2}>
+                    <Grid item sm={12} md={3}>
+                        <InputsForm inputs={formData.inputs}
+                                    setInputs={(inputs) => setFormData({...formData, inputs})}/>
+                    </Grid>
+                    <Grid item sm={12} md={3}>
+                        <StorageStateForm storageState={formData.storageState}
+                                          setStorageState={(storageState) => setFormData({
+                                              ...formData,
+                                              storageState
+                                          })}/>
+                    </Grid>
+                    <Grid item sm={12} md={3}>
+                        <InternalTxsForm internalTxs={formData.internalTxs}
+                                         setInternalTxs={(internalTxs) => setFormData({
+                                             ...formData,
+                                             internalTxs
+                                         })}/>
+                    </Grid>
+                    <Grid item sm={12} md={3}>
+                        <EventsForm events={formData.events}
+                                    setEvents={(events) => setFormData({...formData, events})}/>
+                    </Grid>
+                </Grid>
+                <Box display="flex" justifyContent="space-between" gap={2} marginTop={2}>
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        disabled={loading}
+                        sx={{
+                            padding: 1,
+                            height: "40px",
+                            backgroundColor: "#66cdaa",
+                            '&:hover': {backgroundColor: "#6fa287"}
+                        }}
+                    >
+                        <Box width="100%">
+                            {loading ? <LinearProgress/> : <>Search</>}
+                        </Box>
+                    </Button>
+                    <Button
+                        fullWidth
+                        variant="contained"
+                        onClick={() => {
+                            setFormData({
+                                txHash: '',
+                                contractAddress: '',
+                                sender: '',
+                                gasUsed: '',
+                                gasUsedFrom: '',
+                                gasUsedTo: '',
+                                activity: '',
+                                blockNumber: '',
+                                blockNumberFrom: '',
+                                blockNumberTo: '',
+                                timestamp: '',
+                                timestampFrom: '',
+                                timestampTo: '',
+                                inputs: {
+                                    inputId: '',
+                                    inputName: '',
+                                    type: '',
+                                    inputValue: ''
+                                },
+                                storageState: {
+                                    variableId: '',
+                                    variableName: '',
+                                    type: '',
+                                    variableValue: '',
+                                    variableRawValue: ''
+                                },
+                                internalTxs: {
+                                    callId: '',
+                                    callType: '',
+                                    to: ''
+                                },
+                                events: {
+                                    eventId: '',
+                                    eventName: ''
+                                }
+                            });
+
+                        }}
+                        sx={{
+                            padding: 1,
+                            height: "40px",
+                            backgroundColor: "#f44336",
+                            '&:hover': {backgroundColor: "#d32f2f"}
+                        }}
+                        startIcon={<Delete/>}
+                    >
+                        Clear all fields
+                    </Button>
                 </Box>
-            </Stack>
-        </QueryPageLayout>
+            </Box>
+        </Box>
     );
 }
 

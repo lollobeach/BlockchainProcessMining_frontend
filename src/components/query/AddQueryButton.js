@@ -6,7 +6,8 @@ const AddButton = ({onClick, label}) => {
         <Button variant="contained" onClick={onClick}
                 sx={{
                     padding: "8px",
-                    height: "auto"
+                    height: "auto",
+                    width: "100%"
                 }}>
             {label}
         </Button>
