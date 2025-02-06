@@ -4,7 +4,7 @@ import CustomTypography from "../CustomTypography";
 
 function ActivityEventAttribute() {
 
-    const attributes = ["gasUsed", "sender"]
+    const attributes = ["gasUsed", "blockNumber", "sender"]
 
     return (
         attributes.map((attribute, index) => (
@@ -39,11 +39,11 @@ function ActivityEventAttribute() {
                                 <FormControl disabled fullWidth sx={{width: 200}}>
                                     <InputLabel>Type</InputLabel>
                                     <Select
-                                        value={attribute === "gasUsed" ? "integer" : "string"}
+                                        value={attribute === "gasUsed" || attribute === "blockNumber" ? "integer" : "string"}
                                         label="name"
                                     >
-                                        <MenuItem value={attribute === "gasUsed" ? "integer" : "string"}
-                                                  sx={{width: 400, overflow: "auto"}}>{attribute === "gasUsed" ? "integer" : "string"}</MenuItem>
+                                        <MenuItem value={attribute === "gasUsed" || attribute === "blockNumber" ? "integer" : "string"}
+                                                  sx={{width: 400, overflow: "auto"}}>{attribute === "gasUsed" || attribute === "blockNumber" ? "integer" : "string"}</MenuItem>
                                     </Select>
                                 </FormControl>
                             </Stack>
