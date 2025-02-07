@@ -46,7 +46,7 @@ function ActivityEventType({setEventsItem}) {
             temporaryEvents.forEach((value) => {
                 events.push({
                     id: value.id,
-                    key: "functionName",
+                    key: "activity",
                     type: value.name,
                     time: value.timestamp,
                     attributes: [{name: "gasUsed", value: value.gasUsed}, {name: "blockNumber", value: value.blockNumber}, {name: "sender", value: value.sender}],
@@ -78,10 +78,10 @@ function ActivityEventType({setEventsItem}) {
                         <FormControl disabled fullWidth sx={{width: 200}}>
                             <InputLabel>Key</InputLabel>
                             <Select
-                                value="functionName"
+                                value="activity"
                                 label="name"
                             >
-                                <MenuItem value="functionName">functionName</MenuItem>
+                                <MenuItem value="activity">activity</MenuItem>
                             </Select>
                         </FormControl>
                     </Stack>
