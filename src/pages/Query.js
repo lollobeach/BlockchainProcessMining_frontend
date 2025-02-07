@@ -36,25 +36,21 @@ function Query() {
         timestampFrom: '',
         timestampTo: '',
         inputs: {
-            inputId: '',
             inputName: '',
             type: '',
             inputValue: ''
         },
         storageState: {
-            variableId: '',
             variableName: '',
             type: '',
             variableValue: '',
             variableRawValue: ''
         },
         internalTxs: {
-            callId: '',
             callType: '',
             to: ''
         },
         events: {
-            eventId: '',
             eventName: ''
         }
     });
@@ -266,25 +262,21 @@ function Query() {
                                 timestampFrom: '',
                                 timestampTo: '',
                                 inputs: {
-                                    inputId: '',
                                     inputName: '',
                                     type: '',
                                     inputValue: ''
                                 },
                                 storageState: {
-                                    variableId: '',
                                     variableName: '',
                                     type: '',
                                     variableValue: '',
                                     variableRawValue: ''
                                 },
                                 internalTxs: {
-                                    callId: '',
                                     callType: '',
                                     to: ''
                                 },
                                 events: {
-                                    eventId: '',
                                     eventName: ''
                                 }
                             });
