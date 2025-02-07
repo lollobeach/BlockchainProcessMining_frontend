@@ -47,7 +47,7 @@ function QueryPageLayout({ children, loading, setLoading, results, setResults })
     const hasResults = results && Array.isArray(results) && results.length > 0;
 
     return (
-        <Box display="flex" justifyContent="center" marginTop={5} paddingX={5} height="100%">
+        <Box display="flex" justifyContent="center" marginTop={2} paddingX={5} height="100%">
             <Grid container spacing={2}>
                 <Grid item lg={6} md={12} width="100%">
                     {children}

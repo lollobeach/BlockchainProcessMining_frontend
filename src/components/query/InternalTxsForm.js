@@ -17,7 +17,7 @@ const InternalTxsForm = ({internalTxs, setInternalTxs}) => {
     };
 
     const handleDeleteInternalTxs = () => {
-        setInternalTxs({callId: '', callType: '', to: ''});
+        setInternalTxs({callType: '', to: ''});
         setShowInternalTxs(false);
     };
 
@@ -27,8 +27,6 @@ const InternalTxsForm = ({internalTxs, setInternalTxs}) => {
             {showInternalTxs ? (
                 <Box mb={2} display="flex" alignItems="center">
                     <Box flexGrow={1}>
-                        <NestedField label="Call ID" name="callId" value={internalTxs.callId}
-                                     onChange={handleInternalTxsChange}/>
                         <NestedField label="Call Type" name="callType" value={internalTxs.callType}
                                      onChange={handleInternalTxsChange}/>
                         <NestedField label="To" name="to" value={internalTxs.to} onChange={handleInternalTxsChange}/>

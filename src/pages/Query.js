@@ -104,7 +104,7 @@ function Query() {
 
     const [network, setNetwork] = useState("Mainnet")
 
-    const networks = ["Mainnet", "Sepolia", "Polygon", "Mumbai"]
+    const networks = ["Mainnet", "Sepolia", "Polygon", "Amoy"]
 
     useEffect(() => {
         switch (network) {
@@ -114,7 +114,7 @@ function Query() {
                 break
             case "Polygon":
                 break
-            case "Mumbai":
+            case "Amoy":
                 break
             default:
                 console.log("Change Network")
@@ -153,56 +153,54 @@ function Query() {
                                     </Select>
                                 </FormControl>
                             </Box>
-                            <form onSubmit={handleSubmit}>
-                                <Stack spacing={2} justifyContent="center">
-                                    <Box display="flex" alignItems="center" gap={2}>
-                                        <NestedField label="Transaction Hash" name="txHash" value={formData.txHash}
-                                                     onChange={handleChange}/>
-                                    </Box>
-                                    <Box display="flex" alignItems="center" gap={2}>
-                                        <NestedField label="Contract Address" name="contractAddress"
-                                                     value={formData.contractAddress} onChange={handleChange}/>
-                                    </Box>
-                                    <Box display="flex" alignItems="center" gap={2}>
-                                        <NestedField label="Sender" name="sender" value={formData.sender}
-                                                     onChange={handleChange}/>
-                                    </Box>
-                                    <Box display="flex" alignItems="center" gap={2}>
-                                        <RangeFields
-                                            title="Gas Used"
-                                            name="gasUsed"
-                                            from={formData.gasUsedFrom}
-                                            to={formData.gasUsedTo}
-                                            type="number"
-                                            onChange={handleChange}
-                                        />
-                                    </Box>
-                                    <Box display="flex" alignItems="center" gap={2}>
-                                        <NestedField label="Activity" name="activity" value={formData.activity}
-                                                     onChange={handleChange}/>
-                                    </Box>
-                                    <Box display="flex" alignItems="center" gap={2}>
-                                        <RangeFields
-                                            title="Block Number"
-                                            name="blockNumber"
-                                            from={formData.blockNumberFrom}
-                                            to={formData.blockNumberTo}
-                                            type="number"
-                                            onChange={handleChange}
-                                        />
-                                    </Box>
-                                    <Box display="flex" alignItems="center" gap={2}>
-                                        <RangeFields
-                                            title="Timestamp"
-                                            name="timestamp"
-                                            from={formData.timestampFrom}
-                                            to={formData.timestampTo}
-                                            type="datetime-local"
-                                            onChange={handleChange}
-                                        />
-                                    </Box>
-                                </Stack>
-                            </form>
+                            <Stack spacing={2} justifyContent="center">
+                                <Box display="flex" alignItems="center" gap={2}>
+                                    <NestedField label="Transaction Hash" name="txHash" value={formData.txHash}
+                                                 onChange={handleChange}/>
+                                </Box>
+                                <Box display="flex" alignItems="center" gap={2}>
+                                    <NestedField label="Contract Address" name="contractAddress"
+                                                 value={formData.contractAddress} onChange={handleChange}/>
+                                </Box>
+                                <Box display="flex" alignItems="center" gap={2}>
+                                    <NestedField label="Sender" name="sender" value={formData.sender}
+                                                 onChange={handleChange}/>
+                                </Box>
+                                <Box display="flex" alignItems="center" gap={2}>
+                                    <RangeFields
+                                        title="Gas Used"
+                                        name="gasUsed"
+                                        from={formData.gasUsedFrom}
+                                        to={formData.gasUsedTo}
+                                        type="number"
+                                        onChange={handleChange}
+                                    />
+                                </Box>
+                                <Box display="flex" alignItems="center" gap={2}>
+                                    <NestedField label="Activity" name="activity" value={formData.activity}
+                                                 onChange={handleChange}/>
+                                </Box>
+                                <Box display="flex" alignItems="center" gap={2}>
+                                    <RangeFields
+                                        title="Block Number"
+                                        name="blockNumber"
+                                        from={formData.blockNumberFrom}
+                                        to={formData.blockNumberTo}
+                                        type="number"
+                                        onChange={handleChange}
+                                    />
+                                </Box>
+                                <Box display="flex" alignItems="center" gap={2}>
+                                    <RangeFields
+                                        title="Timestamp"
+                                        name="timestamp"
+                                        from={formData.timestampFrom}
+                                        to={formData.timestampTo}
+                                        type="datetime-local"
+                                        onChange={handleChange}
+                                    />
+                                </Box>
+                            </Stack>
                         </Box>
                     </Box>
                 </Stack>
@@ -234,7 +232,7 @@ function Query() {
                 </Grid>
                 <Box display="flex" justifyContent="space-between" gap={2} marginTop={2}>
                     <Button
-                        type="submit"
+                        onClick={handleSubmit}
                         fullWidth
                         variant="contained"
                         disabled={loading}

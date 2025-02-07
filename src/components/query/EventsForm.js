@@ -17,7 +17,7 @@ const EventsForm = ({events, setEvents}) => {
     };
 
     const handleDeleteEvents = () => {
-        setEvents({eventId: '', eventName: ''});
+        setEvents({eventName: ''});
         setShowEvents(false);
     };
 
@@ -27,8 +27,6 @@ const EventsForm = ({events, setEvents}) => {
             {showEvents ? (
                 <Box mb={2} display="flex" alignItems="center">
                     <Box flexGrow={1}>
-                        <NestedField label="Event ID" name="eventId" value={events.eventId}
-                                     onChange={handleEventsChange}/>
                         <NestedField label="Event Name" name="eventName" value={events.eventName}
                                      onChange={handleEventsChange}/>
                     </Box>

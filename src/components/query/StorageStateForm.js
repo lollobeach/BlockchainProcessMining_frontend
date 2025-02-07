@@ -17,7 +17,7 @@ const StorageStateForm = ({storageState, setStorageState}) => {
     };
 
     const handleDeleteStorageState = () => {
-        setStorageState({variableId: '', variableName: '', type: '', variableValue: '', variableRawValue: ''});
+        setStorageState({variableName: '', type: '', variableValue: '', variableRawValue: ''});
         setShowStorageState(false);
     };
 
@@ -27,8 +27,6 @@ const StorageStateForm = ({storageState, setStorageState}) => {
             {showStorageState ? (
                 <Box mb={2} display="flex" alignItems="center">
                     <Box flexGrow={1}>
-                        <NestedField label="Variable ID" name="variableId" value={storageState.variableId}
-                                     onChange={handleStorageStateChange}/>
                         <NestedField label="Variable Name" name="variableName" value={storageState.variableName}
                                      onChange={handleStorageStateChange}/>
                         <NestedField label="Type" name="type" value={storageState.type}

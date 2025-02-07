@@ -17,7 +17,7 @@ const InputsForm = ({ inputs, setInputs }) => {
     };
 
     const handleDeleteInput = () => {
-        setInputs({ inputId: '', inputName: '', type: '', inputValue: '' });
+        setInputs({ inputName: '', type: '', inputValue: '' });
         setShowInputs(false);
     };
 
@@ -27,7 +27,6 @@ const InputsForm = ({ inputs, setInputs }) => {
             {showInputs ? (
                 <Box mb={2} display="flex" alignItems="center">
                     <Box flexGrow={1}>
-                        <NestedField label="Input ID" name="inputId" value={inputs.inputId} onChange={handleInputChange} />
                         <NestedField label="Input Name" name="inputName" value={inputs.inputName} onChange={handleInputChange} />
                         <NestedField label="Type" name="type" value={inputs.type} onChange={handleInputChange} />
                         <NestedField label="Input Value" name="inputValue" value={inputs.inputValue} onChange={handleInputChange} />
