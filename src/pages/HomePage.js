@@ -384,12 +384,6 @@ function HomePage() {
                                     </DemoContainer>
                                 </LocalizationProvider>
                             </Box>
-                            {/*<Slider*/}
-                            {/*    disabled={!filterTimestamp}*/}
-                            {/*    value={timestamp}*/}
-                            {/*    onChange={handleTimestampChange}*/}
-                            {/*    max={10000000000}*/}
-                            {/*/>*/}
                         </Box>
                         <Box>
                             <Box height={42} display="flex" alignItems="center">
@@ -434,6 +428,7 @@ function HomePage() {
                     <FormControl fullWidth sx={{width: 200}}>
                         <InputLabel>Network</InputLabel>
                         <Select
+                            variant="outlined"
                             value={network}
                             label="name"
                             onChange={(e) => handleNetworkChange(e)}

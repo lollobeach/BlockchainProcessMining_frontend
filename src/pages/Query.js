@@ -135,6 +135,7 @@ function Query() {
                                 <FormControl fullWidth sx={{width: 200}}>
                                     <InputLabel>Network</InputLabel>
                                     <Select
+                                        variant="outlined"
                                         value={network}
                                         label="name"
                                         onChange={handleNetworkChange}

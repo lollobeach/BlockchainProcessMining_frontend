@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Box, Button, FormControl, InputLabel, MenuItem, Select, Stack, TextField} from "@mui/material";
+import {Box, Button, FormControl, InputLabel, MenuItem, Select, Stack} from "@mui/material";
 
 import CustomTypography from "../CustomTypography";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -9,11 +9,7 @@ import {
     handleEventNameObjects,
     handleInputNameObjects,
     handleCallTypeObjects,
-    // handleSelectEventsObjects,
-    // handleSelectInputsObjects,
     handleVariableNameObjects,
-    // handleSelectInternalTxsObjects,
-    // handleSelectStorageStateObjects,
     handleSenderObjects,
     handleContractAddressObjects, handleTxHashObjects
 } from "./selectObjectTypes";
@@ -23,7 +19,6 @@ function ObjectType({
                         objectsKeys,
                         objectsValue,
                         setObjectsTypesItem,
-                        setObjectsItem,
                         objectsTypesItem,
                         objectType,
                         index
@@ -31,17 +26,12 @@ function ObjectType({
 
     const {results, ocel, setOcel} = useDataContext()
 
-    const [objectChosen, setObjectChosen] = useState("")
 
     const [objectAttributes, setObjectsAttributes] = useState([])
 
     useEffect(() => {
         objectType.attributes = objectAttributes
     }, [objectAttributes]);
-
-    const handleAddObjectAttribute = () => {
-        setObjectsAttributes([...objectAttributes, {name: "", type: ""}])
-    }
 
     const handleRemoveObject = (object) => {
 
@@ -59,7 +49,6 @@ function ObjectType({
             events: events
         }
         setOcel(newOcel)
-        setObjectsItem((oldObjects) => oldObjects.filter(item => !objectType.names.map(value => value.name).includes(item.type)))
         setObjectsTypesItem(objectsTypesItem.filter(item => item.name !== object.name))
 
         removeRelationships(object, newOcel, setOcel)
@@ -73,40 +62,16 @@ function ObjectType({
         "stateVariable": handleVariableNameObjects,
         "event": handleEventNameObjects,
         "internalTx": handleCallTypeObjects,
-        // "events": handleSelectEventsObjects,
-        // "inputs": handleSelectInputsObjects,
-        // "internalTxs": handleSelectInternalTxsObjects,
-        // "storageState": handleSelectStorageStateObjects
     }
 
     const handleSelectObjectTypeName = (e) => {
-        setObjectChosen(e.target.value)
         const handler = handlers[e.target.value]
         if (handler) {
-            handler(results, ocel, setObjectsTypesItem, objectsTypesItem, objectType, setObjectsItem, setOcel)
+            handler(results, ocel, setObjectsTypesItem, objectsTypesItem, objectType, setOcel)
         } else {
             console.error("Handler not found")
         }
     }
-
-    // const handleObjectTypeId = (e) => {
-    //     setObjectsTypesItem(objectsTypesItem.map(item => item === objectType ? {
-    //         ...item,
-    //         id: e.target.value
-    //     } : item))
-    //
-    //     const idValues = []
-    //     if (Array.isArray(results)) {
-    //         results.forEach(log => {
-    //             findValue(log, e.target.value, idValues)
-    //         })
-    //     }
-    //     const oldEvents = ocel.objects.filter(object => objectType.names.includes(object.type))
-    //     oldEvents.forEach((event, index) => {
-    //         event.id = idValues[index].value
-    //     })
-    //
-    // }
 
     const objectTypesOptions = ["contractAddress", "txHash", "sender", "input", "stateVariable", "event", "internalTx"]
 

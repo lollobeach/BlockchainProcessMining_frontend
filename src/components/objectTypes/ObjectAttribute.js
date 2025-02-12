@@ -23,6 +23,7 @@ function ObjectAttribute({keys, values, attribute, index, setObjectsAttributes, 
                         <FormControl fullWidth sx={{width: 200}}>
                             <InputLabel>Key</InputLabel>
                             <Select
+                                variant="outlined"
                                 value={attribute.name}
                                 label="name"
                                 onChange={(e) => (setObjectsAttributes(objectAttributes.map(item => item === attribute ? {
@@ -41,6 +42,7 @@ function ObjectAttribute({keys, values, attribute, index, setObjectsAttributes, 
                         <FormControl fullWidth sx={{width: 200}}>
                             <InputLabel>Value</InputLabel>
                             <Select
+                                variant="outlined"
                                 value={attribute.name}
                                 label="name"
                                 onChange={(e) => (setObjectsAttributes(objectAttributes.map(item => item === attribute ? {
@@ -68,6 +70,7 @@ function ObjectAttribute({keys, values, attribute, index, setObjectsAttributes, 
                                 <FormControl fullWidth sx={{width: 200}}>
                                     <InputLabel>Key</InputLabel>
                                     <Select
+                                        variant="outlined"
                                         value={attribute.type}
                                         label="name"
                                         onChange={(e) => (setObjectsAttributes(objectAttributes.map(item => item === attribute ? {
@@ -86,6 +89,7 @@ function ObjectAttribute({keys, values, attribute, index, setObjectsAttributes, 
                                 <FormControl fullWidth sx={{width: 200}}>
                                     <InputLabel>Value</InputLabel>
                                     <Select
+                                        variant="outlined"
                                         value={attribute.type}
                                         label="name"
                                         onChange={(e) => (setObjectsAttributes(objectAttributes.map(item => item === attribute ? {
@@ -112,6 +116,7 @@ function ObjectAttribute({keys, values, attribute, index, setObjectsAttributes, 
                                 <FormControl fullWidth sx={{width: 200}}>
                                     <InputLabel>Time</InputLabel>
                                     <Select
+                                        variant="outlined"
                                         value={attribute.time}
                                         label="name"
                                         onChange={(e) => (setObjectsAttributes(objectAttributes.map(item => item === attribute ? {
@@ -136,6 +141,7 @@ function ObjectAttribute({keys, values, attribute, index, setObjectsAttributes, 
                                     <FormControl fullWidth sx={{width: 200}}>
                                         <InputLabel>Key</InputLabel>
                                         <Select
+                                            variant="outlined"
                                             value={attribute.value}
                                             label="name"
                                             onChange={(e) => (setObjectsAttributes(objectAttributes.map(item => item === attribute ? {
@@ -154,6 +160,7 @@ function ObjectAttribute({keys, values, attribute, index, setObjectsAttributes, 
                                     <FormControl fullWidth sx={{width: 200}}>
                                         <InputLabel>Value</InputLabel>
                                         <Select
+                                            variant="outlined"
                                             value={attribute.value}
                                             label="name"
                                             onChange={(e) => (setObjectsAttributes(objectAttributes.map(item => item === attribute ? {

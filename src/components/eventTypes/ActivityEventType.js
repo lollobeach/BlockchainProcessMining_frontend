@@ -2,28 +2,21 @@ import React, {useEffect} from 'react';
 import {Box, FormControl, InputLabel, MenuItem, Select, Stack} from "@mui/material";
 import CustomTypography from "../CustomTypography";
 import ActivityEventAttribute from "./ActivityEventAttribute";
-// import {findValue} from "../../utils";
 import useDataContext from "../../dataContext/useDataContext";
 
-function ActivityEventType({setEventsItem}) {
+function ActivityEventType() {
 
     const {results, ocel, setOcel} = useDataContext()
 
 
     useEffect(() => {
-        const values = []
         const temporaryEvents = []
 
         if (!results) {
             setOcel({eventTypes: [], objectTypes: [], events: [], objects: []})
         } else {
             results?.forEach((log) => {
-                // findValue(log, "activity", values)
                 temporaryEvents.push({
-                    // relationships: log.storageState.map(variable => ({
-                    //     objectId: variable.variableId,
-                    //     qualifier: variable.variableName
-                    // })),
                     id: log.txHash,
                     relationships: [],
                     timestamp: log.timestamp,
@@ -53,7 +46,7 @@ function ActivityEventType({setEventsItem}) {
                     relationships: value.relationships
                 })
             })
-            setEventsItem((oldEvents) => [...oldEvents, ...events])
+            // setEventsItem((oldEvents) => [...oldEvents, ...events])
 
             setOcel({
                 ...ocel,
@@ -80,7 +73,7 @@ function ActivityEventType({setEventsItem}) {
                             <Select
                                 value="activity"
                                 label="name"
-                            >
+                                variant="outlined">
                                 <MenuItem value="activity">activity</MenuItem>
                             </Select>
                         </FormControl>

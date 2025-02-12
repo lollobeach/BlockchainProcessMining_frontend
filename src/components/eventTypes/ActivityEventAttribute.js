@@ -22,6 +22,7 @@ function ActivityEventAttribute() {
                                 <FormControl disabled fullWidth sx={{width: 200}}>
                                     <InputLabel>Key</InputLabel>
                                     <Select
+                                        variant="outlined"
                                         value={attribute}
                                         label="name"
                                     >
@@ -39,6 +40,7 @@ function ActivityEventAttribute() {
                                 <FormControl disabled fullWidth sx={{width: 200}}>
                                     <InputLabel>Type</InputLabel>
                                     <Select
+                                        variant="outlined"
                                         value={attribute === "gasUsed" || attribute === "blockNumber" ? "integer" : "string"}
                                         label="name"
                                     >
