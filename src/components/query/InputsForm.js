@@ -6,6 +6,7 @@ import AddQueryButton from "./AddQueryButton";
 
 const InputsForm = ({ inputs, setInputs }) => {
     const [showInputs, setShowInputs] = useState(false);
+    const [error, setError] = useState('');
 
     const handleAddInput = () => {
         setShowInputs(true);
@@ -13,12 +14,25 @@ const InputsForm = ({ inputs, setInputs }) => {
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
-        setInputs({ ...inputs, [name]: value });
+
+        if (name === 'inputValue') {
+            if (value && !inputs.type) {
+                setError('Type is required');
+            } else {
+                setError('');
+                const valueToAdd = inputs.type.includes('int') ? Number(value) : inputs.type.includes('bool') ? value === 'true' : value;
+                setInputs({ ...inputs, [name]: valueToAdd});
+            }
+        } else {
+            setInputs({ ...inputs, [name]: value });
+        }
+
     };
 
     const handleDeleteInput = () => {
         setInputs({ inputName: '', type: '', inputValue: '' });
         setShowInputs(false);
+        setError('')
     };
 
     return (
@@ -30,6 +44,7 @@ const InputsForm = ({ inputs, setInputs }) => {
                         <NestedField label="Input Name" name="inputName" value={inputs.inputName} onChange={handleInputChange} />
                         <NestedField label="Type" name="type" value={inputs.type} onChange={handleInputChange} />
                         <NestedField label="Input Value" name="inputValue" value={inputs.inputValue} onChange={handleInputChange} />
+                        {error && <Typography color="error">{error}</Typography>}
                     </Box>
                     <IconButton onClick={handleDeleteInput} color="error">
                         <Delete />
