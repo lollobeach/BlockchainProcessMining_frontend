@@ -46,7 +46,6 @@ function ActivityEventType() {
                     relationships: value.relationships
                 })
             })
-            // setEventsItem((oldEvents) => [...oldEvents, ...events])
 
             setOcel({
                 ...ocel,
