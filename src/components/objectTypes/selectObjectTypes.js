@@ -8,6 +8,8 @@ import {
     addVariableRelationships
 } from "./obj2obj_relationships/addRelationships";
 
+// TODO: all these methods should be deleted since they are used in the backend and not in the frontend
+
 export const handleContractAddressObjects = (results, ocel, setObjectsTypesItem, objectsTypesItem, objectType, setOcel) => {
 
     const contractAddress = []
@@ -68,6 +70,7 @@ export const handleContractAddressObjects = (results, ocel, setObjectsTypesItem,
         })
     })
 
+    // TODO: all the methods to add the relationships (./obj2obj_relationships) should be deleted since they are used in the backend and not in the frontend
     addContractAddressRelationships(newOcel, setOcel, results);
 }
 

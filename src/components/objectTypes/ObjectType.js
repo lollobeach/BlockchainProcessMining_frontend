@@ -1,9 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {Box, Button, FormControl, InputLabel, MenuItem, Select, Stack} from "@mui/material";
 
 import CustomTypography from "../CustomTypography";
 import DeleteIcon from "@mui/icons-material/Delete";
-import ObjectAttribute from "./ObjectAttribute";
 import useDataContext from "../../dataContext/useDataContext";
 import {
     handleEventNameObjects,
@@ -16,22 +15,14 @@ import {
 import {removeRelationships} from "./obj2obj_relationships/removeRelationships";
 
 function ObjectType({
-                        objectsKeys,
-                        objectsValue,
                         setObjectsTypesItem,
                         objectsTypesItem,
                         objectType,
                         index
                     }) {
 
+    // TODO: the 'ocel' and 'setOcel' should be remove from here since they are modified in the backend and they should be called by 'OcelMapping.js'
     const {results, ocel, setOcel} = useDataContext()
-
-
-    const [objectAttributes, setObjectsAttributes] = useState([])
-
-    useEffect(() => {
-        objectType.attributes = objectAttributes
-    }, [objectAttributes]);
 
     const handleRemoveObject = (object) => {
 
@@ -54,6 +45,7 @@ function ObjectType({
         removeRelationships(object, newOcel, setOcel)
     }
 
+    // TODO: these methods should be deleted since they are used in the backend and not in the frontend
     const handlers = {
         "contractAddress": handleContractAddressObjects,
         "txHash": handleTxHashObjects,
@@ -64,6 +56,7 @@ function ObjectType({
         "internalTx": handleCallTypeObjects,
     }
 
+    // TODO: this method should set only the object types to map calling 'setObjectTypesToMap' in the OcelMapping module
     const handleSelectObjectTypeName = (e) => {
         const handler = handlers[e.target.value]
         if (handler) {
@@ -109,25 +102,9 @@ function ObjectType({
                 </Box>
                 <CustomTypography>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"attributes": []
-                </CustomTypography>
-                {
-                    objectAttributes.length > 0 &&
-                    (
-                        <>
-                            {objectAttributes.map((attribute, index) => (
-                                <ObjectAttribute key={`${index}_attribute`} keys={objectsKeys} values={objectsValue}
-                                                 attribute={attribute} index={index} isObjectType
-                                                 setObjectsAttributes={setObjectsAttributes}
-                                                 objectAttributes={objectAttributes}/>
-                            ))}
-                            <CustomTypography>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],
-                            </CustomTypography>
-                        </>
-                    )
-                }
                 <CustomTypography>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"}"}{index !== objectsTypesItem.length - 1 && ","}
+                </CustomTypography>
                 </CustomTypography>
             </Box>
             <Box marginTop={8} marginLeft={2}>
