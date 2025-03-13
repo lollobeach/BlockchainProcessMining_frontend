@@ -15,6 +15,8 @@ import {
 import {removeRelationships} from "./obj2obj_relationships/removeRelationships";
 
 function ObjectType({
+                        objectTypesToMap,
+                        setObjectTypesToMap,
                         setObjectsTypesItem,
                         objectsTypesItem,
                         objectType,
@@ -58,12 +60,14 @@ function ObjectType({
 
     // TODO: this method should set only the object types to map calling 'setObjectTypesToMap' in the OcelMapping module
     const handleSelectObjectTypeName = (e) => {
-        const handler = handlers[e.target.value]
-        if (handler) {
-            handler(results, ocel, setObjectsTypesItem, objectsTypesItem, objectType, setOcel)
-        } else {
-            console.error("Handler not found")
-        }
+        objectType.name = e.target.value
+        setObjectTypesToMap([...objectTypesToMap, objectType.name])
+        // const handler = handlers[e.target.value]
+        // if (handler) {
+        //     handler(results, ocel, setObjectsTypesItem, objectsTypesItem, objectType, setOcel)
+        // } else {
+        //     console.error("Handler not found")
+        // }
     }
 
     const objectTypesOptions = ["contractAddress", "txHash", "sender", "input", "stateVariable", "event", "internalTx"]
