@@ -26,7 +26,6 @@ function OcelMapping() {
     const sendObjectTypesToMap = () => {
         _occelMapping(objectTypesToMap,results).then((response) => {
             setOcel(response.data)
-            // console.log(response)
         })
     }
     return (
