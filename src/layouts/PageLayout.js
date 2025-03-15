@@ -41,6 +41,12 @@ function PageLayout({children, loading, setLoading}) {
 
     const handleDelete = () => {
         setResults(null)
+        setOcel({
+            eventTypes: [],
+            objectTypes: [],
+            events: [],
+            objects: []
+        })
         window.history.replaceState({}, '', path)
     }
 
@@ -116,13 +122,13 @@ function PageLayout({children, loading, setLoading}) {
                 </Grid>
                 <Grid item lg={6} md={12} width="100%">
                     <Stack spacing={1}>
-                        <Card sx={{minWidth: "500px", height: "500px"}}>
+                        <Card sx={{minWidth: "500px", height: "500px", backgroundColor: "#202020"}}>
                             <Box height="40px" display="flex" alignItems="center" justifyContent="space-between" padding={2}>
-                                <Typography variant="h5">Contract Logs</Typography>
+                                <Typography variant="h5" color="#FFFFFF">Contract Logs</Typography>
                                 {path === "/ocel" && <Button variant="contained" sx={{padding: 1, width: "130px"}}
                                          onClick={handleShowOcel}>{showOcel ? "Show Logs" : "Show OCEL"}</Button>}
                                 <Button disabled={!results} color="error"
-                                        onClick={handleDelete} sx={{padding: 0}}>
+                                        onClick={handleDelete} sx={{padding: 0, '&.Mui-disabled': {color: 'rgba(255, 0, 0, 0.5)'}}}>
                                     <Delete/>
                                 </Button>
                             </Box>
@@ -137,12 +143,12 @@ function PageLayout({children, loading, setLoading}) {
                                         (
                                             showOcel ? (
                                                 <>
-                                                    <JsonView value={ocel} style={darkTheme} width="100%"/>
+                                                    <JsonView value={ocel} style={{...darkTheme, fontSize: '14px'}} width="100%"/>
                                                 </>
                                             ) : results &&
                                                 (
                                                     <>
-                                                        <JsonView value={results} style={darkTheme} width="100%"/>
+                                                        <JsonView value={results} style={{...darkTheme, fontSize: '14px'}}  width="100%"/>
                                                     </>
                                                 )
                                         )

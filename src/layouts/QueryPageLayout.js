@@ -54,10 +54,10 @@ function QueryPageLayout({ children, loading, setLoading, results, setResults })
                 </Grid>
                 <Grid item lg={6} md={12} width="100%">
                     <Stack spacing={1}>
-                        <Card sx={{ minWidth: "500px", height: "500px" }}>
+                        <Card sx={{ minWidth: "500px", height: "500px", backgroundColor: "#202020" }}>
                             <Box display="flex" alignItems="center" justifyContent="space-between" padding={2}>
-                                <Typography variant="h5">Contract Logs</Typography>
-                                <Button disabled={!hasResults} color="error" onClick={handleDelete} sx={{ padding: 0 }}>
+                                <Typography variant="h5" color="#FFFFFF">Contract Logs</Typography>
+                                <Button disabled={!hasResults} color="error" onClick={handleDelete} sx={{ padding: 0, '&.Mui-disabled': {color: 'rgba(255, 0, 0, 0.5)'} }}>
                                     <Delete />
                                 </Button>
                             </Box>
@@ -70,8 +70,7 @@ function QueryPageLayout({ children, loading, setLoading, results, setResults })
                                     ) : hasResults ? (
                                         <JsonView
                                             value={results}
-                                            theme={darkTheme}
-                                            style={{ padding: 20 }}
+                                            style={{...darkTheme, fontSize: '14px'}}
                                             collapsed={2}
                                             enableClipboard={false}
                                             displayDataTypes={false}

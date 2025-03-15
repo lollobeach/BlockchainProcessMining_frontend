@@ -8,13 +8,15 @@ import PageLayout from "../layouts/PageLayout";
 import ActivityEventType from "../components/eventTypes/ActivityEventType";
 import useDataContext from "../dataContext/useDataContext";
 import {_occelMapping} from "../api/services";
+
 function OcelMapping() {
-    
-    const {results}=useDataContext();
+
+    const {results} = useDataContext();
+
+    const [loading, setLoading] = useState(false)
 
     const [objectsTypesItem, setObjectsTypesItem] = useState([])
 
-    // TODO: the following state should be the array with the object types to send via API for the backend
     const [objectTypesToMap, setObjectTypesToMap] = useState([])
 
     const {setOcel} = useDataContext()
@@ -24,12 +26,16 @@ function OcelMapping() {
     }
 
     const sendObjectTypesToMap = () => {
-        _occelMapping(objectTypesToMap,results).then((response) => {
+        setLoading(true)
+
+        _occelMapping(objectTypesToMap, results).then((response) => {
             setOcel(response.data)
+            setLoading(false)
         })
     }
+
     return (
-        <PageLayout>
+        <PageLayout loading={loading}>
             <Box display="flex" justifyContent="center">
                 <Box position="relative" height="100%" width={520} paddingBottom={2}>
                     <Typography variant="h3">
@@ -84,9 +90,11 @@ function OcelMapping() {
                     </Stack>
                 </Box>
             </Box>
-            <Button onClick={sendObjectTypesToMap}>
-                <AddBoxIcon sx={{fontSize: 30}}/>
-            </Button>
+            <Box display="flex" justifyContent="center">
+                <Button disabled={objectTypesToMap.length === 0 || !results} component="label" variant="contained" onClick={sendObjectTypesToMap} sx={{padding: 1}}>
+                    Map Data
+                </Button>
+            </Box>
         </PageLayout>
     )
 }
