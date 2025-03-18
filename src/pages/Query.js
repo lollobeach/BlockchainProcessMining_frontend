@@ -23,13 +23,13 @@ import QueryPageLayout from "../layouts/QueryPageLayout";
 function Query() {
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
-        txHash: '',
+        transactionHash: '',
         contractAddress: '',
         sender: '',
         gasUsed: '',
         gasUsedFrom: '',
         gasUsedTo: '',
-        activity: '',
+        functionName: '',
         blockNumber: '',
         blockNumberFrom: '',
         blockNumberTo: '',
@@ -152,7 +152,7 @@ function Query() {
                             </Box>
                             <Stack spacing={2} justifyContent="center">
                                 <Box display="flex" alignItems="center" gap={2}>
-                                    <NestedField label="Transaction Hash" name="txHash" value={formData.txHash}
+                                    <NestedField label="Transaction Hash" name="transactionHash" value={formData.transactionHash}
                                                  onChange={handleChange}/>
                                 </Box>
                                 <Box display="flex" alignItems="center" gap={2}>
@@ -174,7 +174,7 @@ function Query() {
                                     />
                                 </Box>
                                 <Box display="flex" alignItems="center" gap={2}>
-                                    <NestedField label="Activity" name="activity" value={formData.activity}
+                                    <NestedField label="Function Name" name="functionName" value={formData.functionName}
                                                  onChange={handleChange}/>
                                 </Box>
                                 <Box display="flex" alignItems="center" gap={2}>

@@ -1,95 +1,41 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {Box, Button, Stack, Typography} from "@mui/material";
 import AddBoxIcon from '@mui/icons-material/AddBox';
 
 import CustomTypography from "../components/CustomTypography";
 import ObjectType from "../components/objectTypes/ObjectType";
 import PageLayout from "../layouts/PageLayout";
-import useDataContext from "../dataContext/useDataContext";
 import ActivityEventType from "../components/eventTypes/ActivityEventType";
-
-const getAllKeys = (jsonLog, set) => {
-    if (jsonLog && Array.isArray(jsonLog)) {
-        jsonLog.forEach((log) => {
-            if (log) {
-                Object.keys(log).forEach((key) => {
-                    if (Array.isArray(log[key]) || typeof log[key] === "object") {
-                        set.add(key)
-                        getAllKeys(log[key], set)
-                    } else if (typeof log !== "string") {
-                        set.add(key)
-                    }
-                })
-            }
-        })
-    } else if (jsonLog && typeof jsonLog === "object") {
-        Object.keys(jsonLog).forEach((key) => {
-            set.add(key)
-            if (Array.isArray(jsonLog[key]) || typeof jsonLog[key] === "object") {
-                getAllKeys(jsonLog[key], set)
-            }
-        })
-    }
-}
-
-const getAllValues = (jsonLog, set) => {
-    if (jsonLog && Array.isArray(jsonLog)) {
-        jsonLog.forEach((log) => {
-            if (log) {
-                if (typeof log === "string") set.add(log)
-                else {
-                    Object.values(log).forEach((value) => {
-                        if (Array.isArray(value) || typeof value === "object") {
-                            getAllValues(value, set)
-                        } else {
-                            set.add(value)
-                        }
-                    })
-                }
-            }
-        })
-    } else if (jsonLog && typeof jsonLog === "object") {
-        Object.values(jsonLog).forEach((value) => {
-            if (Array.isArray(value) || typeof value === "object") {
-                getAllValues(value, set)
-            } else {
-                set.add(value)
-            }
-        })
-    }
-}
+import useDataContext from "../dataContext/useDataContext";
+import {_occelMapping} from "../api/services";
 
 function OcelMapping() {
 
-    const {results} = useDataContext()
+    const {results} = useDataContext();
 
-    const [jsonKeys, setJsonKeys] = useState([])
-    const [jsonValues, setJsonValues] = useState([])
+    const [loading, setLoading] = useState(false)
 
     const [objectsTypesItem, setObjectsTypesItem] = useState([])
 
+    const [objectTypesToMap, setObjectTypesToMap] = useState([])
 
-    useEffect(() => {
-        if (results) {
-            const keySet = new Set()
-            getAllKeys(results, keySet)
-            setJsonKeys([...keySet])
-
-            const valueSet = new Set()
-            getAllValues(results, valueSet)
-            setJsonValues([...valueSet])
-        } else {
-            setJsonKeys([])
-            setJsonValues([])
-        }
-    }, [results]);
+    const {setOcel} = useDataContext()
 
     const handleAddObjectType = () => {
         setObjectsTypesItem([...objectsTypesItem, {name: "", names: []}])
     }
 
+    const sendObjectTypesToMap = () => {
+        setLoading(true)
+
+        _occelMapping(objectTypesToMap, results).then((response) => {
+            setOcel(response.data)
+            setLoading(false)
+        })
+    }
+
     return (
-        <PageLayout>
+        <PageLayout loading={loading}>
             <Box display="flex" justifyContent="center">
                 <Box position="relative" height="100%" width={520} paddingBottom={2}>
                     <Typography variant="h3">
@@ -119,8 +65,9 @@ function OcelMapping() {
                             (
                                 <>
                                     {objectsTypesItem.map((objectType, index) => (
-                                        <ObjectType key={`${index}_object`} objectsKeys={jsonKeys}
-                                                    objectsValue={jsonValues}
+                                        <ObjectType key={`${index}_object`}
+                                                    objectTypesToMap={objectTypesToMap}
+                                                    setObjectTypesToMap={setObjectTypesToMap}
                                                     setObjectsTypesItem={setObjectsTypesItem}
                                                     objectsTypesItem={objectsTypesItem} objectType={objectType}
                                                     index={index}/>
@@ -142,6 +89,11 @@ function OcelMapping() {
                         </CustomTypography>
                     </Stack>
                 </Box>
+            </Box>
+            <Box display="flex" justifyContent="center">
+                <Button disabled={objectTypesToMap.length === 0 || !results} component="label" variant="contained" onClick={sendObjectTypesToMap} sx={{padding: 1}}>
+                    Map Data
+                </Button>
             </Box>
         </PageLayout>
     )

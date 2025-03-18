@@ -1,60 +1,9 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {Box, FormControl, InputLabel, MenuItem, Select, Stack} from "@mui/material";
 import CustomTypography from "../CustomTypography";
 import ActivityEventAttribute from "./ActivityEventAttribute";
-import useDataContext from "../../dataContext/useDataContext";
 
 function ActivityEventType() {
-
-    const {results, ocel, setOcel} = useDataContext()
-
-
-    useEffect(() => {
-        const temporaryEvents = []
-
-        if (!results) {
-            setOcel({eventTypes: [], objectTypes: [], events: [], objects: []})
-        } else {
-            results?.forEach((log) => {
-                temporaryEvents.push({
-                    id: log.txHash,
-                    relationships: [],
-                    timestamp: log.timestamp,
-                    name: log.activity || "",
-                    gasUsed: log.gasUsed,
-                    blockNumber: log.blockNumber,
-                    sender: log.sender,
-                    attributes: [{name: "gasUsed", type: "integer"}, {name: "blockNumber", type: "integer"}, {name: "sender", type: "string"}]
-                })
-            })
-
-            let newEventTypes = [...ocel.eventTypes]
-
-            const valuesSet = temporaryEvents.filter((value, index, self) => self.map(item => item.name).indexOf(value.name) === index)
-            valuesSet.forEach(value => {
-                newEventTypes.push({name: value.name, attributes: value.attributes})
-            })
-
-            const events = []
-            temporaryEvents.forEach((value) => {
-                events.push({
-                    id: value.id,
-                    key: "activity",
-                    type: value.name,
-                    time: value.timestamp,
-                    attributes: [{name: "gasUsed", value: value.gasUsed}, {name: "blockNumber", value: value.blockNumber}, {name: "sender", value: value.sender}],
-                    relationships: value.relationships
-                })
-            })
-
-            setOcel({
-                ...ocel,
-                eventTypes: newEventTypes,
-                events: [...ocel.events, ...events.map(({key, ...rest}) => rest)]
-            })
-        }
-
-    }, [results])
 
     return (
         <Box display="flex">

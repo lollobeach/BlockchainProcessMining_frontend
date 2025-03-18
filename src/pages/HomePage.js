@@ -41,7 +41,7 @@ function HomePage() {
 
     const [contractName, setContractName] = useState("CakeOFT")
     const [contractAddress, setContractAddress] = useState("0x152649eA73beAb28c5b49B26eb48f7EAD6d4c898")
-    const [impl_contract, setImplContractAddress] = useState()
+    const [impl_contract, setImplContractAddress] = useState("0x152649eA73beAb28c5b49B26eb48f7EAD6d4c898")
     const [fromBlock, setFromBlock] = useState("18698008")
     const [toBlock, setToBlock] = useState("18698323")
 
@@ -241,6 +241,11 @@ function HomePage() {
         if (filter === "functions") {
             setFunctions([])
         }
+    }
+
+    const addContractAddress = (e) => {
+        setContractAddress(e.target.value)
+        setImplContractAddress(e.target.value)
     }
 
     return (
@@ -457,13 +462,13 @@ function HomePage() {
                             <FormControl variant="filled">
                                 <InputLabel sx={{fontWeight: "700", fontSize: "18px"}}>Contract Address</InputLabel>
                                 <FilledInput value={contractAddress} label="Contract Address"
-                                             onChange={(e) => setContractAddress(e.target.value)}/>
+                                             onChange={(e) => addContractAddress(e)}/>
                             </FormControl>
-                            <FormControl variant="filled">
-                                <InputLabel sx={{fontWeight: "700", fontSize: "18px"}}>Implementation contract address</InputLabel>
-                                <FilledInput value={impl_contract} label="Implementation address"
-                                             onChange={(e) => setImplContractAddress(e.target.value)}/>
-                            </FormControl>
+                            {/*<FormControl variant="filled">*/}
+                            {/*    <InputLabel sx={{fontWeight: "700", fontSize: "18px"}}>Implementation contract address</InputLabel>*/}
+                            {/*    <FilledInput value={impl_contract} label="Implementation address"*/}
+                            {/*                 onChange={(e) => setImplContractAddress(e.target.value)}/>*/}
+                            {/*</FormControl>*/}
                             <FormControl variant="filled">
                                 <InputLabel sx={{fontWeight: "700", fontSize: "18px"}}>From Block</InputLabel>
                                 <FilledInput value={fromBlock} label="From Block"

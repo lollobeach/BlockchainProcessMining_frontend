@@ -96,3 +96,13 @@ export const _searchTransactionByQuery = async (query) => {
         return {status: error.response.status, data: error.response.data}
     }
 }
+
+export const _occelMapping = async (objectsToMap,blockchainLog) => {
+    try {
+        const response = await axios.post(serverUrl + "/api/ocelMap", {objectsToMap,blockchainLog})
+        return {status: response.status, data: response.data}
+    } catch (error) {
+        console.error(error)
+        return {status: error.response.status, data: error.response.data}
+    }
+}
