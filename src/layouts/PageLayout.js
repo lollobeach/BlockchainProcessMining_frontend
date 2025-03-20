@@ -13,7 +13,7 @@ import {
 import JsonView from "@uiw/react-json-view";
 import {darkTheme} from "@uiw/react-json-view/dark";
 import {Download, FileUpload, Delete} from "@mui/icons-material";
-import {_downloadCSV, _downloadCSVOCEL, _downloadJson, _downloadJSONOCEL, _downloadOCEL} from "../api/services";
+import {_downloadCSV, _downloadCSVOCEL, _downloadJson, _downloadJSONOCEL, _downloadOCEL, _xesDownload} from "../api/services";
 import useDataContext from "../dataContext/useDataContext";
 import {Link} from "react-router-dom";
 import {HiddenInput} from "../components/HiddenInput";
@@ -83,7 +83,17 @@ function PageLayout({children, loading, setLoading}) {
         window.URL.revokeObjectURL(href)
         setLoading && setLoading(false)
     }
-
+    const downloadXES = async () => {
+        setLoading && setLoading(true)
+        const response = await _xesDownload(results)
+        const href = window.URL.createObjectURL(new Blob([response], { type: 'application/xml' }))
+        const anchor = document.createElement('a')
+        anchor.href = href
+        anchor.download = "jsonLog.xml"
+        anchor.click()
+        window.URL.revokeObjectURL(href)
+        setLoading && setLoading(false)
+    }
     const downloadOcel = async () => {
         const response = await _downloadOCEL(ocel)
         const href = window.URL.createObjectURL(response)
@@ -193,6 +203,15 @@ function PageLayout({children, loading, setLoading}) {
                                             '&:hover': {backgroundColor: "#2f6749"}
                                         }}>
                                             <Typography variant="h6">CSV</Typography>
+                                        </Button>
+                                        <Button disabled={!results} startIcon={<Download/>} onClick={downloadXES}
+                                                variant="contained" sx={{
+                                            padding: 1,
+                                            width: 120,
+                                            backgroundColor: "#38a651",
+                                            '&:hover': {backgroundColor: "#2f6749"}
+                                        }}>
+                                            <Typography variant="h6">XES</Typography>
                                         </Button>
                                     </Box>
                                 )

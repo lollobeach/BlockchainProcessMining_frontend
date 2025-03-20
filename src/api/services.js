@@ -39,9 +39,21 @@ export const _downloadCSV = async (jsonLog) => {
     const body = {
         jsonLog
     }
-
     try {
         const response = await axios.post(serverUrl + "/csv-download", body, {responseType: 'blob'})
+        return response.data
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+export const _xesDownload = async (jsonLog) => {
+    const body = {
+        jsonLog
+    }
+    console.log(body)
+    try {
+        const response = await axios.post(serverUrl + "/xes-translator", body, {responseType: 'blob'})
         return response.data
     } catch (error) {
         console.error(error)
