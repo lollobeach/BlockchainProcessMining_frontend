@@ -27,6 +27,64 @@ const CardContentNoPadding = styled(CardContent)(
     `
 )
 
+const MAX_DISPLAY_SIZE = 49;
+
+const limitJsonSize = (data) => {
+    if (!data) return null;
+
+    // Handle array case
+    if (Array.isArray(data)) {
+        if (data.length > MAX_DISPLAY_SIZE) {
+            return [
+                ...data.slice(0, MAX_DISPLAY_SIZE),
+                {__note: `+ ${data.length - MAX_DISPLAY_SIZE} items`}
+            ];
+        }
+        return data;
+    }
+
+    // Handle object case
+    if (typeof data === 'object') {
+        // Special handling for OCEL structure
+        if (data.events || data.objects || data.eventTypes || data.objectTypes) {
+            const result = {};
+
+            // Process each key in the OCEL object
+            for (const key of Object.keys(data)) {
+                // If the value is an array (like events, objects, etc.), limit it
+                if (Array.isArray(data[key])) {
+                    if (data[key].length > MAX_DISPLAY_SIZE) {
+                        result[key] = [
+                            ...data[key].slice(0, MAX_DISPLAY_SIZE),
+                            {__note: `+ ${data[key].length - MAX_DISPLAY_SIZE} more ${key}`}
+                        ];
+                    } else {
+                        result[key] = data[key];
+                    }
+                } else {
+                    // For non-array values, just copy them
+                    result[key] = data[key];
+                }
+            }
+            return result;
+        }
+
+        // Normal object handling
+        const keys = Object.keys(data);
+        if (keys.length > MAX_DISPLAY_SIZE) {
+            const limitedObj = {};
+            keys.slice(0, MAX_DISPLAY_SIZE).forEach(key => {
+                limitedObj[key] = data[key];
+            });
+            limitedObj.__note = `+ ${keys.length - MAX_DISPLAY_SIZE} properties`;
+            return limitedObj;
+        }
+        return data;
+    }
+
+    return data;
+};
+
 function PageLayout({children, loading, setLoading}) {
 
     const {results, setResults, ocel, setOcel} = useDataContext()
@@ -123,12 +181,14 @@ function PageLayout({children, loading, setLoading}) {
                 <Grid item lg={6} md={12} width="100%">
                     <Stack spacing={1}>
                         <Card sx={{minWidth: "500px", height: "500px", backgroundColor: "#202020"}}>
-                            <Box height="40px" display="flex" alignItems="center" justifyContent="space-between" padding={2}>
+                            <Box height="40px" display="flex" alignItems="center" justifyContent="space-between"
+                                 padding={2}>
                                 <Typography variant="h5" color="#FFFFFF">Contract Logs</Typography>
                                 {path === "/ocel" && <Button variant="contained" sx={{padding: 1, width: "130px"}}
-                                         onClick={handleShowOcel}>{showOcel ? "Show Logs" : "Show OCEL"}</Button>}
+                                                             onClick={handleShowOcel}>{showOcel ? "Show Logs" : "Show OCEL"}</Button>}
                                 <Button disabled={!results} color="error"
-                                        onClick={handleDelete} sx={{padding: 0, '&.Mui-disabled': {color: 'rgba(255, 0, 0, 0.5)'}}}>
+                                        onClick={handleDelete}
+                                        sx={{padding: 0, '&.Mui-disabled': {color: 'rgba(255, 0, 0, 0.5)'}}}>
                                     <Delete/>
                                 </Button>
                             </Box>
@@ -143,12 +203,20 @@ function PageLayout({children, loading, setLoading}) {
                                         (
                                             showOcel ? (
                                                 <>
-                                                    <JsonView value={ocel} style={{...darkTheme, fontSize: '14px'}} width="100%"/>
+                                                    <JsonView value={ocel
+                                                        ? limitJsonSize(ocel)
+                                                        : ocel && [limitJsonSize(ocel[0]), limitJsonSize(ocel[1])]}
+                                                              style={{...darkTheme, fontSize: '14px'}}
+                                                              width="100%"/>
                                                 </>
                                             ) : results &&
                                                 (
                                                     <>
-                                                        <JsonView value={results} style={{...darkTheme, fontSize: '14px'}}  width="100%"/>
+                                                        <JsonView value={results
+                                                            ? limitJsonSize(results)
+                                                            : results && [limitJsonSize(results[0]), limitJsonSize(results[1])]}
+                                                                  style={{...darkTheme, fontSize: '14px'}}
+                                                                  width="100%"/>
                                                     </>
                                                 )
                                         )
@@ -161,20 +229,33 @@ function PageLayout({children, loading, setLoading}) {
                                         <Button component="label" variant="contained" startIcon={<FileUpload/>}
                                                 sx={{padding: 1, height: "55px"}}>
                                             Upload File
-                                            <HiddenInput type="file" onChange={handleFileChange} />
+                                            <HiddenInput type="file" onChange={handleFileChange}/>
                                         </Button>
-                                        <Button variant="contained" onClick={downloadOcel} sx={{padding: 1, width: "125px", height: "55px"}}>
+                                        <Button variant="contained" onClick={downloadOcel}
+                                                sx={{padding: 1, width: "125px", height: "55px"}}>
                                             <Typography color="white">Download JSON</Typography>
                                         </Button>
                                         <Link to="/">
-                                            <Button color="error" variant="contained" onClick={() => {setOcel({eventTypes: [],objectTypes: [],events: [],objects: []})}} sx={{padding: 1, width: "125px", height: "55px"}}>
+                                            <Button color="error" variant="contained" onClick={() => {
+                                                setOcel({eventTypes: [], objectTypes: [], events: [], objects: []})
+                                            }} sx={{padding: 1, width: "125px", height: "55px"}}>
                                                 <Typography>BACK</Typography>
                                             </Button>
                                         </Link>
-                                        <Button variant="contained" onClick={downloadJSONOcel} sx={{padding: 1, width: "125px", height: "55px", backgroundColor: "#5316ec"}}>
+                                        <Button variant="contained" onClick={downloadJSONOcel} sx={{
+                                            padding: 1,
+                                            width: "125px",
+                                            height: "55px",
+                                            backgroundColor: "#5316ec"
+                                        }}>
                                             <Typography color="white">Download JSONOCEL</Typography>
                                         </Button>
-                                        <Button variant="contained" onClick={downloadCSVOcel} sx={{padding: 1, width: "125px", height: "55px", backgroundColor: "#1dec16"}}>
+                                        <Button variant="contained" onClick={downloadCSVOcel} sx={{
+                                            padding: 1,
+                                            width: "125px",
+                                            height: "55px",
+                                            backgroundColor: "#1dec16"
+                                        }}>
                                             <Typography color="white">Download CSV OCEL</Typography>
                                         </Button>
                                     </Box>
