@@ -7,7 +7,8 @@ const initialState = {
         objectTypes: [],
         events: [],
         objects: []
-    }
+    },
+    xes:null
 }
 
 const reducer = (state, action) => {
@@ -21,6 +22,11 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 ocel: action.payload
+            }
+        case 'SET_XES':
+            return {
+                ...state,
+                xes: action.payload
             }
         default:
             return state
@@ -40,14 +46,19 @@ function DataProvider(props) {
     const setOcel = useCallback((ocel) => {
         dispatch({type: 'SET_OCEL', payload: ocel})
     }, [])
+    
+    const setXes = useCallback((xes) => {
+        dispatch({type: 'SET_XES', payload: xes})
+    }, [])
 
     const memorizedValue = useMemo(() => ({
         setResults,
         setOcel,
+        setXes,
+        xes: state.xes,
         results: state.results,
         ocel: state.ocel
-    }), [state.results, state.ocel, setResults, setOcel]);
-
+    }), [state.results, state.ocel, state.xes, setXes, setResults, setOcel]);
     return (
         <DataContext.Provider value={memorizedValue}>
             {props.children}

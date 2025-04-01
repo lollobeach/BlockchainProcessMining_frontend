@@ -12,6 +12,7 @@ import {ThemeProvider} from "@mui/material";
 import {customTheme} from "./theme/customTheme";
 import DataProvider from "./dataContext/DataContext";
 import Query from "./pages/Query";
+import XesPage from "./pages/XesPage";
 
 const router = createBrowserRouter([
     {
@@ -19,7 +20,8 @@ const router = createBrowserRouter([
         children: [
             {path: "/", element: <HomePage/>},
             {path: "/ocel", element: <OcelMapping/>},
-            {path: "/query", element: <Query/>}
+            {path: "/query", element: <Query/>},
+            {path: "/xes",element:<XesPage/>}
         ]
     }
 ]);

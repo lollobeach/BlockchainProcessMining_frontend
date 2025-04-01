@@ -538,6 +538,10 @@ function HomePage() {
                                     sx={{padding: 1, height: "40px"}}>
                                 <Typography color="white">Map data</Typography>
                             </Button>
+                            <Button component={Link} to="/xes" fullWidth variant="contained"
+                                    sx={{padding: 1, height: "40px"}}>
+                                <Typography color="white">Map xes</Typography>
+                            </Button>
                         </Box>
                     </Stack>
                 </Stack>
