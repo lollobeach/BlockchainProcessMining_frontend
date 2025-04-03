@@ -27,7 +27,6 @@ function OcelMapping() {
 
     const sendObjectTypesToMap = () => {
         setLoading(true)
-
         _occelMapping(objectTypesToMap, results).then((response) => {
             setOcel(response.data)
             setLoading(false)

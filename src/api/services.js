@@ -39,9 +39,20 @@ export const _downloadCSV = async (jsonLog) => {
     const body = {
         jsonLog
     }
-
     try {
         const response = await axios.post(serverUrl + "/csv-download", body, {responseType: 'blob'})
+        return response.data
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+export const _xesDownload = async (jsonLog) => {
+    const body = {
+        jsonLog
+    }
+    try {
+        const response = await axios.post(serverUrl + "/xes-translator", body, {responseType: 'blob'})
         return response.data
     } catch (error) {
         console.error(error)
@@ -52,7 +63,6 @@ export const _downloadOCEL = async (ocel) => {
     const body = {
         ocel
     }
-
     try {
         const response = await axios.post(serverUrl + "/ocel-download", body, {responseType: 'blob'})
         return response.data
@@ -105,4 +115,15 @@ export const _occelMapping = async (objectsToMap,blockchainLog) => {
         console.error(error)
         return {status: error.response.status, data: error.response.data}
     }
+}
+
+export const _ocelXes = async (objectsToXes,jsonToXes)=>{
+    try {
+        const response = await axios.post(serverUrl + "/api/xes", {objectsToXes,jsonToXes})
+        return {status: response.status, data: response.data}
+    } catch (error) {
+        console.error(error)
+        return {status: error.response.status, data: error.response.data}
+    }
+
 }
