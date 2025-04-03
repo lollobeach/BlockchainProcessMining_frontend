@@ -30,6 +30,10 @@ function XesPage() {
     const sendObjectForXes = () => {
             setLoading(true)
             _ocelXes({caseId,activityKey,timestamp},results).then((response) => {
+                // const xmlString =response.data.xesString;
+                // const parser = new DOMParser();
+                // const xmlDoc = parser.parseFromString(xmlString, "text/xml");
+                // console.log(xmlDoc.documentElement);
                 setXes(response.data)
                 setLoading(false)
             }).then()

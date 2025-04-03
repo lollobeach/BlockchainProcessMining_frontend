@@ -17,6 +17,7 @@ import {_downloadCSV, _downloadCSVOCEL, _downloadJson, _downloadJSONOCEL, _downl
 import useDataContext from "../dataContext/useDataContext";
 import {Link} from "react-router-dom";
 import {HiddenInput} from "../components/HiddenInput";
+import XMLViewer from "react-xml-viewer";
 
 const CardContentNoPadding = styled(CardContent)(
     `
@@ -37,7 +38,6 @@ function PageLayout({children, loading, setLoading}) {
     const path = window.location.pathname
 
     const handleShowXes =() =>{
-
         setShowXes(!showXes)
     }
     const handleDeleteXes=()=>{
@@ -50,7 +50,8 @@ function PageLayout({children, loading, setLoading}) {
     const handleShowOcel = () => {
         setShowOcel(!showOcel)
     }
-
+    
+    
     const handleDelete = () => {
         setResults(null)
         setOcel({
@@ -233,7 +234,7 @@ function PageLayout({children, loading, setLoading}) {
                                     <Delete/>
                                 </Button>
                             </Box>
-                            <CardContentNoPadding sx={{height: "calc(100% - 112px)", overflow: "auto"}}>
+                            <CardContentNoPadding sx={{ height: "calc(100% - 112px)", overflowY: "auto", overflowX: "auto", whiteSpace: "pre", overflow: "auto"}}>
                                 {
                                      loading ? (
                                         <Box width="100%" height="100%" display="flex" justifyContent="center" alignItems="center">
@@ -241,8 +242,22 @@ function PageLayout({children, loading, setLoading}) {
                                         </Box>
                                     ) : showOcel ? (
                                         <JsonView value={ocel} style={{ ...darkTheme, fontSize: '14px' }} width="100%" />
-                                    ) : showXes ? (
-                                        <JsonView value={xes} style={{ ...darkTheme, fontSize: '14px' }} width="100%" />
+                                    ) : showXes ? ( 
+                                        <Box sx={{
+                                            width: "100%",
+                                            maxWidth: "100%",
+                                            overflowX: "auto",  // Enables horizontal scrolling
+                                            whiteSpace: "pre",  // Ensures text does not wrap
+                                            backgroundColor: "#1e1e1e", // Optional: Dark theme background
+                                            padding: 2
+                                        }}>
+                                            <Box sx={{
+                                                display: "inline-block",  // Ensures the box takes the exact width of the XML content
+                                                minWidth: "100%"  // Prevents shrinking
+                                            }}>
+                                                <XMLViewer xml={xes.xesString || "<empty></empty>"} />
+                                            </Box>
+                                        </Box>
                                     ) : results && (
                                         <JsonView value={results} style={{ ...darkTheme, fontSize: '14px' }} width="100%" />
                                     )
