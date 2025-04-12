@@ -13,6 +13,7 @@ import {customTheme} from "./theme/customTheme";
 import DataProvider from "./dataContext/DataContext";
 import Query from "./pages/Query";
 import XesPage from "./pages/XesPage";
+import NetworkGraph from "./pages/VisualModel";
 
 const router = createBrowserRouter([
     {
@@ -21,7 +22,8 @@ const router = createBrowserRouter([
             {path: "/", element: <HomePage/>},
             {path: "/ocel", element: <OcelMapping/>},
             {path: "/query", element: <Query/>},
-            {path: "/xes",element:<XesPage/>}
+            {path: "/xes",element:<XesPage/>},
+            {path: "/visual",element:<NetworkGraph/>}
         ]
     }
 ]);
