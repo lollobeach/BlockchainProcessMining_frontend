@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { Box,Button, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 import jp from 'jsonpath';
 import useDataContext from "../../dataContext/useDataContext";
 
-function KeyType({ nameFrom, nameTo, objectToSet, index }) {
+function KeyType({ nameFrom, nameTo, objectToSet, index,setObjectsTypesItem }) {
     const { results } = useDataContext();
     const [objectTypesOptions, setObjectTypesOptions] = useState([]);
-
+    objectToSet.index = index;
     // Extract unique keys (excluding numeric keys)
     function getUniqueKeys(json) {
         if (!json) return [];
@@ -32,7 +33,7 @@ function KeyType({ nameFrom, nameTo, objectToSet, index }) {
         }
     }, [results]);
     const handleRemoveObject=(e)=>{
-
+        setObjectsTypesItem(prev => prev.filter(item => item.index !== e.index))
     }
     const handleSelectObjectTypeNameFrom = (e) => {
         objectToSet.nameFrom=nameFrom
@@ -46,7 +47,7 @@ function KeyType({ nameFrom, nameTo, objectToSet, index }) {
     
 
     return (
-        <Box display="flex" gap={2}>
+        <Box display="flex" gap={2} >
             <FormControl fullWidth sx={{ width: 200 }}>
                 <InputLabel id={`label-from-${index}`}>{nameFrom}</InputLabel>
                 <Select
@@ -82,7 +83,11 @@ function KeyType({ nameFrom, nameTo, objectToSet, index }) {
                     )}
                 </Select>
             </FormControl>
-            
+            <Box marginTop={8} marginLeft={2}>
+                <Button onClick={() => handleRemoveObject(objectToSet)}>
+                    <DeleteIcon sx={{fontSize: 30, color: "red"}}/>
+                </Button>
+            </Box>
         </Box>
         
     );

@@ -542,7 +542,24 @@ function HomePage() {
                                     sx={{padding: 1, height: "40px"}}>
                                 <Typography color="white">Map xes</Typography>
                             </Button>
+                            <Button component={Link} to="/visual" fullWidth variant="contained"
+                                    sx={{padding: 1, height: "40px"}}>
+                                <Typography color="white">Graph Visualization</Typography>
+                            </Button>
+                            
                         </Box>
+                        <Button
+                                variant="contained"
+                                onClick={() => window.open("http://localhost:8080","_blank")}
+                                sx={{
+                                    padding: 1,
+                                    height: "40px",
+                                    backgroundColor: "#007bff",
+                                    '&:hover': { backgroundColor: "#0056b3" }
+                                }}
+                            >
+                                Graph Analysis
+                            </Button>
                     </Stack>
                 </Stack>
             </PageLayout>
