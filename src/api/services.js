@@ -1,5 +1,5 @@
 import axios from "axios";
-import jp from 'jsonpath';
+import jp, { value } from 'jsonpath';
 const serverUrl = "http://localhost:8000";
 
 export const _sendData = async (contractName, contractAddress, impl_contract, fromBlock, toBlock, network, sc, filters) => {
@@ -133,32 +133,61 @@ export const _generateGraph=async (jsonData,edges)=>{
         const nodesSet = new Map();
         let index=0;
         let edgesArray = [];
-        let level=0;
-        const addNodeIfMissing = (id,label, shape, level, color, tx) => {
+        const addNodeIfMissing = (id,label, shape, color, tx,key) => {
             if (!nodesSet.has(id)) {
                 nodesSet.set(id, {
-                    id,
+                    id: id,
+                    size: 10,
+                    hidden:false,
                     label: label,
-                    shape,
-                    level,
-                    color,
-                    details: tx
+                    keyUsed:key,
+                    x: Math.random() * 100,
+                    y: Math.random() * 100,
+                    color: color,
+                    details:tx
                 });
             }
         }; 
+        const addEdgeIfMissing = (from, to) => { 
+            let id=`${from}-${to}`;
+            if (!edgesArray.some(edge => edge.id === id)) {
+                edgesArray.push({
+                    id: id,
+                    from: from,
+                    to: to,
+                    label: "",
+                    value: 1,
+                });
+            }else{  
+                edgesArray.forEach(edge => {
+                    if (edge.id === id) {
+                        edge.value++;
+                    }
+                });
+            }
+        }
         const getNodeId = (item) => {
             if (typeof item === 'object' && item !== null) {
+                console.log("item",item)
                 return JSON.stringify(item);
             }
             return String(item);
         };
-        
-        let indexNodeTo=0;
-        let indexNodeFrom=0;
+        const getRandomColor = () => {
+            var letters = '0123456789ABCDEF';
+            var color = '#';
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return "#" + ((1 << 24) * Math.random() | 0).toString(16).padStart(6, "0");
+        };
         edges.forEach(edge => {
            
             let from=edge.from;
             let to=edge.to;
+
+            const colorFrom = getRandomColor();
+            const colorTo = getRandomColor();
             jsonData.forEach(tx => {
                 let fromResults=jp.value(tx, `$..${from}`);
                 let toResults=jp.value(tx, `$..${to}`);
@@ -166,27 +195,19 @@ export const _generateGraph=async (jsonData,edges)=>{
                 const toItems=Array.isArray(toResults) ? toResults : [toResults];
                 fromItems.forEach((fromItem) => {
                     const idFrom = getNodeId(fromItem);
-                    const labelFrom = idFrom.slice(0,64)+"...";
-                    addNodeIfMissing(idFrom, labelFrom, "ellipse", level, "lightblue", tx);
+                    const labelFrom = idFrom.slice(0,64);
+                    addNodeIfMissing(idFrom, labelFrom, "ellipse", colorFrom, tx,from);
                 
                     toItems.forEach((toItem) => {
                         const idTo = getNodeId(toItem);
-                        const labelTo = idTo.slice(0,64)+"...";
-                        addNodeIfMissing(idTo, labelTo, "box", level + 1, "orange", tx);
-                        edgesArray.push({
-                            id: `${idFrom}-${idTo}-${index}`,
-                            from: idFrom,
-                            to: idTo,
-                            label: ""
-                        });
-                        index++;
+                        const labelTo = idTo.slice(0,64);
+                        addNodeIfMissing(idTo, labelTo, "box", colorTo, tx,to);
+                        addEdgeIfMissing(idFrom, idTo, "");
                     });
                 });
                 
             })
-            level++;
         })
-            
         return {status:200,data:{nodesSet,edgesArray}};
     } catch (error) {
         console.error(error)
