@@ -14,6 +14,7 @@ import DataProvider from "./dataContext/DataContext";
 import Query from "./pages/Query";
 import XesPage from "./pages/XesPage";
 import NetworkGraph from "./pages/VisualModel";
+import DataView from "./pages/DataView";
 
 const router = createBrowserRouter([
     {
@@ -23,7 +24,8 @@ const router = createBrowserRouter([
             {path: "/ocel", element: <OcelMapping/>},
             {path: "/query", element: <Query/>},
             {path: "/xes",element:<XesPage/>},
-            {path: "/visual",element:<NetworkGraph/>}
+            {path: "/visual",element:<NetworkGraph/>},
+            {path: "/view", element: <DataView/>}
         ]
     }
 ]);
