@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import forceAtlas2 from 'graphology-layout-forceatlas2';
 import useDataContext from "../dataContext/useDataContext";
-import { FileUpload } from "@mui/icons-material";
+import { ConstructionOutlined, FileUpload } from "@mui/icons-material";
 import { HiddenInput } from "../components/HiddenInput";
 import React, { useEffect, useState, useRef } from "react";
 import {darkTheme} from "@uiw/react-json-view/dark";
@@ -22,8 +22,9 @@ import KeyType from '../components/keyType/keyType';
 import MultiDirectedGraph from "graphology";
 import { SigmaContainer, useLoadGraph,useRegisterEvents } from "@react-sigma/core";
 // import { ForceAtlas2 } from '@react-sigma/layout-forceatlas2';
-import Graph from "./Graph"; 
+import GraphExtraction from "./Graph"; 
 import { TextField } from "@mui/material";
+import GraphComponent from "./Anothergraph";
 
 
 import "@react-sigma/core/lib/style.css";
@@ -267,6 +268,7 @@ const NetworkGraph = () => {
     const [edgeFilter, setEdgeFilter] = useState("");
     const [colorLegend,setColorLegend]=useState([]);
     const [visibleNodesCount, setVisibleNodeCount]=useState(0);
+    const [startLayout,setStartLayout]=useState(false);
   const [graphData, setGraphData] = useState({
     nodes: [
     ],
@@ -281,7 +283,7 @@ const NetworkGraph = () => {
     setSelectedNode(value === "" ? null : value);
   };
   const handleVisibleNodeCount=(count)=>{
-    console.log("count",count)
+    // console.log("count",count)
     setVisibleNodeCount(count);
   }
   
@@ -307,7 +309,7 @@ const NetworkGraph = () => {
         try {
             setResults(JSON.parse(content));
         } catch (err) {
-            console.error("Invalid JSON file");
+            // console.error("Invalid JSON file");
         }
     };
     if (e.target.files[0]) {
@@ -322,6 +324,9 @@ const NetworkGraph = () => {
   const handleNodeSelected = (node) => {
     setSelectedNode(node);
   };
+  const hadleStartLayout=()=>{
+    setStartLayout(!startLayout);
+  }
     const generateGraph = () => {
         setLoading(true);
         _generateGraph(results, objectsTypesItem).then((response) => {
@@ -367,8 +372,8 @@ const NetworkGraph = () => {
             const minEdgeValue = Math.min(...edgeValues);
             // Scale edge values to a smaller range (e.g., 1 to 10)
             const scaleEdgeValue = (value) => {
-                if (maxEdgeValue === minEdgeValue) return 5; // Avoid division by zero
-                return ((value - minEdgeValue) / (maxEdgeValue - minEdgeValue)) * 9 + 1;
+                if (maxEdgeValue === minEdgeValue) return 1; // Avoid division by zero
+                return ((value - minEdgeValue) / (maxEdgeValue - minEdgeValue)) * 4 + 1;
             }
             const newEdges=edges.map((obj,index) => ({
                 key:obj.id,
@@ -387,7 +392,7 @@ const NetworkGraph = () => {
         setLoading(false);
         }).catch(err => {
             setLoading(false);
-            console.error("Error generating graph:", err);
+            // console.error("Error generating graph:", err);
         });
     };
 //   const generateGraph = () => {
@@ -420,7 +425,7 @@ const NetworkGraph = () => {
   return (
     <div style={{ height: '100%', width: '100%'}}>
       {/* Top control box */}
-      <Box display="flex" gap={2} marginBottom={2} style={{ height: '25em' }}>
+      <Box display="flex" gap={2} marginBottom={2} style={{ height: '4em' }}>
         <Button
           component="label"
           variant="contained"
@@ -432,24 +437,16 @@ const NetworkGraph = () => {
         </Button>
         
 
-        <Stack marginY={3}  overflow="auto">
+        <Stack   >
           <CustomTypography>
             <Button onClick={handleAddObjectType}>
               <Button  variant="contained"
               sx={{ padding: 1, height: "55px" }}>Add edge</Button>
             </Button>
+            
           </CustomTypography>
 
-          {objectsTypesItem.map((objectType, index) => (
-            <KeyType
-              key={`object-type-${index}`}
-              nameFrom={objectType.nameFrom}
-              nameTo={objectType.nameTo}
-              objectToSet={objectType}
-              index={index}
-              setObjectsTypesItem={setObjectsTypesItem}
-            />
-          ))}
+          
         </Stack>
 
         <Button
@@ -493,15 +490,42 @@ const NetworkGraph = () => {
             <Typography variant="body1">{legendItem.keyAssigned}</Typography>
           </Box>
         ))}
+        
       </Box>
+      
+      </Box>
+      <Box overflow="auto">
+      {objectsTypesItem.map((objectType, index) => (
+            <KeyType
+              key={`object-type-${index}`}
+              nameFrom={objectType.nameFrom}
+              nameTo={objectType.nameTo}
+              objectToSet={objectType}
+              index={index}
+              setObjectsTypesItem={setObjectsTypesItem}
+            />
+          ))}
+      </Box>
+      <Box>
+
+      <Button onClick={hadleStartLayout}>Test</Button>
       </Box>
       {/* Graph itself */}
       <SigmaContainer style={{ height: 'calc(100vh - 200px)', width: '100%' }}>
-        <Graph selectedNode={selectedNode} 
+        <GraphExtraction selectedNode={selectedNode} 
         graphData={graphData}
         nodeFilter={nodeFilter}
         onNodeSelected={handleNodeSelected}
-        onVisibleNodeCount={handleVisibleNodeCount}/>
+        onVisibleNodeCount={handleVisibleNodeCount}
+        startLayout={startLayout}
+        />
+        {/* { graphData &&(
+          <GraphComponent
+          graphData={graphData}
+          nodeFilter={nodeFilter}
+           onVisibleNodeCount={handleVisibleNodeCount}
+           />
+        )} */}
       </SigmaContainer>
       {selectedNode && (
       <Stack marginY={3} height="calc(100vh - 300px)" overflow="auto">
@@ -510,7 +534,10 @@ const NetworkGraph = () => {
 
         </Stack>
       )}
+
+     
     </div>
+    
   );
 };
 

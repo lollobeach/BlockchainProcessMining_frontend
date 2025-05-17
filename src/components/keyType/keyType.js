@@ -83,7 +83,7 @@ function KeyType({ nameFrom, nameTo, objectToSet, index,setObjectsTypesItem }) {
                     )}
                 </Select>
             </FormControl>
-            <Box marginTop={8} marginLeft={2}>
+            <Box marginTop={1} >
                 <Button onClick={() => handleRemoveObject(objectToSet)}>
                     <DeleteIcon sx={{fontSize: 30, color: "red"}}/>
                 </Button>
