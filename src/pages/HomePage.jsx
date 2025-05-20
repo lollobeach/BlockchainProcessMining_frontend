@@ -24,7 +24,7 @@ import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {DemoContainer} from "@mui/x-date-pickers/internals/demo";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
-import {Link} from "react-router-dom";
+import {Link} from "react-router";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="down" ref={ref} {...props} />;
