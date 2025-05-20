@@ -15,7 +15,7 @@ import {darkTheme} from "@uiw/react-json-view/dark";
 import {Download, FileUpload, Delete} from "@mui/icons-material";
 import {_downloadCSV, _downloadCSVOCEL, _downloadJson, _downloadJSONOCEL, _downloadOCEL, _xesDownload} from "../api/services";
 import useDataContext from "../dataContext/useDataContext";
-import {Link} from "react-router-dom";
+import {Link} from "react-router";
 import {HiddenInput} from "../components/HiddenInput";
 import XMLViewer from "react-xml-viewer";
 
@@ -108,8 +108,8 @@ function PageLayout({children, loading, setLoading}) {
     const handleShowOcel = () => {
         setShowOcel(!showOcel)
     }
-    
-    
+
+
     const handleDelete = () => {
         setResults(null)
         setOcel({
@@ -313,7 +313,7 @@ function PageLayout({children, loading, setLoading}) {
                                         </Box>
                                     ) : showOcel ? (
                                         <JsonView value={ocel} style={{ ...darkTheme, fontSize: '14px' }} width="100%" />
-                                    ) : showXes ? ( 
+                                    ) : showXes ? (
                                         <Box sx={{
                                             width: "100%",
                                             maxWidth: "100%",
