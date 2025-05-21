@@ -54,7 +54,7 @@ const tabs = [
     },
 ]
 
-export default function DataView() {
+export default function DataViewPage() {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -62,8 +62,6 @@ export default function DataView() {
   };
     return (
         <div>
-            <h1>Data Visualization</h1>
-            <p>Select the type of data you want to visualize</p>
             <Box sx={{ width: '100%' }}>
               <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
