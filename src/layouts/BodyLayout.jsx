@@ -1,12 +1,16 @@
 import React from 'react';
 import {Box} from "@mui/material";
-import {Outlet} from "react-router";
+import { Outlet } from "react-router";
+import { PageContainer } from '@toolpad/core/PageContainer';
+import { DashboardLayout } from '@toolpad/core/DashboardLayout';
 
 function BodyLayout() {
     return (
-        <Box position="relative" paddingX={2} paddingY={5}>
-            <Outlet/>
-        </Box>
+        <DashboardLayout>
+            <PageContainer>
+                <Outlet/>
+            </PageContainer>
+        </DashboardLayout>
     );
 }
 
