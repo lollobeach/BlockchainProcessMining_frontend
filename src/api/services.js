@@ -1,6 +1,6 @@
 import axios from "axios";
 import jp, { value } from 'jsonpath';
-const serverUrl = "http://localhost:8000";
+const serverUrl = "http://localhost:8080";
 
 export const _sendData = async (contractName, contractAddress, impl_contract, fromBlock, toBlock, network, sc, filters) => {
     const formData = new FormData()
@@ -130,85 +130,8 @@ export const _ocelXes = async (objectsToXes,jsonToXes)=>{
 
 export const _generateGraph=async (jsonData,edges)=>{
     try {
-        const nodesSet = new Map();
-        let index=0;
-        let edgesArray = [];
-        const addNodeIfMissing = (id,label, shape, color, tx,key) => {
-            if (!nodesSet.has(id)) {
-                nodesSet.set(id, {
-                    id: id,
-                    size: 10,
-                    hidden:false,
-                    label: label,
-                    keyUsed:key,
-                    x: Math.random() * 100,
-                    y: Math.random() * 100,
-                    color: color,
-                    details:tx
-                });
-            }
-        }; 
-        const addEdgeIfMissing = (from, to) => { 
-            let id=`${from}-${to}`;
-            if (!edgesArray.some(edge => edge.id === id)) {
-                edgesArray.push({
-                    id: id,
-                    from: from,
-                    to: to,
-                    label: "",
-                    value: 1,
-                });
-            }else{  
-                edgesArray.forEach(edge => {
-                    if (edge.id === id) {
-                        edge.value++;
-                    }
-                });
-            }
-        }
-        const getNodeId = (item) => {
-            if (typeof item === 'object' && item !== null) {
-                console.log("item",item)
-                return JSON.stringify(item);
-            }
-            return String(item);
-        };
-        const getRandomColor = () => {
-            var letters = '0123456789ABCDEF';
-            var color = '#';
-            for (var i = 0; i < 6; i++) {
-                color += letters[Math.floor(Math.random() * 16)];
-            }
-            return "#" + ((1 << 24) * Math.random() | 0).toString(16).padStart(6, "0");
-        };
-        edges.forEach(edge => {
-           
-            let from=edge.from;
-            let to=edge.to;
-
-            const colorFrom = getRandomColor();
-            const colorTo = getRandomColor();
-            jsonData.forEach(tx => {
-                let fromResults=jp.value(tx, `$..${from}`);
-                let toResults=jp.value(tx, `$..${to}`);
-                const fromItems=Array.isArray(fromResults) ? fromResults : [fromResults];
-                const toItems=Array.isArray(toResults) ? toResults : [toResults];
-                fromItems.forEach((fromItem) => {
-                    const idFrom = getNodeId(fromItem);
-                    const labelFrom = idFrom.slice(0,64);
-                    addNodeIfMissing(idFrom, labelFrom, "ellipse", colorFrom, tx,from);
-                
-                    toItems.forEach((toItem) => {
-                        const idTo = getNodeId(toItem);
-                        const labelTo = idTo.slice(0,64);
-                        addNodeIfMissing(idTo, labelTo, "box", colorTo, tx,to);
-                        addEdgeIfMissing(idFrom, idTo, "");
-                    });
-                });
-                
-            })
-        })
-        return {status:200,data:{nodesSet,edgesArray}};
+        const result=await axios.post(serverUrl + "/api/generateGraph", {jsonData,edges});
+        return {status:200,data:result.data};
     } catch (error) {
         console.error(error)
         return {status: error.response.status, data: error.response.data}

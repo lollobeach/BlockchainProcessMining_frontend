@@ -3,7 +3,7 @@ import { useLoadGraph, useRegisterEvents, useSigma } from "@react-sigma/core";
 import FA2Layout from "graphology-layout-forceatlas2/worker";
 import circlepack from "graphology-layout/circlepack";
 
-const GraphExtraction = ({ graphData, nodeFilter, onNodeSelected, onVisibleNodeCount, startLayout }) => {
+const GraphExtraction = ({ graphData, nodeFilter, onNodeSelected, onVisibleNodeCount,onVisibleEdgeCount, startLayout }) => {
   const loadGraph = useLoadGraph();
   const registerEvents = useRegisterEvents();
   const sigma = useSigma();
@@ -66,7 +66,6 @@ const GraphExtraction = ({ graphData, nodeFilter, onNodeSelected, onVisibleNodeC
   // Initialize the layout instance only once
   useEffect(() => {
     if (!graph) return;
-    console.log("sono 2")
     // Initialize the layout if it hasn't been created yet
     if (!layoutRef.current) {
       layoutRef.current = new FA2Layout(graph, {
@@ -79,6 +78,7 @@ const GraphExtraction = ({ graphData, nodeFilter, onNodeSelected, onVisibleNodeC
       });
       // Update visible node count
     onVisibleNodeCount(graph.nodes().length);
+    onVisibleEdgeCount(graph.edges().length);
     }
 
     // Cleanup on unmount
@@ -87,12 +87,11 @@ const GraphExtraction = ({ graphData, nodeFilter, onNodeSelected, onVisibleNodeC
         layoutRef.current.stop();
       }
     };
-  }, [graph,onVisibleNodeCount]);
+  }, [graph,onVisibleNodeCount,onVisibleEdgeCount]);
 
   // Start or stop the layout based on `startLayout`
   useEffect(() => {
     if (!layoutRef.current) return;
-    console.log("sono 3")
 
     if (startLayout) {
       layoutRef.current.start();
@@ -105,7 +104,6 @@ const GraphExtraction = ({ graphData, nodeFilter, onNodeSelected, onVisibleNodeC
     const handleEnterNode = ({ node }) => {
       setHoveredNode(node);
       setHoveredNeighbors(new Set(graph.neighbors(node)));
-      console.log(graph.neighbors(node))
     };
 
     const handleLeaveNode = () => {
@@ -176,10 +174,10 @@ const GraphExtraction = ({ graphData, nodeFilter, onNodeSelected, onVisibleNodeC
         visibleNodeCount.add(node);
       });
     }
-
     // Update visible node count
     onVisibleNodeCount(visibleNodeCount.size);
-  }, [nodeFilter, graph, onVisibleNodeCount]);
+    onVisibleEdgeCount(graph.edges().length);
+  }, [nodeFilter, graph, onVisibleNodeCount,onVisibleEdgeCount]);
 
   // Node drag handlers
   let draggedNode = null;
