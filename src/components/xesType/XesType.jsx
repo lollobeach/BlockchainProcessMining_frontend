@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import jp from 'jsonpath';
-import useDataContext from "../../dataContext/useDataContext";
+import useDataContext from "../../context/useDataContext";
 
 function XesType({ name, objectToSet }) {
     const { results } = useDataContext();
@@ -17,7 +17,7 @@ function XesType({ name, objectToSet }) {
         paths.forEach(pathArray => {
             if (pathArray.length > 1) { // Ignore root $
                 const lastKey = pathArray[pathArray.length - 1];
-                
+
                 // Only add keys that are not purely numeric
                 if (isNaN(lastKey)) {
                     keys.add(lastKey);

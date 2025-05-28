@@ -6,7 +6,7 @@ import CustomTypography from "../components/CustomTypography";
 import ObjectType from "../components/objectTypes/ObjectType";
 import PageLayout from "../layouts/PageLayout";
 import ActivityEventType from "../components/eventTypes/ActivityEventType";
-import useDataContext from "../dataContext/useDataContext";
+import useDataContext from "../context/useDataContext";
 import {_occelMapping} from "../api/services";
 
 function OcelMapping() {

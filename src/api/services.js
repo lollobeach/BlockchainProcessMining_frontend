@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const serverUrl = "http://localhost:8000";
+const serverUrl = "http://localhost:8000"; // Update to match your backend server port
 
 export const _sendData = async (contractName, contractAddress, impl_contract, fromBlock, toBlock, network, sc, filters) => {
     const formData = new FormData()
@@ -125,5 +125,17 @@ export const _ocelXes = async (objectsToXes,jsonToXes)=>{
         console.error(error)
         return {status: error.response.status, data: error.response.data}
     }
+}
 
+export const getData = async ({ type, query}) => {
+  try {
+    const response = await axios.get("http://localhost:8000/api/data", {
+      params: { type },
+      data: query,
+    });
+    return {status: response.status, data: response.data}
+  } catch (error) {
+    console.error(error)
+    return {status: error.response.status, data: error.response.data}
+  }
 }

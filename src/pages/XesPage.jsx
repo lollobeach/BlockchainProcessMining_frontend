@@ -6,7 +6,7 @@ import CustomTypography from "../components/CustomTypography";
 import ObjectType from "../components/objectTypes/ObjectType";
 
 import ActivityEventType from "../components/eventTypes/ActivityEventType";
-import useDataContext from "../dataContext/useDataContext";
+import useDataContext from "../context/useDataContext";
 import PageLayout from '../layouts/PageLayout';
 import XesType from '../components/xesType/XesType';
 import { _ocelXes } from '../api/services';
@@ -26,7 +26,7 @@ function XesPage() {
 
     const {setXes} = useDataContext()
 
-    
+
     const sendObjectForXes = () => {
             setLoading(true)
             _ocelXes({caseId,activityKey,timestamp},results).then((response) => {
