@@ -14,7 +14,7 @@ import JsonView from "@uiw/react-json-view";
 import {darkTheme} from "@uiw/react-json-view/dark";
 import {Download, FileUpload, Delete} from "@mui/icons-material";
 import {_downloadCSV, _downloadCSVOCEL, _downloadJson, _downloadJSONOCEL, _downloadOCEL, _xesDownload} from "../api/services";
-import useDataContext from "../dataContext/useDataContext";
+import useDataContext from "../context/useDataContext";
 import {Link} from "react-router";
 import {HiddenInput} from "../components/HiddenInput";
 import XMLViewer from "react-xml-viewer";
