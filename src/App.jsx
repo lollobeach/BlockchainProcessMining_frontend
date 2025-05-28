@@ -7,7 +7,11 @@ import ConstructionIcon from '@mui/icons-material/Construction';
 import { ReactRouterAppProvider } from '@toolpad/core/react-router';
 import MapTwoToneIcon from '@mui/icons-material/MapTwoTone';
 import ContentPasteSearchTwoToneIcon from '@mui/icons-material/ContentPasteSearchTwoTone';
-import DataProvider from './dataContext/DataContext';
+import DataProvider from './context/DataContext';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { DataViewProvider } from './context/DataViewContext';
+
 const NAVIGATION = [
   {
     kind: 'header',
@@ -57,12 +61,18 @@ const BRANDING = {
 
 function App() {
     return (
-      <ReactRouterAppProvider navigation={NAVIGATION} branding={BRANDING}>
-        <DataProvider>
-          <Outlet />
-        </DataProvider>
-      </ReactRouterAppProvider>
-    );
+			<ReactRouterAppProvider
+				navigation={NAVIGATION}
+				branding={BRANDING}>
+				<LocalizationProvider dateAdapter={AdapterDateFns}>
+					<DataProvider>
+						<DataViewProvider>
+							<Outlet />
+						</DataViewProvider>
+					</DataProvider>
+				</LocalizationProvider>
+			</ReactRouterAppProvider>
+		);
 }
 
 export default App;

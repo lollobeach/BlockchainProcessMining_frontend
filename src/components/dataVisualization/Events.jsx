@@ -2,12 +2,13 @@ import { BarChart } from '@mui/x-charts/BarChart';
 import React from 'react';
 import { Box } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
+import { useDataView } from "../../context/DataViewContext";
 
 
-const data = [
-  { id: 0, smartContract: '0x1234567890123456789012345678901234567890', eventName: 'Transfer', occurrences: 4234},
-  { id: 1, smartContract: '0x1234567890123456789012345678901234567890', eventName: 'Approval', occurrences:5650 },
-];
+// const data = [
+//   { id: 0, smartContract: '0x1234567890123456789012345678901234567890', eventName: 'Transfer', occurrences: 4234},
+//   { id: 1, smartContract: '0x1234567890123456789012345678901234567890', eventName: 'Approval', occurrences:5650 },
+// ];
 
 const columns = [
   { field: 'smartContract', headerName: 'Smart Contract', width: 400 },
@@ -16,20 +17,21 @@ const columns = [
 ];
 
 export default function Events() {
+    const { data } = useDataView();
     return (
         <div>
             <h1>Events</h1>
             <Box sx={{
               display: 'flex',
-              flexDirection: { xs: 'column', md: 'row' },
-              alignItems: { xs: 'center', md: 'flex-start' },
+              flexDirection: "column",
+              alignItems: "center",
               gap: 2
             }}>
               <Box sx={{
-                width: { xs: '100%', md: '50%' },
+                width: "100%",
                 minWidth: { md: '400px' },
                 display: 'flex',
-                justifyContent: { xs: 'center', md: 'flex-start' }
+                justifyContent: "center"
               }}>
                 <BarChart
                   series={[
@@ -44,7 +46,7 @@ export default function Events() {
               </Box>
               <Box sx={{
                 flexGrow: 1,
-                width: { xs: '100%', md: '50%' },
+                width: "100%",
                 height: 400
               }}>
                 <DataGrid rows={
