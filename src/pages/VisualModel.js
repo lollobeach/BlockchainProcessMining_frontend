@@ -216,7 +216,7 @@ const NetworkGraph = () => {
       </Box>
       <Box>
 
-      <Button onClick={hadleStartLayout}>Test</Button>
+      {/* <Button onClick={hadleStartLayout}>Test</Button> */}
       </Box>
       {/* Graph itself */}
       <SigmaContainer style={{ height: 'calc(100vh - 200px)', width: '100%' }}>
