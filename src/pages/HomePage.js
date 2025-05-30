@@ -550,7 +550,7 @@ function HomePage() {
                         </Box>
                         <Button
                                 variant="contained"
-                                onClick={() => window.open("http://localhost:8080","_blank")}
+                                onClick={() => window.open("http://localhost:8000","_blank")}
                                 sx={{
                                     padding: 1,
                                     height: "40px",
