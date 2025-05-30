@@ -8,23 +8,18 @@ import {
     styled,
     Stack
 } from "@mui/material";
-import forceAtlas2 from 'graphology-layout-forceatlas2';
 import useDataContext from "../dataContext/useDataContext";
 import { ConstructionOutlined, FileUpload } from "@mui/icons-material";
 import { HiddenInput } from "../components/HiddenInput";
 import React, { useEffect, useState, useRef } from "react";
-import {darkTheme} from "@uiw/react-json-view/dark";
 import JsonView from "@uiw/react-json-view";
 import { _generateGraph } from "../api/services";
 import CustomTypography from "../components/CustomTypography";
-import AddBoxIcon from '@mui/icons-material/AddBox';
 import KeyType from '../components/keyType/keyType';
-import MultiDirectedGraph from "graphology";
 import { SigmaContainer, useLoadGraph,useRegisterEvents } from "@react-sigma/core";
 // import { ForceAtlas2 } from '@react-sigma/layout-forceatlas2';
 import GraphExtraction from "./Graph"; 
 import { TextField } from "@mui/material";
-import GraphComponent from "./Anothergraph";
 
 
 import "@react-sigma/core/lib/style.css";
