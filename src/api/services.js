@@ -1,6 +1,5 @@
 import axios from "axios";
-import jp, { value } from 'jsonpath';
-const serverUrl = "http://localhost:8080";
+const serverUrl = "http://localhost:8000";
 
 export const _sendData = async (contractName, contractAddress, impl_contract, fromBlock, toBlock, network, sc, filters) => {
     const formData = new FormData()
