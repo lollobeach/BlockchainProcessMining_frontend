@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import  { useEffect, useRef, useState } from "react";
 import { useLoadGraph, useRegisterEvents, useSigma } from "@react-sigma/core";
 import FA2Layout from "graphology-layout-forceatlas2/worker";
 import circlepack from "graphology-layout/circlepack";
