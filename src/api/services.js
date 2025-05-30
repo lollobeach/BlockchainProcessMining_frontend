@@ -1,6 +1,6 @@
 import axios from "axios";
-
-const serverUrl = "http://localhost:8000";
+import jp, { value } from 'jsonpath';
+const serverUrl = "http://localhost:8080";
 
 export const _sendData = async (contractName, contractAddress, impl_contract, fromBlock, toBlock, network, sc, filters) => {
     const formData = new FormData()
@@ -126,4 +126,38 @@ export const _ocelXes = async (objectsToXes,jsonToXes)=>{
         return {status: error.response.status, data: error.response.data}
     }
 
+}
+
+export const _generateGraph=async (jsonData,edges)=>{
+    try {
+        const result=await axios.post(serverUrl + "/api/generateGraph", {jsonData,edges});
+        return {status:200,data:result.data};
+    } catch (error) {
+        console.error(error)
+        return {status: error.response.status, data: error.response.data}
+    }
+}
+
+
+function findAllValuesByKey(obj, key) {
+    let results = [];
+
+    function recursiveSearch(o) {
+        if (typeof o !== 'object' || o === null) return;
+
+        if (key in o) {
+            results.push(o[key]);
+        }
+
+        for (let k in o) {
+            if (typeof o[k] === 'object') {
+                recursiveSearch(o[k]);
+            } else if (Array.isArray(o[k])) {
+                o[k].forEach(item => recursiveSearch(item));
+            }
+        }
+    }
+
+    recursiveSearch(obj);
+    return results;
 }
