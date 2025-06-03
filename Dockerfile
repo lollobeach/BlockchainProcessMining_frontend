@@ -1,6 +1,7 @@
 FROM node:22-alpine
-WORKDIR app
-COPY . .
+WORKDIR /app
+COPY package*.json ./
 RUN npm install
-EXPOSE 3000
-CMD ["npm", "run", "start"]
+COPY . .
+EXPOSE 5173
+CMD ["npm", "run", "dev", "--", "--host"]
