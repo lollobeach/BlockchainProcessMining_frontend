@@ -8,7 +8,6 @@ import {
     styled,
     Stack
 } from "@mui/material";
-import useDataContext from "../dataContext/useDataContext";
 import { ConstructionOutlined, FileUpload } from "@mui/icons-material";
 import { HiddenInput } from "../components/HiddenInput";
 import React, { useEffect, useState, useRef } from "react";
@@ -18,11 +17,12 @@ import CustomTypography from "../components/CustomTypography";
 import KeyType from '../components/keyType/keyType';
 import { SigmaContainer, useLoadGraph,useRegisterEvents } from "@react-sigma/core";
 // import { ForceAtlas2 } from '@react-sigma/layout-forceatlas2';
-import GraphExtraction from "./Graph"; 
+import GraphExtraction from "./Graph";
 import { TextField } from "@mui/material";
 
 
 import "@react-sigma/core/lib/style.css";
+import useDataContext from "../context/useDataContext";
 
 
 
@@ -114,7 +114,7 @@ const NetworkGraph = () => {
               setColorLegend(response.data.colorLegend);
               setEdgeFilter(response.data.edgeFilter);
               setGraphData({nodes:nodes, edges:edges});
-              const endTime = performance.now(); 
+              const endTime = performance.now();
               console.log(`Graph creation took ${(endTime - startTime).toFixed(2)} ms`);
 
           setLoading(false);
@@ -124,7 +124,7 @@ const NetworkGraph = () => {
           });
         }else{
           setLoading(false)
-          const endTime = performance.now(); 
+          const endTime = performance.now();
           console.log(`Graph creation took ${(endTime - startTime).toFixed(2)} ms`);
         }
     };
@@ -142,7 +142,7 @@ const NetworkGraph = () => {
           Upload File
           <HiddenInput type="file" onChange={handleFileChange} />
         </Button>
-        
+
 
         <Stack   >
           <CustomTypography>
@@ -150,10 +150,10 @@ const NetworkGraph = () => {
               <Button  variant="contained"
               sx={{ padding: 1, height: "55px" }}>Add edge</Button>
             </Button>
-            
+
           </CustomTypography>
 
-          
+
         </Stack>
 
         <Button
@@ -198,9 +198,9 @@ const NetworkGraph = () => {
             <Typography variant="body1">{legendItem.keyAssigned}</Typography>
           </Box>
         ))}
-        
+
       </Box>
-      
+
       </Box>
       <Box overflow="auto">
       {objectsTypesItem.map((objectType, index) => (
@@ -220,7 +220,7 @@ const NetworkGraph = () => {
       </Box>
       {/* Graph itself */}
       <SigmaContainer style={{ height: 'calc(100vh - 200px)', width: '100%' }}>
-        <GraphExtraction selectedNode={selectedNode} 
+        <GraphExtraction selectedNode={selectedNode}
         graphData={graphData}
         nodeFilter={nodeFilter}
         onNodeSelected={handleNodeSelected}
@@ -238,15 +238,15 @@ const NetworkGraph = () => {
       </SigmaContainer>
       {selectedNode && (
       <Stack marginY={3} height="calc(100vh - 300px)" overflow="auto">
-      
+
       <JsonView value={selectedNode} style={{ fontSize: '14px' }} width="100%" />
 
         </Stack>
       )}
 
-     
+
     </div>
-    
+
   );
 };
 

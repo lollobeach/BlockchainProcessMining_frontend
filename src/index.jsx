@@ -11,6 +11,7 @@ import Query from './pages/Query';
 import XesPage from './pages/XesPage';
 import HomePage from './pages/HomePage';
 import DataViewPage from './pages/DataView';
+import NetworkGraph from './pages/VisualModel';
 
 const router = createBrowserRouter([
     {
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
                   path: "xes",
                   Component: XesPage
                 },
+                {
+                  path: "visual",
+                  Component: NetworkGraph
+                }
               ]
             },
         ]
