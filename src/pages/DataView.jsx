@@ -78,12 +78,12 @@ export default function DataViewPage() {
 
     const isInitialFetch = useRef(false);
 
-    const onFetchData = async ({ type, query }) => {
+    const onFetchData = async ({ type, queryParams }) => {
       console.log("[DataView] Fetching data with type:", type, "and query:", query);
       setLoadingState(true);
       setErrorState(null);
       try {
-        const response = await getData({ type, query });
+        const response = await getData({ type, queryParams });
         console.log("[DataView] Response Data:", response);
         setDataView(response.data);
       } catch (error) {
@@ -210,7 +210,7 @@ function TabContent () {
       </Box>
     );
   }
-  if (loading || !data || data.length === 0) {
+  if (loading || !data || data.length === 0 || !isNaN(data)) {
 		return (
 			<Box
 				sx={{

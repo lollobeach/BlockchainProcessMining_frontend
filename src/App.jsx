@@ -11,6 +11,7 @@ import DataProvider from './context/DataContext';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DataViewProvider } from './context/DataViewContext';
+import { DialogsProvider } from '@toolpad/core/useDialogs';
 
 const NAVIGATION = [
   {
@@ -67,7 +68,9 @@ function App() {
 				<LocalizationProvider dateAdapter={AdapterDateFns}>
 					<DataProvider>
 						<DataViewProvider>
-							<Outlet />
+              <DialogsProvider>
+							  <Outlet />
+              </DialogsProvider>
 						</DataViewProvider>
 					</DataProvider>
 				</LocalizationProvider>

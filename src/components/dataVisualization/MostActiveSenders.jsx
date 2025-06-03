@@ -50,7 +50,7 @@ const columns = [
 ];
 
 export default function MostActiveSenders() {
-    const { data, setDataView } = useDataView();
+    const { data } = useDataView();
 
     const [searchValue, setSearchValue] = React.useState("");
     const [filteredData, setFilteredData] = React.useState(data || []);
@@ -61,7 +61,7 @@ export default function MostActiveSenders() {
 				<Box
 					sx={{
 						flexGrow: 1,
-						width: { xs: "100%", md: "100%" },
+						width: "100%",
 						height: 400,
 					}}>
 					<Box
