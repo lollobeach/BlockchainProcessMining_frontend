@@ -184,7 +184,6 @@ export default function DataViewPage() {
 								<Tab
 									key={index}
 									label={tab.label}
-									{...a11yProps(index)}
 								/>
 							))}
 						</Tabs>
