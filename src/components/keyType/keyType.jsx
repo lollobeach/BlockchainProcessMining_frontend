@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Box,Button, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import jp from 'jsonpath';
-import useDataContext from "../../dataContext/useDataContext";
+import useDataContext from '../../context/useDataContext';
 
 function KeyType({ nameFrom, nameTo, objectToSet, index,setObjectsTypesItem }) {
     const { results } = useDataContext();
@@ -39,12 +39,12 @@ function KeyType({ nameFrom, nameTo, objectToSet, index,setObjectsTypesItem }) {
         objectToSet.nameFrom=nameFrom
         objectToSet.from = e.target.value;
     };
-    
+
     const handleSelectObjectTypeNameTo = (e) => {
         objectToSet.nameTo=nameTo
         objectToSet.to = e.target.value;
     };
-    
+
 
     return (
         <Box display="flex" gap={2} >
@@ -89,7 +89,7 @@ function KeyType({ nameFrom, nameTo, objectToSet, index,setObjectsTypesItem }) {
                 </Button>
             </Box>
         </Box>
-        
+
     );
 }
 
