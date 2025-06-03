@@ -159,4 +159,19 @@ function findAllValuesByKey(obj, key) {
 
     recursiveSearch(obj);
     return results;
+
 }
+
+export const getData = async ({ type, query}) => {
+  try {
+    const response = await axios.get("http://localhost:8000/api/data", {
+      params: { type },
+      data: query,
+    });
+    return {status: response.status, data: response.data}
+  } catch (error) {
+    console.error(error)
+    return {status: error.response.status, data: error.response.data}
+  }
+}
+

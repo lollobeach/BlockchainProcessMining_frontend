@@ -546,7 +546,7 @@ function HomePage() {
                                     sx={{padding: 1, height: "40px"}}>
                                 <Typography color="white">Graph Visualization</Typography>
                             </Button>
-                            
+
                         </Box>
                         <Button
                                 variant="contained"
@@ -568,3 +568,4 @@ function HomePage() {
 }
 
 export default HomePage;
+
