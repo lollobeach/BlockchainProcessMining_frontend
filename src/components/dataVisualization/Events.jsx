@@ -11,9 +11,9 @@ import { useDataView } from "../../context/DataViewContext";
 // ];
 
 const columns = [
-  { field: 'smartContract', headerName: 'Smart Contract', width: 400 },
-  { field: 'eventName', headerName: 'Event Name', width: 200 },
-  { field: 'occurrences', headerName: 'Occurrences', width: 200 },
+	{ field: "contractAddress", headerName: "Smart Contract", width: 400 },
+	{ field: "eventName", headerName: "Event Name", width: 200 },
+	{ field: "count", headerName: "Occurrences", width: 200 },
 ];
 
 export default function Events() {
@@ -36,7 +36,7 @@ export default function Events() {
                 <BarChart
                   series={[
                     {
-                      data: data.map((item) => item.occurrences),
+                      data: data.map((item) => item.count),
                     },
                   ]}
                   height={290}
@@ -50,9 +50,10 @@ export default function Events() {
                 height: 400
               }}>
                 <DataGrid rows={
-                  data.map((item) => ({
+                  data.map((item, index) => ({
+                    id: index,
                     ...item,
-                    occurrences: item.occurrences || 0
+                    timestamp: new Date(Date.parse(item.timestamp))
                   }))
                 } columns={columns} />
               </Box>

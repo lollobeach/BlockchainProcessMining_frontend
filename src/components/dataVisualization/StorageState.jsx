@@ -4,20 +4,15 @@ import { Box } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { useDataView } from "../../context/DataViewContext";
 
-// const data = [
-//   { id: 0, smartContract: '0x1234567890123456789012345678901234567890', variableName: '_decimals', occurrences: 4400},
-//   { id: 1, smartContract: '0x1234567890123456789012345678901234567890', variableName: '_totalSupply', occurrences:5430 },
-//   { id: 2, smartContract: '0x1234567890123456789012345678901234567890', variableName: 'sushi', occurrences:1256},
-// ];
 
 const columns = [
-  { field: 'smartContract', headerName: 'Smart Contract', width: 400 },
-  { field: 'variableName', headerName: 'Variable Name', width: 200 },
-  { field: 'occurrences', headerName: 'Occurrences', width: 200 },
+  { field: 'variableName', headerName: 'Variable Name', width: 400 },
+  { field: 'count', headerName: 'Occurrences', width: 200 },
 ];
 
 export default function StorageState() {
     const { data } = useDataView();
+
     return (
         <div>
             <h1>Storage State</h1>
@@ -36,7 +31,7 @@ export default function StorageState() {
                 <BarChart
                   series={[
                     {
-                      data: data.map((item) => item.occurrences),
+                      data: data.map((item) => item.count),
                     },
                   ]}
                   height={290}
@@ -50,9 +45,9 @@ export default function StorageState() {
                 height: 400
               }}>
                 <DataGrid rows={
-                  data.map((item) => ({
+                  data.map((item, index) => ({
                     ...item,
-                    occurrences: item.occurrences || 0
+                    id: index
                   }))
                 } columns={columns} />
               </Box>

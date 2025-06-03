@@ -1,8 +1,10 @@
-import { BarChart } from '@mui/x-charts/BarChart';
 import React from 'react';
-import { Box } from '@mui/material';
+import { Box, TextField, Button } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { useDataView } from "../../context/DataViewContext";
+import SearchIcon from "@mui/icons-material/Search";
+import DeleteSweepTwoToneIcon from "@mui/icons-material/DeleteSweepTwoTone";
+
 
 // const data = [
 //   { id: 0, smartContract: '0x1234567890123456789012345678901234567890', inputName: 'amount', inputType: "uint256", occurrences: 4234},
@@ -14,14 +16,17 @@ import { useDataView } from "../../context/DataViewContext";
 // ];
 
 const columns = [
-  { field: 'smartContract', headerName: 'Smart Contract', width: 400 },
-  { field: 'inputName', headerName: 'Input Name', width: 200 },
-  { field: 'inputType', headerName: 'Input Type', width: 200 },
-  { field: 'occurrences', headerName: 'Occurrences', width: 200 },
+	{ field: "contractAddress", headerName: "Smart Contract", width: 400 },
+	{ field: "inputName", headerName: "Input Name", width: 200 },
+	{ field: "inputType", headerName: "Input Type", width: 200 },
+	{ field: "inputValue", headerName: "Input Value", width: 200 },
 ];
 
 export default function Inputs() {
     const { data } = useDataView();
+    const [searchValue, setSearchValue] = React.useState("");
+    const [filteredData, setFilteredData] = React.useState(data || []);
+
     return (
 			<div>
 				<h1>Inputs</h1>
@@ -30,25 +35,53 @@ export default function Inputs() {
 						display: "flex",
 						flexDirection: "column",
 						alignItems: "flex-start",
+						width: "100%",
 						gap: 2,
 					}}>
 					<Box
 						sx={{
-							width: "100%",
-							minWidth: { md: "400px" },
 							display: "flex",
-							justifyContent: "center"
+							flexDirection: "row",
+							alignItems: "center",
+							width: "100%",
+							gap: 2,
+							marginBottom: 2,
 						}}>
-						<BarChart
-							series={[
-								{
-									data: data.map((item) => item.occurrences),
-								},
-							]}
-							height={290}
-							width={400}
-							xAxis={[{ data: data.map((item) => item.inputName) }]}
+						<TextField
+							label="Search by Contract Address"
+							variant="outlined"
+							fullWidth
+							value={searchValue}
+							placeholder="0x..."
+							onChange={(e) => setSearchValue(e.target.value.toLowerCase())}
 						/>
+						<Button
+							variant="contained"
+							onClick={() =>
+								setFilteredData(
+									data.filter((item) =>
+										item.contractAddress.toLowerCase().includes(searchValue)
+									)
+								)
+							}
+							sx={{ width: "fit-content", height: "100%", minHeight: "56px" }}>
+							<SearchIcon />
+						</Button>
+						<Button
+							variant="contained"
+							onClick={() => {
+								setFilteredData(data);
+								setSearchValue("");
+							}}
+							sx={{
+								width: "fit-content",
+								backgroundColor: "red",
+								color: "white",
+								height: "100%",
+								minHeight: "56px",
+							}}>
+							<DeleteSweepTwoToneIcon />
+						</Button>
 					</Box>
 					<Box
 						sx={{
@@ -57,9 +90,9 @@ export default function Inputs() {
 							height: 400,
 						}}>
 						<DataGrid
-							rows={data.map((item) => ({
+							rows={filteredData.map((item, index) => ({
+								id: index,
 								...item,
-								occurrences: item.occurrences || 0,
 							}))}
 							columns={columns}
 						/>
